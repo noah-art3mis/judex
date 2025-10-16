@@ -53,7 +53,7 @@ class LexiconSpiderMiddleware:
             yield r
 
     def spider_opened(self, spider):
-        spider.logger.info('Spider opened: %s' % spider.name)
+        spider.logger.info("Spider opened: %s" % spider.name)
 
 
 class LexiconDownloaderMiddleware:
@@ -100,11 +100,13 @@ class LexiconDownloaderMiddleware:
         pass
 
     def spider_opened(self, spider):
-        spider.logger.info('Spider opened: %s' % spider.name)
+        spider.logger.info("Spider opened: %s" % spider.name)
+
 
 from scrapy.http import HtmlResponse
 from urllib.parse import urlparse
 from curl_cffi import requests as curl_requests
+
 
 class CurlCFFIDownloaderMiddleware:
     def __init__(self):
@@ -122,12 +124,20 @@ class CurlCFFIDownloaderMiddleware:
             return None
 
         # Convert Scrapy headers to a plain dict of str -> str
-        headers = {k.decode() if isinstance(k, bytes) else k:
-                   v[0].decode() if isinstance(v, (list, tuple)) else (v.decode() if isinstance(v, bytes) else v)
-                   for k, v in request.headers.items()}
+        headers = {
+            k.decode() if isinstance(k, bytes) else k: (
+                v[0].decode()
+                if isinstance(v, (list, tuple))
+                else (v.decode() if isinstance(v, bytes) else v)
+            )
+            for k, v in request.headers.items()
+        }
 
         # Merge a realistic UA if one isn’t already present
-        headers.setdefault("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
+        headers.setdefault(
+            "User-Agent",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        )
 
         # Send the request with curl-cffi
         try:
