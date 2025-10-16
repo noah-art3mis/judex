@@ -110,7 +110,7 @@ from scrapy.http import HtmlResponse
 class CurlCFFIDownloaderMiddleware:
     def __init__(self):
         # Reuse one session to retain connection pooling/cookies
-        self.session = curl_requests.Session(impersonate="chrome120")
+        self.session = curl_requests.Session(impersonate="firefox120", verify=False)
 
     @classmethod
     def from_crawler(cls, crawler):
@@ -135,7 +135,7 @@ class CurlCFFIDownloaderMiddleware:
         # Merge a realistic UA if one isn’t already present
         headers.setdefault(
             "User-Agent",
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0",
         )
 
         # Send the request with curl-cffi
@@ -159,11 +159,18 @@ class CurlCFFIDownloaderMiddleware:
             spider.logger.warning(f"curl_cffi error for {request.url}: {e}")
             return None  # Let Scrapy retry via its standard pipeline
 
+        # Clean up headers to avoid gzip decompression issues
+        clean_headers = {}
+        for k, v in resp.headers.items():
+            # Skip content-encoding to avoid gzip decompression issues
+            if k.lower() not in ['content-encoding', 'transfer-encoding']:
+                clean_headers[k] = v
+
         # Build a Scrapy HtmlResponse
         return HtmlResponse(
             url=request.url,
             status=resp.status_code,
-            headers={k: v for k, v in resp.headers.items()},
+            headers=clean_headers,
             body=resp.content,
             request=request,
             encoding=resp.encoding or "utf-8",

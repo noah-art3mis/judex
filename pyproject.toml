@@ -8,11 +8,8 @@ dependencies = [
     "beautifulsoup4>=4.14.2",
     "curl-cffi>=0.13.0",
     "ipykernel>=7.0.1",
-    "matplotlib>=3.10.7",
     "pandas>=2.3.3",
-    "pydantic>=2.12.2",
     "scrapy>=2.13.3",
-    "seaborn>=0.13.2",
 ]
 
 [project.optional-dependencies]
