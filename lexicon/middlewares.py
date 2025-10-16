@@ -101,3 +101,61 @@ class LexiconDownloaderMiddleware:
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
+
+from scrapy.http import HtmlResponse
+from urllib.parse import urlparse
+from curl_cffi import requests as curl_requests
+
+class CurlCFFIDownloaderMiddleware:
+    def __init__(self):
+        # Reuse one session to retain connection pooling/cookies
+        self.session = curl_requests.Session(impersonate="chrome120")
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls()
+
+    def process_request(self, request, spider):
+        # Only handle our target domain; let Scrapy handle everything else
+        netloc = urlparse(request.url).netloc
+        if "portal.stf.jus.br" not in netloc:
+            return None
+
+        # Convert Scrapy headers to a plain dict of str -> str
+        headers = {k.decode() if isinstance(k, bytes) else k:
+                   v[0].decode() if isinstance(v, (list, tuple)) else (v.decode() if isinstance(v, bytes) else v)
+                   for k, v in request.headers.items()}
+
+        # Merge a realistic UA if one isn’t already present
+        headers.setdefault("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
+
+        # Send the request with curl-cffi
+        try:
+            if request.method == "POST":
+                resp = self.session.post(
+                    request.url,
+                    data=request.body if request.body else None,
+                    headers=headers,
+                    cookies=request.cookies or None,
+                    timeout=30,
+                )
+            else:
+                resp = self.session.get(
+                    request.url,
+                    headers=headers,
+                    cookies=request.cookies or None,
+                    timeout=30,
+                )
+        except Exception as e:
+            spider.logger.warning(f"curl_cffi error for {request.url}: {e}")
+            return None  # Let Scrapy retry via its standard pipeline
+
+        # Build a Scrapy HtmlResponse
+        return HtmlResponse(
+            url=request.url,
+            status=resp.status_code,
+            headers={k: v for k, v in resp.headers.items()},
+            body=resp.content,
+            request=request,
+            encoding=resp.encoding or "utf-8",
+        )
