@@ -9,7 +9,7 @@ class STFCaseItem(scrapy.Item):
 
     # classificação do processo
     classe = scrapy.Field()
-    nome_processo = scrapy.Field()
+    liminar = scrapy.Field()
     tipo_processo = scrapy.Field()
 
     # detalhes do processo

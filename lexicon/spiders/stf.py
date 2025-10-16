@@ -67,7 +67,7 @@ class StfSpider(scrapy.Spider):
 
         # classificacao
         item["classe"] = self.extract_classe(soup)
-        item["nome_processo"] = self.extract_nome_processo(soup)
+        item["liminar"] = self.extract_liminar(soup)
         item["tipo_processo"] = self.extract_tipo_processo(soup)
 
         # detalhes
@@ -121,16 +121,6 @@ class StfSpider(scrapy.Spider):
             self.logger.error(f"Error extracting classe: {e}")
             return None
 
-    def extract_nome_processo(self, soup: BeautifulSoup) -> str | None:
-        """Extract process name"""
-        try:
-            # From the process title
-            processo_titulo = soup.find("div", class_="processo-titulo")
-            if processo_titulo:
-                return processo_titulo.get_text().strip()
-            return None
-        except:
-            return None
 
     def extract_tipo_processo(self, soup: BeautifulSoup) -> str | None:
         """Extract process type from badges"""
@@ -297,4 +287,62 @@ class StfSpider(scrapy.Spider):
             assuntos_list = [assunto.get_text().strip() for assunto in assuntos_elements]
             return assuntos_list
         except:
+            return []
+
+    def extract_liminar(self, soup: BeautifulSoup) -> list[str]:
+        """Extract meaningful information from nome_processo field"""
+        try:
+            # Extract nome_processo from the soup
+            processo_titulo = soup.find("div", class_="processo-titulo")
+            if not processo_titulo:
+                return []
+            
+            nome_processo = processo_titulo.get_text().strip()
+            if not nome_processo:
+                return []
+            
+            # Clean up the text - remove extra whitespace and normalize
+            cleaned = re.sub(r'\r\n\s+', '\n', nome_processo)
+            cleaned = re.sub(r'\s+', ' ', cleaned.strip())
+            
+            # Split by newlines to get individual lines
+            lines = [line.strip() for line in cleaned.split('\n') if line.strip()]
+            
+            result = []
+            
+            # Look for specific patterns and extract meaningful information
+            for line in lines:
+                line_upper = line.upper()
+                
+                # Extract process type (ADI, etc.) - but don't add to result yet
+                if re.match(r'^ADI\s*\d+', line_upper):
+                    # Extract the ADI number but don't add it to the main result
+                    # as it's not one of the requested output items
+                    pass
+                
+                # Check for "Processo Eletrônico" - convert to meaningful status
+                if 'PROCESSO ELETRÔNICO' in line_upper or 'PROCESSO ELETRONICO' in line_upper:
+                    result.append('CONVERTIDO EM PROCESSO ELETRÔNICO')
+                
+                # Check for "Medida Liminar"
+                if 'MEDIDA LIMINAR' in line_upper:
+                    result.append('MEDIDA LIMINAR')
+                
+                # Check for "Público" - this might indicate public access
+                if 'PÚBLICO' in line_upper or 'PUBLICO' in line_upper:
+                    result.append('PROCESSO PÚBLICO')
+            
+            # If no specific patterns found, try to extract meaningful words
+            if not result:
+                # Look for capitalized words that might be meaningful
+                words = re.findall(r'\b[A-Z][A-Z\s]+\b', cleaned)
+                for word in words:
+                    word_clean = word.strip()
+                    if len(word_clean) > 3:  # Only include words longer than 3 characters
+                        result.append(word_clean)
+            
+            return result
+            
+        except Exception as e:
+            self.logger.error(f"Error parsing nome_processo: {e}")
             return []
