@@ -3,10 +3,8 @@
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-from scrapy import signals
-
 # useful for handling different item types with a single interface
-from itemadapter import is_item, ItemAdapter
+from scrapy import signals
 
 
 class LexiconSpiderMiddleware:
@@ -103,9 +101,10 @@ class LexiconDownloaderMiddleware:
         spider.logger.info("Spider opened: %s" % spider.name)
 
 
-from scrapy.http import HtmlResponse
 from urllib.parse import urlparse
+
 from curl_cffi import requests as curl_requests
+from scrapy.http import HtmlResponse
 
 
 class CurlCFFIDownloaderMiddleware:

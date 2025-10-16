@@ -1,12 +1,27 @@
-# Define here the models for your scraped items
-#
-# See documentation in:
-# https://docs.scrapy.org/en/latest/topics/items.html
-
 import scrapy
 
 
-class LexiconItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+class STFCaseItem(scrapy.Item):
+    # ids
+    processo_id = scrapy.Field()
+    incidente = scrapy.Field()
+    numero_unico = scrapy.Field()
+
+    # classificação do processo
+    classe = scrapy.Field()
+    nome_processo = scrapy.Field()
+    tipo_processo = scrapy.Field()
+
+    # detalhes do processo
+    origem = scrapy.Field()
+    relator = scrapy.Field()
+    liminar = scrapy.Field()
+    data_protocolo = scrapy.Field()
+    origem_orgao = scrapy.Field()
+    autor1 = scrapy.Field()
+    assuntos = scrapy.Field()
+
+    # metadados
+    status = scrapy.Field()
+    html = scrapy.Field()
+    extraido = scrapy.Field()
