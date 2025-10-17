@@ -1,7 +1,7 @@
 #!/bin/bash
 # Non-blocking pre-commit hook for code quality and tests
 
-set -e
+# Don't use set -e as we want to handle errors gracefully
 
 echo "🔍 Running code quality checks and tests (non-blocking)..."
 
