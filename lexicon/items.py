@@ -7,20 +7,20 @@ class STFCaseItem(scrapy.Item):
     incidente = scrapy.Field()
     numero_unico = scrapy.Field()
 
-    # classificação do processo
+    # do not need bs4
     classe = scrapy.Field()
     liminar = scrapy.Field()
     tipo_processo = scrapy.Field()
+    relator = scrapy.Field()
 
     # detalhes do processo
     origem = scrapy.Field()
-    relator = scrapy.Field()
     data_protocolo = scrapy.Field()
     origem_orgao = scrapy.Field()
     autor1 = scrapy.Field()
     assuntos = scrapy.Field()
 
-    # AJAX-loaded content
+    ### AJAX-loaded content
     partes = scrapy.Field()
     andamentos = scrapy.Field()
     decisoes = scrapy.Field()

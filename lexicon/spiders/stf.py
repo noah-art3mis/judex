@@ -9,8 +9,24 @@ from scrapy_selenium import SeleniumRequest
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.wait import WebDriverWait
 
+from lexicon.extract import (
+    extract_andamentos,
+    extract_assuntos,
+    extract_autor1,
+    extract_classe,
+    extract_data_protocolo,
+    extract_decisoes,
+    extract_deslocamentos,
+    extract_liminar,
+    extract_numero_unico,
+    extract_origem,
+    extract_origem_orgao,
+    extract_partes,
+    extract_relator,
+    extract_tipo_processo,
+)
 from lexicon.items import STFCaseItem
 from lexicon.types import validate_case_type
 
@@ -46,8 +62,8 @@ class StfSpider(scrapy.Spider):
 
         try:
             self.numeros = json.loads(processos)
-        except Exception:
-            raise ValueError("processos must be a JSON list, e.g., '[4916, 4917]'")
+        except Exception as e:
+            raise ValueError("processos must be a JSON list, e.g., '[4916, 4917]'") from e
 
     def start_requests(self) -> Iterator[scrapy.Request]:
         base = "https://portal.stf.jus.br"
@@ -75,23 +91,20 @@ class StfSpider(scrapy.Spider):
         Wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
         return driver.find_element(By.XPATH, xpath).get_attribute("innerHTML")
 
-    def clean_text(self, html_text: str) -> str:
+    def clean_text(self, html_text: str) -> str | None:
         """Clean HTML text by removing extra whitespace and HTML entities"""
         if not html_text:
-            return ""
+            return None
 
-        # Parse with BeautifulSoup to handle HTML entities and tags
         soup = BeautifulSoup(html_text, "html.parser")
-        # Get text content and strip whitespace
         text = soup.get_text(strip=True)
-        # Clean up any remaining extra whitespace
         text = " ".join(text.split())
         return text
 
     def parse_main_page_selenium(self, response: Response) -> Iterator[scrapy.Request]:
-        """Parse the main page and extract incidente number, then make AJAX requests"""
-        # soup = BeautifulSoup(response.text, "html.parser")
-        driver = response.request.meta["driver"]
+        driver = response.request.meta["driver"]  # type: ignore
+        page_html = driver.page_source
+        soup = BeautifulSoup(page_html, "html.parser")
 
         if "CAPTCHA" in driver.page_source:
             self.logger.error(f"CAPTCHA detected in {response.url}")
@@ -103,58 +116,119 @@ class StfSpider(scrapy.Spider):
             self.logger.error(f"502 Bad Gateway detected in {response.url}")
             return
 
-        # Extract incidente number from the page
-        incidente = self.get_element_by_id(driver, "incidente")
+        # NON NULL
+        incidente = int(self.get_element_by_id(driver, "incidente"))
         if not incidente:
             self.logger.error(f"Could not extract incidente number from {response.url}")
             return
 
-        # Create the main item with basic info
         item = STFCaseItem()
+
+        # ids
         item["processo_id"] = response.meta["numero"]
-        item["incidente"] = incidente
-        # item["numero_unico"] = extract_numero_unico(soup)
-        # item["classe"] = extract_classe(soup)
-        # item["liminar"] = extract_liminar(soup)
-        # item["tipo_processo"] = extract_tipo_processo(soup)
-        item["origem"] = self.clean_text(
-            self.get_element_by_xpath(driver, '//*[@id="descricao-procedencia"]')
-        )
-        # item["origem"] = response.selector.xpath('//*[@id="descricao-procedencia"]/text()').get()
-        # item["relator"] = extract_relator(soup)
-        item["data_protocolo"] = self.clean_text(
-            self.get_element_by_xpath(
-                driver, '//*[@id="informacoes-completas"]/div[2]/div[1]/div[2]/div[2]'
-            )
-        )
-        item["origem_orgao"] = self.clean_text(
-            self.get_element_by_xpath(
-                driver, '//*[@id="informacoes-completas"]/div[2]/div[1]/div[2]/div[4]'
-            )
-        )
-        # item["autor1"] = extract_autor1(soup)
-        assuntos_html = self.get_element_by_xpath(
-            driver, '//*[@id="informacoes-completas"]/div[1]/div[2]'
-        )
-        # Parse the HTML to extract clean subject text
-        soup = BeautifulSoup(assuntos_html, "html.parser")
-        item["assuntos"] = [
-            self.clean_text(li.get_text()) for li in soup.find_all("li") if li.get_text().strip()
-        ]
-        item["status"] = response.status
+        item["incidente"] = int(incidente)
+        # Try optimized extractors first
+        try:
+            item["numero_unico"] = extract_numero_unico(soup)
+        except Exception as e:
+            self.logger.warning(f"Could not extract numero_unico with extract function: {e}")
+            item["numero_unico"] = None
 
-        item["extraido"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+        try:
+            item["classe"] = extract_classe(soup) or self.classe
+        except Exception as e:
+            self.logger.warning(f"Could not extract classe with extract function: {e}")
+            item["classe"] = self.classe
 
-        # Initialize AJAX fields as empty
-        item["partes"] = []
-        item["andamentos"] = []
-        item["decisoes"] = []
-        item["deslocamentos"] = []
+        try:
+            item["liminar"] = extract_liminar(self, driver, soup)
+        except Exception as e:
+            self.logger.warning(f"Could not extract liminar: {e}")
+            item["liminar"] = []
+
+        try:
+            item["relator"] = extract_relator(soup)
+        except Exception as e:
+            self.logger.warning(f"Could not extract relator with extract function: {e}")
+            item["relator"] = None
+
+        try:
+            item["tipo_processo"] = extract_tipo_processo(soup)
+        except Exception as e:
+            self.logger.warning(f"Could not extract tipo_processo with extract function: {e}")
+            # Fallback to page source detection
+            if "Processo Físico" in page_html:
+                item["tipo_processo"] = "Físico"
+            elif "Processo Eletrônico" in page_html:
+                item["tipo_processo"] = "Eletrônico"
+            else:
+                item["tipo_processo"] = None
+
+        try:
+            item["origem"] = extract_origem(soup, driver)
+        except Exception as e:
+            self.logger.warning(f"Could not extract origem with extract function: {e}")
+            # Fallback to Selenium
+
+        try:
+            item["data_protocolo"] = extract_data_protocolo(self, driver, soup)
+        except Exception as e:
+            self.logger.warning(f"Could not extract data_protocolo with extract function: {e}")
+            item["data_protocolo"] = None
+
+        try:
+            item["origem_orgao"] = extract_origem_orgao(self, driver, soup)
+        except Exception as e:
+            self.logger.warning(f"Could not extract origem_orgao with extract function: {e}")
+            item["origem_orgao"] = None
+
+        try:
+            item["autor1"] = extract_autor1(self, driver, soup)
+        except Exception as e:
+            self.logger.warning(f"Could not extract autor1: {e}")
+            item["autor1"] = None
+
+        try:
+            item["assuntos"] = extract_assuntos(self, driver, soup)
+        except Exception as e:
+            self.logger.warning(f"Could not extract assuntos with extract function: {e}")
+            item["assuntos"] = []
+
+        # Try to extract AJAX content using extract functions
+        try:
+            item["partes"] = extract_partes(soup)
+        except Exception as e:
+            self.logger.warning(f"Could not extract partes: {e}")
+            item["partes"] = []
+
+        try:
+            item["andamentos"] = extract_andamentos(soup)
+        except Exception as e:
+            self.logger.warning(f"Could not extract andamentos: {e}")
+            item["andamentos"] = []
+
+        try:
+            item["decisoes"] = extract_decisoes(soup)
+        except Exception as e:
+            self.logger.warning(f"Could not extract decisoes: {e}")
+            item["decisoes"] = []
+
+        try:
+            item["deslocamentos"] = extract_deslocamentos(soup)
+        except Exception as e:
+            self.logger.warning(f"Could not extract deslocamentos: {e}")
+            item["deslocamentos"] = []
+
+        # remaining fields
         item["peticoes"] = []
         item["recursos"] = []
         item["pautas"] = []
-        item["informacoes"] = {}
         item["sessao"] = {}
+
+        # metadados
+        item["status"] = response.status
+        item["html"] = page_html
+        item["extraido"] = datetime.datetime.now().isoformat() + "Z"
 
         yield item
 
@@ -172,7 +246,6 @@ class StfSpider(scrapy.Spider):
 
     #     # classificacao
     #     item["classe"] = extract_classe(soup)
-    #     item["liminar"] = extract_liminar(soup)
     #     item["tipo_processo"] = extract_tipo_processo(soup)
 
     #     # detalhes
