@@ -5,20 +5,15 @@ Unit tests for Pydantic models
 import json
 
 import pytest
+from pydantic import ValidationError
+
 from judex.models import (
     Andamento,
     CaseType,
-    Decisao,
-    Deslocamento,
     Parte,
-    Pauta,
-    Peticao,
     ProcessType,
-    Recurso,
-    Sessao,
     STFCaseModel,
 )
-from pydantic import ValidationError
 
 
 class TestCaseType:

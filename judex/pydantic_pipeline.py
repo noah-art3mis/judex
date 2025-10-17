@@ -3,7 +3,6 @@ Pydantic validation pipeline for STF case data
 """
 
 import logging
-from typing import Any, Dict
 
 from itemadapter import ItemAdapter
 from pydantic import ValidationError

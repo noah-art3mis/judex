@@ -4,13 +4,13 @@ Unit tests for spider integration with Pydantic
 
 import os
 import tempfile
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import Mock, patch
 
 import pytest
-from judex.models import CaseType, STFCaseModel
-from judex.spiders.stf import StfSpider
-from scrapy import Request
 from scrapy.http import Response
+
+from judex.models import CaseType
+from judex.spiders.stf import StfSpider
 
 
 class TestStfSpiderIntegration:

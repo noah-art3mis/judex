@@ -5,9 +5,7 @@ import os
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 
-from .database import get_all_processos, save_processo_data
 from .exporters import export_to_csv
-from .loaders import load_yaml
 from .spiders.stf import StfSpider
 
 logger = logging.getLogger(__name__)
