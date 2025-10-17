@@ -2,6 +2,10 @@
 STF (Supremo Tribunal Federal) types and validation
 """
 
+from pydantic import BaseModel, validator
+
+from .models import CaseType
+
 # Set of valid STF case types with full names as comments
 STF_CASE_TYPES = frozenset(
     [
@@ -52,6 +56,20 @@ STF_CASE_TYPES = frozenset(
         "TPA",  # Tutela Provisória Antecipada
     ]
 )
+
+
+class CaseTypeValidator(BaseModel):
+    """Pydantic validator for case types"""
+
+    classe: str
+
+    @validator("classe")
+    def validate_classe(cls, v):
+        try:
+            return CaseType(v)
+        except ValueError:
+            valid_types = [case_type.value for case_type in CaseType]
+            raise ValueError(f"Invalid case type '{v}'. Valid types are: {', '.join(valid_types)}")
 
 
 def validate_case_type(classe: str) -> str:

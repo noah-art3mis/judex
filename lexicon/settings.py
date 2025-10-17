@@ -30,6 +30,7 @@ DOWNLOADER_MIDDLEWARES = {
 # }
 
 ITEM_PIPELINES = {
+    "lexicon.pydantic_pipeline.PydanticValidationPipeline": 200,
     "lexicon.pipelines.DatabasePipeline": 300,
 }
 
@@ -40,7 +41,7 @@ AUTOTHROTTLE_ENABLED = True
 AUTOTHROTTLE_START_DELAY = 1.0
 AUTOTHROTTLE_MAX_DELAY = 60
 AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
-AUTOTHROTTLE_DEBUG = True
+AUTOTHROTTLE_DEBUG = False
 
 HTTPCACHE_ENABLED = True
 HTTPCACHE_EXPIRATION_SECS = 360
@@ -91,3 +92,7 @@ SELENIUM_DRIVER_ARGUMENTS = [
     "--disable-blink-features=AutomationControlled",
     f"--user-agent={USER_AGENT}",
 ]
+
+# LOG_LEVEL = "DEBUG"
+# LOG_LEVEL = "WARNING"
+LOG_LEVEL = "INFO"

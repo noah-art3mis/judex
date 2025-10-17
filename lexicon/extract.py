@@ -94,19 +94,47 @@ def extract_autor1(spider, driver: WebDriver, soup) -> str | None:
 
 
 def extract_partes(spider, driver: WebDriver, soup) -> list:
-    """Extract partes using class selectors from backup"""
+    """Extract partes using updated CSS selectors for current STF website"""
     try:
-        partes_tipo = driver.find_elements(By.CLASS_NAME, "detalhe-parte")
-        partes_nome = driver.find_elements(By.CLASS_NAME, "nome-parte")
+        # Find the partes section
+        partes_section = driver.find_element(By.ID, "resumo-partes")
+
+        # Look for all divs with processo-partes class
+        processo_partes = partes_section.find_elements(
+            By.CSS_SELECTOR, "div[class*='processo-partes']"
+        )
 
         partes_list = []
-        for i in range(len(partes_tipo)):
-            if i < len(partes_nome):
-                parte_data = {
-                    "_index": i + 1,
-                    "tipo": spider.clean_text(partes_tipo[i].get_attribute("innerHTML")),
-                    "nome": spider.clean_text(partes_nome[i].get_attribute("innerHTML")),
-                }
+        for i, div in enumerate(processo_partes):
+            # Extract text content
+            text_content = div.text.strip()
+
+            # Skip empty or header elements
+            if not text_content or text_content in [
+                "AUTOR(A/S)(ES)",
+                "RÉU/RÉUS",
+                "INTERESSADO(A/S)",
+            ]:
+                continue
+
+            # Try to determine tipo and nome from the text
+            # This is a heuristic approach - may need refinement based on actual data
+            if "AUTOR" in text_content.upper():
+                tipo = "AUTOR"
+                nome = text_content.replace("AUTOR(A/S)(ES)", "").strip()
+            elif "RÉU" in text_content.upper():
+                tipo = "RÉU"
+                nome = text_content.replace("RÉU/RÉUS", "").strip()
+            elif "INTERESSADO" in text_content.upper():
+                tipo = "INTERESSADO"
+                nome = text_content.replace("INTERESSADO(A/S)", "").strip()
+            else:
+                # Default to 'PARTE' if we can't determine the type
+                tipo = "PARTE"
+                nome = text_content
+
+            if nome:  # Only add if we have a name
+                parte_data = {"_index": len(partes_list) + 1, "tipo": tipo, "nome": nome}
                 partes_list.append(parte_data)
 
         return partes_list

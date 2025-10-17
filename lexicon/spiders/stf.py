@@ -165,7 +165,7 @@ class StfSpider(scrapy.Spider):
         text = " ".join(text.split())
         return text
 
-    def parse_main_page_selenium(self, response: Response) -> Iterator[scrapy.Request]:
+    def parse_main_page_selenium(self, response: Response) -> Iterator[STFCaseItem]:
         driver = response.request.meta["driver"]  # type: ignore
         page_html = driver.page_source
         soup = BeautifulSoup(page_html, "html.parser")
@@ -186,138 +186,162 @@ class StfSpider(scrapy.Spider):
             self.logger.error(f"Could not extract incidente number from {response.url}")
             return
 
-        item = STFCaseItem()
+        # Create a dictionary for Pydantic validation
+        case_data = {}
 
         # ids
-        item["processo_id"] = response.meta["numero"]
-        item["incidente"] = int(incidente)
+        case_data["processo_id"] = response.meta["numero"]
+        case_data["incidente"] = int(incidente)
         # Try optimized extractors first
         try:
-            item["numero_unico"] = extract_numero_unico(soup)
+            case_data["numero_unico"] = extract_numero_unico(soup)
         except Exception as e:
             self.logger.warning(f"Could not extract numero_unico with extract function: {e}")
-            item["numero_unico"] = None
+            case_data["numero_unico"] = None
 
         try:
-            item["classe"] = extract_classe(soup) or self.classe
+            case_data["classe"] = extract_classe(soup) or self.classe
         except Exception as e:
             self.logger.warning(f"Could not extract classe with extract function: {e}")
-            item["classe"] = self.classe
+            case_data["classe"] = self.classe
 
         try:
-            item["liminar"] = extract_liminar(self, driver, soup)
+            case_data["liminar"] = extract_liminar(self, driver, soup)
         except Exception as e:
             self.logger.warning(f"Could not extract liminar: {e}")
-            item["liminar"] = []
+            case_data["liminar"] = []
 
         try:
-            item["relator"] = extract_relator(soup)
+            case_data["relator"] = extract_relator(soup)
         except Exception as e:
             self.logger.warning(f"Could not extract relator with extract function: {e}")
-            item["relator"] = None
+            case_data["relator"] = None
 
         try:
-            item["tipo_processo"] = extract_tipo_processo(soup)
+            case_data["tipo_processo"] = extract_tipo_processo(soup)
         except Exception as e:
             self.logger.warning(f"Could not extract tipo_processo with extract function: {e}")
             # Fallback to page source detection
             if "Processo Físico" in page_html:
-                item["tipo_processo"] = "Físico"
+                case_data["tipo_processo"] = "Físico"
             elif "Processo Eletrônico" in page_html:
-                item["tipo_processo"] = "Eletrônico"
+                case_data["tipo_processo"] = "Eletrônico"
             else:
-                item["tipo_processo"] = None
+                case_data["tipo_processo"] = None
 
         try:
-            item["origem"] = extract_origem(self, driver, soup)
+            case_data["origem"] = extract_origem(self, driver, soup)
         except Exception as e:
             self.logger.warning(f"Could not extract origem with extract function: {e}")
             # Fallback to Selenium
             try:
                 origem_element = driver.find_element(By.ID, "descricao-procedencia")
-                item["origem"] = self.clean_text(origem_element.text)
+                case_data["origem"] = self.clean_text(origem_element.text)
             except Exception as e2:
                 self.logger.warning(f"Could not extract origem with Selenium fallback: {e2}")
-                item["origem"] = None
+                case_data["origem"] = None
 
         try:
-            item["data_protocolo"] = extract_data_protocolo(self, driver, soup)
+            case_data["data_protocolo"] = extract_data_protocolo(self, driver, soup)
         except Exception as e:
             self.logger.warning(f"Could not extract data_protocolo with extract function: {e}")
-            item["data_protocolo"] = None
+            case_data["data_protocolo"] = None
 
         try:
-            item["origem_orgao"] = extract_origem_orgao(self, driver, soup)
+            case_data["origem_orgao"] = extract_origem_orgao(self, driver, soup)
         except Exception as e:
             self.logger.warning(f"Could not extract origem_orgao with extract function: {e}")
-            item["origem_orgao"] = None
+            case_data["origem_orgao"] = None
 
         try:
-            item["autor1"] = extract_autor1(self, driver, soup)
+            case_data["autor1"] = extract_autor1(self, driver, soup)
         except Exception as e:
             self.logger.warning(f"Could not extract autor1: {e}")
-            item["autor1"] = None
+            case_data["autor1"] = None
 
         try:
-            item["assuntos"] = extract_assuntos(self, driver, soup)
+            case_data["assuntos"] = extract_assuntos(self, driver, soup)
         except Exception as e:
             self.logger.warning(f"Could not extract assuntos with extract function: {e}")
-            item["assuntos"] = []
+            case_data["assuntos"] = []
 
         # Try to extract AJAX content using extract functions
         try:
-            item["partes"] = extract_partes(self, driver, soup)
+            # Wait for partes data to load dynamically
+            Wait = WebDriverWait(driver, 10)
+            try:
+                # Wait for either the partes section to have content or a timeout
+                Wait.until(
+                    lambda d: d.find_element(By.ID, "resumo-partes")
+                    .get_attribute("innerHTML")
+                    .strip()
+                    != ""
+                    or d.find_element(By.ID, "resumo-partes")
+                    .get_attribute("innerHTML")
+                    .count("processo-partes")
+                    > 0
+                )
+            except Exception:
+                # If the wait fails, continue anyway - the extract function will handle empty data
+                pass
+
+            case_data["partes"] = extract_partes(self, driver, soup)
         except Exception as e:
             self.logger.warning(f"Could not extract partes: {e}")
-            item["partes"] = []
+            case_data["partes"] = []
 
         try:
-            item["andamentos"] = extract_andamentos(self, driver, soup)
+            case_data["andamentos"] = extract_andamentos(self, driver, soup)
         except Exception as e:
             self.logger.warning(f"Could not extract andamentos: {e}")
-            item["andamentos"] = []
+            case_data["andamentos"] = []
 
         try:
-            item["decisoes"] = extract_decisoes(self, driver, soup)
+            case_data["decisoes"] = extract_decisoes(self, driver, soup)
         except Exception as e:
             self.logger.warning(f"Could not extract decisoes: {e}")
-            item["decisoes"] = []
+            case_data["decisoes"] = []
 
         try:
-            item["deslocamentos"] = extract_deslocamentos(self, driver, soup)
+            case_data["deslocamentos"] = extract_deslocamentos(self, driver, soup)
         except Exception as e:
             self.logger.warning(f"Could not extract deslocamentos: {e}")
-            item["deslocamentos"] = []
+            case_data["deslocamentos"] = []
 
         # Try to extract remaining AJAX content using extract functions
         try:
-            item["peticoes"] = extract_peticoes(self, driver, soup)
+            case_data["peticoes"] = extract_peticoes(self, driver, soup)
         except Exception as e:
             self.logger.warning(f"Could not extract peticoes: {e}")
-            item["peticoes"] = []
+            case_data["peticoes"] = []
 
         try:
-            item["recursos"] = extract_recursos(self, driver, soup)
+            case_data["recursos"] = extract_recursos(self, driver, soup)
         except Exception as e:
             self.logger.warning(f"Could not extract recursos: {e}")
-            item["recursos"] = []
+            case_data["recursos"] = []
 
         try:
-            item["pautas"] = extract_pautas(self, driver, soup)
+            case_data["pautas"] = extract_pautas(self, driver, soup)
         except Exception as e:
             self.logger.warning(f"Could not extract pautas: {e}")
-            item["pautas"] = []
+            case_data["pautas"] = []
 
         try:
-            item["sessao"] = extract_sessao(self, driver, soup)
+            case_data["sessao"] = extract_sessao(self, driver, soup)
         except Exception as e:
             self.logger.warning(f"Could not extract sessao: {e}")
-            item["sessao"] = {}
+            case_data["sessao"] = {}
 
         # metadados
-        item["status"] = response.status
-        item["html"] = page_html
-        item["extraido"] = datetime.datetime.now().isoformat() + "Z"
+        case_data["status"] = response.status
+        case_data["html"] = page_html
+        case_data["extraido"] = datetime.datetime.now().isoformat() + "Z"
+
+        # Create a Scrapy Item from the validated data for compatibility
+        item = STFCaseItem()
+        for key, value in case_data.items():
+            item[key] = value
 
         yield item
 
