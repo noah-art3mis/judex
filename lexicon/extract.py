@@ -221,36 +221,69 @@ def extract_andamentos(spider, driver: WebDriver, soup) -> list:
         return []
 
 
-def extract_decisoes(soup):
-    decisoes_elements = soup.find_all("div", class_="decisao")
-    decisoes_list = []
+def extract_decisoes(spider, driver: WebDriver, soup) -> list:
+    """Extract decisoes from andamento-julgador badge elements"""
+    try:
+        # Find all andamento elements that contain julgador badges
+        andamentos = driver.find_elements(By.CLASS_NAME, "andamento-item")
+        decisoes_list = []
 
-    for decisao in decisoes_elements:
-        decisao_data = {
-            "data": (
-                decisao.find("div", class_="data-decisao").get_text().strip()
-                if decisao.find("div", class_="data-decisao")
-                else None
-            ),
-            "tipo": (
-                decisao.find("div", class_="tipo-decisao").get_text().strip()
-                if decisao.find("div", class_="tipo-decisao")
-                else None
-            ),
-            "relator": (
-                decisao.find("div", class_="relator-decisao").get_text().strip()
-                if decisao.find("div", class_="relator-decisao")
-                else None
-            ),
-            "texto": (
-                decisao.find("div", class_="texto-decisao").get_text().strip()
-                if decisao.find("div", class_="texto-decisao")
-                else None
-            ),
-        }
-        decisoes_list.append(decisao_data)
+        for i, andamento in enumerate(andamentos):
+            try:
+                html = andamento.get_attribute("innerHTML")
 
-    return decisoes_list
+                # Check if this andamento has a julgador badge (indicating a decision)
+                if "andamento-julgador badge bg-info" in html:
+                    # Extract decision data
+                    data_element = andamento.find_element(By.CLASS_NAME, "andamento-data")
+                    nome_element = andamento.find_element(By.CLASS_NAME, "andamento-nome")
+                    julgador_element = andamento.find_element(By.CLASS_NAME, "andamento-julgador")
+                    complemento_element = andamento.find_element(By.CLASS_NAME, "col-md-9")
+
+                    # Extract link if present
+                    link = None
+                    if "href" in html:
+                        import re
+
+                        link_match = re.search(r'href="([^"]+)"', html)
+                        if link_match:
+                            link = "https://portal.stf.jus.br/processos/" + link_match.group(
+                                1
+                            ).replace("amp;", "")
+
+                    # Clean the extracted data
+                    data = spider.clean_text(data_element.text)
+                    nome = spider.clean_text(nome_element.text)
+                    julgador = spider.clean_text(julgador_element.text)
+                    complemento = spider.clean_text(complemento_element.text)
+
+                    # Filter out entries that are mostly null/empty
+                    # Keep only if at least 3 meaningful fields have content
+                    meaningful_fields = [data, nome, julgador, complemento, link]
+                    non_empty_fields = [
+                        field for field in meaningful_fields if field and field.strip()
+                    ]
+
+                    # Only add if we have at least 3 non-empty fields
+                    if len(non_empty_fields) >= 3:
+                        decisao_data = {
+                            "index": i + 1,
+                            "data": data,
+                            "nome": nome,
+                            "julgador": julgador,
+                            "complemento": complemento,
+                            "link": link,
+                        }
+                        decisoes_list.append(decisao_data)
+
+            except Exception as e:
+                spider.logger.warning(f"Could not extract decisao {i}: {e}")
+                continue
+
+        return decisoes_list
+    except Exception as e:
+        spider.logger.warning(f"Could not extract decisoes: {e}")
+        return []
 
 
 def extract_deslocamentos(spider, driver: WebDriver, soup) -> list:
@@ -424,43 +457,71 @@ def extract_peticoes(spider, driver: WebDriver, soup) -> list:
 
 
 def extract_recursos(spider, driver: WebDriver, soup) -> list:
-    """Extract recursos from AJAX-loaded content"""
+    """Extract recursos from andamentos that have julgador badges"""
     try:
-        recursos_info = driver.find_element(By.XPATH, '//*[@id="recursos"]')
-        recursos = recursos_info.find_elements(By.CLASS_NAME, "lista-dados")
-
+        # Find all andamento elements
+        andamentos = driver.find_elements(By.CLASS_NAME, "andamento-item")
         recursos_list = []
-        for i, recurso in enumerate(recursos):
+
+        for i, andamento in enumerate(andamentos):
             try:
-                index = len(recursos) - i
-                html = recurso.get_attribute("innerHTML")
+                html = andamento.get_attribute("innerHTML")
 
-                # Extract data from HTML using text parsing
-                import re
+                # Check if this andamento has a julgador badge (indicating a decision/recurso)
+                if "andamento-julgador badge bg-info" in html:
+                    # Extract recurso data
+                    data_element = andamento.find_element(By.CLASS_NAME, "andamento-data")
+                    nome_element = andamento.find_element(By.CLASS_NAME, "andamento-nome")
+                    julgador_element = andamento.find_element(By.CLASS_NAME, "andamento-julgador")
+                    complemento_element = andamento.find_element(By.CLASS_NAME, "col-md-9")
 
-                data_match = re.search(r'processo-detalhes bg-font-info">([^<]+)', html)
-                tipo_match = re.search(r'processo-detalhes-bold">([^<]+)', html)
-                autor_match = re.search(r'processo-detalhes">([^<]+)', html)
+                    # Try to extract autor from complemento or other elements
+                    autor = None
+                    try:
+                        # Look for autor in the complemento text
+                        complemento_text = complemento_element.text
+                        if (
+                            "autor" in complemento_text.lower()
+                            or "requerente" in complemento_text.lower()
+                        ):
+                            # Extract autor name from complemento
+                            import re
 
-                data = data_match.group(1) if data_match else None
-                tipo = tipo_match.group(1) if tipo_match else None
-                autor = autor_match.group(1) if autor_match else None
+                            autor_match = re.search(
+                                r"(?:autor|requerente)[:\s]+([^,\n]+)",
+                                complemento_text,
+                                re.IGNORECASE,
+                            )
+                            if autor_match:
+                                autor = spider.clean_text(autor_match.group(1))
+                    except:
+                        pass
 
-                # Clean the extracted data
-                if data is not None:
-                    data = spider.clean_text(data)
-                if tipo is not None:
-                    tipo = spider.clean_text(tipo)
-                if autor is not None:
-                    autor = spider.clean_text(autor)
+                    # Clean the extracted data
+                    data = spider.clean_text(data_element.text)
+                    nome = spider.clean_text(nome_element.text)
+                    julgador = spider.clean_text(julgador_element.text)
+                    complemento = spider.clean_text(complemento_element.text)
 
-                recurso_data = {
-                    "index": index,
-                    "data": data,
-                    "tipo": tipo,
-                    "autor": autor,
-                }
-                recursos_list.append(recurso_data)
+                    # Filter out entries that are mostly null/empty
+                    # Keep only if at least 3 meaningful fields have content
+                    meaningful_fields = [data, nome, julgador, complemento, autor]
+                    non_empty_fields = [
+                        field for field in meaningful_fields if field and field.strip()
+                    ]
+
+                    # Only add if we have at least 3 non-empty fields
+                    if len(non_empty_fields) >= 3:
+                        recurso_data = {
+                            "index": i + 1,
+                            "data": data,
+                            "nome": nome,
+                            "julgador": julgador,
+                            "complemento": complemento,
+                            "autor": autor,
+                        }
+                        recursos_list.append(recurso_data)
+
             except Exception as e:
                 spider.logger.warning(f"Could not extract recurso {i}: {e}")
                 continue
@@ -472,43 +533,55 @@ def extract_recursos(spider, driver: WebDriver, soup) -> list:
 
 
 def extract_pautas(spider, driver: WebDriver, soup) -> list:
-    """Extract pautas from AJAX-loaded content"""
+    """Extract pautas from andamentos that have 'pauta' in their name"""
     try:
-        pautas_info = driver.find_element(By.XPATH, '//*[@id="pautas"]')
-        pautas = pautas_info.find_elements(By.CLASS_NAME, "lista-dados")
-
+        # Find all andamento elements
+        andamentos = driver.find_elements(By.CLASS_NAME, "andamento-item")
         pautas_list = []
-        for i, pauta in enumerate(pautas):
+
+        for i, andamento in enumerate(andamentos):
             try:
-                index = len(pautas) - i
-                html = pauta.get_attribute("innerHTML")
+                # Get the andamento name to check if it contains "pauta"
+                nome_element = andamento.find_element(By.CLASS_NAME, "andamento-nome")
+                nome_text = nome_element.text.lower()
 
-                # Extract data from HTML using text parsing
-                import re
+                # Check if this andamento is a pauta (has "pauta" in the name)
+                if "pauta" in nome_text:
+                    # Extract pauta data
+                    data_element = andamento.find_element(By.CLASS_NAME, "andamento-data")
+                    complemento_element = andamento.find_element(By.CLASS_NAME, "col-md-9")
 
-                data_match = re.search(r'processo-detalhes bg-font-info">([^<]+)', html)
-                sessao_match = re.search(r'processo-detalhes-bold">([^<]+)', html)
-                relator_match = re.search(r'processo-detalhes">([^<]+)', html)
+                    # Try to extract relator from complemento or other elements
+                    relator = None
+                    try:
+                        # Look for relator in the complemento text
+                        complemento_text = complemento_element.text
+                        if (
+                            "relator" in complemento_text.lower()
+                            or "ministro" in complemento_text.lower()
+                        ):
+                            # Extract relator name from complemento
+                            import re
 
-                data = data_match.group(1) if data_match else None
-                sessao = sessao_match.group(1) if sessao_match else None
-                relator = relator_match.group(1) if relator_match else None
+                            relator_match = re.search(
+                                r"(?:relator|ministro)[:\s]+([^,\n]+)",
+                                complemento_text,
+                                re.IGNORECASE,
+                            )
+                            if relator_match:
+                                relator = spider.clean_text(relator_match.group(1))
+                    except:
+                        pass
 
-                # Clean the extracted data
-                if data is not None:
-                    data = spider.clean_text(data)
-                if sessao is not None:
-                    sessao = spider.clean_text(sessao)
-                if relator is not None:
-                    relator = spider.clean_text(relator)
+                    pauta_data = {
+                        "index": i + 1,
+                        "data": spider.clean_text(data_element.text),
+                        "nome": spider.clean_text(nome_element.text),
+                        "complemento": spider.clean_text(complemento_element.text),
+                        "relator": relator,
+                    }
+                    pautas_list.append(pauta_data)
 
-                pauta_data = {
-                    "index": index,
-                    "data": data,
-                    "sessao": sessao,
-                    "relator": relator,
-                }
-                pautas_list.append(pauta_data)
             except Exception as e:
                 spider.logger.warning(f"Could not extract pauta {i}: {e}")
                 continue
