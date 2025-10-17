@@ -12,6 +12,7 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
+from lexicon.database import get_existing_processo_ids, get_failed_processo_ids
 from lexicon.extract import (
     extract_andamentos,
     extract_assuntos,
@@ -34,7 +35,6 @@ from lexicon.extract import (
 )
 from lexicon.items import STFCaseItem
 from lexicon.types import validate_case_type
-from lexicon.database import get_existing_processo_ids, get_failed_processo_ids
 
 
 class StfSpider(scrapy.Spider):
@@ -86,45 +86,49 @@ class StfSpider(scrapy.Spider):
 
     def start_requests(self) -> Iterator[scrapy.Request]:
         base = "https://portal.stf.jus.br"
-        
+
         # Get database path from settings
         db_path = self.settings.get("DATABASE_PATH", "lexicon.db")
-        
+
         # Get existing and failed processo IDs from database
         existing_ids = set()
         failed_ids = set()
-        
+
         if self.skip_existing or self.retry_failed:
             try:
                 if self.skip_existing:
-                    existing_ids = get_existing_processo_ids(db_path, self.classe, self.max_age_hours)
+                    existing_ids = get_existing_processo_ids(
+                        db_path, self.classe, self.max_age_hours
+                    )
                     self.logger.info(f"Found {len(existing_ids)} existing processo IDs to skip")
-                
+
                 if self.retry_failed:
                     failed_ids = get_failed_processo_ids(db_path, self.classe, self.max_age_hours)
                     self.logger.info(f"Found {len(failed_ids)} failed processo IDs to retry")
-                    
+
             except Exception as e:
                 self.logger.warning(f"Could not check database for existing data: {e}")
-        
+
         # Filter numeros based on database check
         numeros_to_scrape = []
         skipped_count = 0
-        
+
         for numero in self.numeros:
             if self.skip_existing and numero in existing_ids:
                 self.logger.info(f"Skipping {numero} - already exists in database")
                 skipped_count += 1
                 continue
-            
+
             # Always retry failed cases if retry_failed is True
             if self.retry_failed and numero in failed_ids:
                 self.logger.info(f"Retrying {numero} - previously failed")
-            
+
             numeros_to_scrape.append(numero)
-        
-        self.logger.info(f"Scraping {len(numeros_to_scrape)} out of {len(self.numeros)} processos (skipped {skipped_count})")
-        
+
+        self.logger.info(
+            f"Scraping {len(numeros_to_scrape)} out of {len(self.numeros)} processos (skipped {skipped_count})"
+        )
+
         # Generate requests only for numeros that need scraping
         for numero in numeros_to_scrape:
             url = (
