@@ -58,13 +58,13 @@ from judex import StfSpider, init_database
 init_database("casos.db") # opcional
 
 spider = StfSpider(classe="ADI", casos=[123, 456])
-spider.scrape_cases("ADI", "[4916, 4917]")
+spider.scrape("ADI", "[4916, 4917]")
 ```
 
 Com mais parâmetros:
 
 ```python
-scrape = judexScraper(
+scrape = JudexScraper(
     output_dir="output",
     db_path="judex.db",
     filename="processos.csv",
@@ -72,7 +72,7 @@ scrape = judexScraper(
     retry_failed=True,  # Retry cases that previously failed
     max_age_hours=24,  # Only skip cases scraped within last 24 hours
 )
-scraper.scrape_cases("ADI", "[4916, 4917]")
+scraper.scrape("ADI", "[4916, 4917]")
 ```
 
 ### 3. Exemplos Avançados
@@ -90,9 +90,9 @@ ADPF:
   - 568
 
 # main.py
-from judex.core import judexScraper
+from judex.core import JudexScraper
 
-scraper = judexScraper(
+scraper = JudexScraper(
     input_file="processos.yaml",
     output_dir="output",
     db_path="judex.db"
@@ -102,7 +102,7 @@ scraper = judexScraper(
 #### Configurações de Performance
 
 ```python
-scraper = judexScraper(
+scraper = JudexScraper(
     skip_existing=True,    # Pular casos já no banco
     retry_failed=True,     # Tentar novamente casos que falharam
     max_age_hours=24,      # Só pular casos extraídos nas últimas 24h

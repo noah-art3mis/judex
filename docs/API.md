@@ -6,12 +6,12 @@ This document provides comprehensive API reference for the judex STF data scrape
 
 ## 🏗 Core Classes
 
-### `judexScraper`
+### `JudexScraper`
 
 Main orchestrator class for the scraping process.
 
 ```python
-class judexScraper:
+class JudexScraper:
     def __init__(
         self,
         input_file: str | None = None,
@@ -36,7 +36,7 @@ class judexScraper:
 
 **Methods**:
 
-#### `scrape_cases(classe: str, processos: str) -> None`
+#### `scrape(classe: str, processos: str) -> None`
 
 Scrape cases for a specific class and process list.
 
@@ -48,8 +48,8 @@ Scrape cases for a specific class and process list.
 **Example**:
 
 ```python
-scraper = judexScraper()
-scraper.scrape_cases("ADI", "[1234, 5678, 9012]")
+scraper = JudexScraper()
+scraper.scrape("ADI", "[1234, 5678, 9012]")
 ```
 
 ## 🕷 Spider Classes
@@ -532,17 +532,17 @@ SELENIUM_DRIVER_ARGUMENTS = [
 ### Basic Usage
 
 ```python
-from judex.core import judexScraper
+from judex.core import JudexScraper
 
 # Initialize scraper
-scraper = judexScraper(
+scraper = JudexScraper(
     output_dir="output",
     db_path="judex.db",
     skip_existing=True
 )
 
 # Scrape ADI cases
-scraper.scrape_cases("ADI", "[1234, 5678, 9012]")
+scraper.scrape("ADI", "[1234, 5678, 9012]")
 ```
 
 ### Custom Validation
