@@ -3,15 +3,14 @@ Unit tests for types module with Pydantic integration
 """
 
 import pytest
-from pydantic import ValidationError
-
-from lexicon.models import CaseType
-from lexicon.types import (
+from judex.models import CaseType
+from judex.types import (
     CaseTypeValidator,
     get_all_case_types,
     is_valid_case_type,
     validate_case_type,
 )
+from pydantic import ValidationError
 
 
 class TestCaseTypeValidator:
@@ -130,7 +129,7 @@ class TestIntegrationWithModels:
 
     def test_case_type_enum_consistency(self):
         """Test that CaseType enum is consistent with STF_CASE_TYPES"""
-        from lexicon.types import STF_CASE_TYPES
+        from judex.types import STF_CASE_TYPES
 
         # Get all case types from enum
         enum_types = [case_type.value for case_type in CaseType]

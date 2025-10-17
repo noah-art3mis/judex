@@ -5,9 +5,7 @@ Unit tests for Pydantic models
 import json
 
 import pytest
-from pydantic import ValidationError
-
-from lexicon.models import (
+from judex.models import (
     Andamento,
     CaseType,
     Decisao,
@@ -20,6 +18,7 @@ from lexicon.models import (
     Sessao,
     STFCaseModel,
 )
+from pydantic import ValidationError
 
 
 class TestCaseType:

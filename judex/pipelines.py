@@ -19,7 +19,7 @@ class DatabasePipeline:
     @classmethod
     def from_crawler(cls, crawler):
         """Create pipeline instance from crawler settings"""
-        db_path = crawler.settings.get("DATABASE_PATH", "lexicon.db")
+        db_path = crawler.settings.get("DATABASE_PATH", "judex.db")
         return cls(db_path)
 
     def process_item(self, item, spider: scrapy.Spider) -> ItemAdapter:

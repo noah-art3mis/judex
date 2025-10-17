@@ -5,15 +5,8 @@ from collections.abc import Iterator
 
 import scrapy
 from bs4 import BeautifulSoup
-from scrapy.http import Response
-from scrapy_selenium import SeleniumRequest
-from selenium.webdriver.common.by import By
-from selenium.webdriver.remote.webdriver import WebDriver
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.wait import WebDriverWait
-
-from lexicon.database import get_existing_processo_ids, get_failed_processo_ids
-from lexicon.extract import (
+from judex.database import get_existing_processo_ids, get_failed_processo_ids
+from judex.extract import (
     extract_andamentos,
     extract_assuntos,
     extract_autor1,
@@ -33,8 +26,14 @@ from lexicon.extract import (
     extract_sessao,
     extract_tipo_processo,
 )
-from lexicon.items import STFCaseItem
-from lexicon.types import validate_case_type
+from judex.items import STFCaseItem
+from judex.types import validate_case_type
+from scrapy.http import Response
+from scrapy_selenium import SeleniumRequest
+from selenium.webdriver.common.by import By
+from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
 
 
 class StfSpider(scrapy.Spider):
@@ -88,7 +87,7 @@ class StfSpider(scrapy.Spider):
         base = "https://portal.stf.jus.br"
 
         # Get database path from settings
-        db_path = self.settings.get("DATABASE_PATH", "lexicon.db")
+        db_path = self.settings.get("DATABASE_PATH", "judex.db")
 
         # Get existing and failed processo IDs from database
         existing_ids = set()

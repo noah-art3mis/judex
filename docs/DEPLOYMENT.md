@@ -1,8 +1,8 @@
-# Lexicon Deployment Guide
+# judex Deployment Guide
 
 ## 🚀 Deployment Overview
 
-This guide covers deploying the Lexicon STF data scraper in various environments, from development to production.
+This guide covers deploying the judex STF data scraper in various environments, from development to production.
 
 ## ⚖️ Legal and Compliance Considerations
 
@@ -80,13 +80,13 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # Clone repository
 git clone <repository-url>
-cd lexicon
+cd judex
 
 # Install dependencies
 uv sync
 
 # Verify installation
-uv run python -c "import lexicon; print('Installation successful')"
+uv run python -c "import judex; print('Installation successful')"
 ```
 
 ### Method 2: Using pip
@@ -94,7 +94,7 @@ uv run python -c "import lexicon; print('Installation successful')"
 ```bash
 # Clone repository
 git clone <repository-url>
-cd lexicon
+cd judex
 
 # Create virtual environment
 python -m venv venv
@@ -104,7 +104,7 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -e .
 
 # Verify installation
-python -c "import lexicon; print('Installation successful')"
+python -c "import judex; print('Installation successful')"
 ```
 
 ### Method 3: Using Docker
@@ -151,13 +151,13 @@ ENV CHROME_BIN=/usr/bin/google-chrome
 ENV CHROMEDRIVER_PATH=/usr/local/bin/chromedriver
 
 # Default command
-CMD ["python", "-m", "lexicon.core"]
+CMD ["python", "-m", "judex.core"]
 ```
 
 ```bash
 # Build and run Docker container
-docker build -t lexicon .
-docker run -v $(pwd)/data:/app/data lexicon
+docker build -t judex .
+docker run -v $(pwd)/data:/app/data judex
 ```
 
 ## 🔧 Configuration
@@ -166,7 +166,7 @@ docker run -v $(pwd)/data:/app/data lexicon
 
 ```bash
 # Database configuration
-export DATABASE_PATH="/path/to/lexicon.db"
+export DATABASE_PATH="/path/to/judex.db"
 export DATABASE_BACKUP_PATH="/path/to/backups/"
 
 # Scraping configuration
@@ -181,20 +181,20 @@ export SELENIUM_HEADLESS="true"
 
 # Logging configuration
 export LOG_LEVEL="INFO"
-export LOG_FILE="/var/log/lexicon/lexicon.log"
+export LOG_FILE="/var/log/judex/judex.log"
 
 # Output configuration
-export OUTPUT_DIR="/var/lib/lexicon/output"
+export OUTPUT_DIR="/var/lib/judex/output"
 export EXPORT_FORMAT="csv,json"
 ```
 
 ### Configuration Files
 
-#### `lexicon/settings.py`
+#### `judex/settings.py`
 
 ```python
 # Database settings
-DATABASE_PATH = os.getenv("DATABASE_PATH", "lexicon.db")
+DATABASE_PATH = os.getenv("DATABASE_PATH", "judex.db")
 DATABASE_BACKUP_ENABLED = True
 DATABASE_BACKUP_INTERVAL = 3600  # seconds
 
@@ -217,7 +217,7 @@ SELENIUM_DRIVER_ARGUMENTS = [
 
 # Logging settings
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
-LOG_FILE = os.getenv("LOG_FILE", "lexicon.log")
+LOG_FILE = os.getenv("LOG_FILE", "judex.log")
 
 # Output settings
 OUTPUT_DIR = os.getenv("OUTPUT_DIR", "output")
@@ -229,7 +229,7 @@ EXPORT_FORMATS = os.getenv("EXPORT_FORMAT", "csv").split(",")
 ```yaml
 # Database configuration
 database:
-    path: 'lexicon.db'
+    path: 'judex.db'
     backup_enabled: true
     backup_interval: 3600
     max_connections: 10
@@ -255,7 +255,7 @@ selenium:
 # Logging configuration
 logging:
     level: 'INFO'
-    file: 'lexicon.log'
+    file: 'judex.log'
     max_size: '10MB'
     backup_count: 5
 
@@ -273,14 +273,14 @@ output:
 ```bash
 # Local development setup
 git clone <repository-url>
-cd lexicon
+cd judex
 uv sync --group dev
 
 # Run tests
 uv run python -m pytest
 
 # Start development server
-uv run python -m lexicon.core --config config.yaml
+uv run python -m judex.core --config config.yaml
 ```
 
 ### Staging Environment
@@ -288,12 +288,12 @@ uv run python -m lexicon.core --config config.yaml
 ```bash
 # Staging deployment
 export ENVIRONMENT="staging"
-export DATABASE_PATH="/var/lib/lexicon/staging.db"
+export DATABASE_PATH="/var/lib/judex/staging.db"
 export LOG_LEVEL="DEBUG"
-export OUTPUT_DIR="/var/lib/lexicon/staging/output"
+export OUTPUT_DIR="/var/lib/judex/staging/output"
 
 # Run with staging configuration
-uv run python -m lexicon.core --config config.staging.yaml
+uv run python -m judex.core --config config.staging.yaml
 ```
 
 ### Production Environment
@@ -301,21 +301,21 @@ uv run python -m lexicon.core --config config.staging.yaml
 #### Systemd Service
 
 ```ini
-# /etc/systemd/system/lexicon.service
+# /etc/systemd/system/judex.service
 [Unit]
-Description=Lexicon STF Data Scraper
+Description=judex STF Data Scraper
 After=network.target
 
 [Service]
 Type=simple
-User=lexicon
-Group=lexicon
-WorkingDirectory=/opt/lexicon
-Environment=PYTHONPATH=/opt/lexicon
-Environment=DATABASE_PATH=/var/lib/lexicon/lexicon.db
+User=judex
+Group=judex
+WorkingDirectory=/opt/judex
+Environment=PYTHONPATH=/opt/judex
+Environment=DATABASE_PATH=/var/lib/judex/judex.db
 Environment=LOG_LEVEL=INFO
-Environment=OUTPUT_DIR=/var/lib/lexicon/output
-ExecStart=/opt/lexicon/.venv/bin/python -m lexicon.core --config /etc/lexicon/config.yaml
+Environment=OUTPUT_DIR=/var/lib/judex/output
+ExecStart=/opt/judex/.venv/bin/python -m judex.core --config /etc/judex/config.yaml
 Restart=always
 RestartSec=10
 
@@ -326,9 +326,9 @@ WantedBy=multi-user.target
 ```bash
 # Enable and start service
 sudo systemctl daemon-reload
-sudo systemctl enable lexicon
-sudo systemctl start lexicon
-sudo systemctl status lexicon
+sudo systemctl enable judex
+sudo systemctl start judex
+sudo systemctl status judex
 ```
 
 #### Docker Compose
@@ -338,30 +338,30 @@ sudo systemctl status lexicon
 version: '3.8'
 
 services:
-    lexicon:
+    judex:
         build: .
-        container_name: lexicon
+        container_name: judex
         restart: unless-stopped
         volumes:
             - ./data:/app/data
             - ./logs:/app/logs
             - ./config:/app/config
         environment:
-            - DATABASE_PATH=/app/data/lexicon.db
+            - DATABASE_PATH=/app/data/judex.db
             - LOG_LEVEL=INFO
             - OUTPUT_DIR=/app/data/output
-        command: python -m lexicon.core --config /app/config/config.yaml
+        command: python -m judex.core --config /app/config/config.yaml
 
     nginx:
         image: nginx:alpine
-        container_name: lexicon-nginx
+        container_name: judex-nginx
         ports:
             - '80:80'
         volumes:
             - ./nginx.conf:/etc/nginx/nginx.conf
             - ./data:/var/www/html
         depends_on:
-            - lexicon
+            - judex
 ```
 
 ## 📊 Monitoring and Logging
@@ -374,7 +374,7 @@ import logging
 import logging.handlers
 from pathlib import Path
 
-def setup_logging(log_level="INFO", log_file="lexicon.log"):
+def setup_logging(log_level="INFO", log_file="judex.log"):
     """Setup logging configuration"""
 
     # Create logs directory
@@ -395,7 +395,7 @@ def setup_logging(log_level="INFO", log_file="lexicon.log"):
         ]
     )
 
-    return logging.getLogger("lexicon")
+    return logging.getLogger("judex")
 ```
 
 ### Health Checks
@@ -437,7 +437,7 @@ def check_selenium_health():
 def check_system_health():
     """Comprehensive system health check"""
     return {
-        "database": check_database_health("lexicon.db"),
+        "database": check_database_health("judex.db"),
         "selenium": check_selenium_health(),
         "timestamp": datetime.now().isoformat()
     }
@@ -473,10 +473,10 @@ def setup_metrics(port=8000):
 
 ```bash
 # Create dedicated user
-sudo useradd -r -s /bin/false lexicon
-sudo mkdir -p /var/lib/lexicon
-sudo chown lexicon:lexicon /var/lib/lexicon
-sudo chmod 750 /var/lib/lexicon
+sudo useradd -r -s /bin/false judex
+sudo mkdir -p /var/lib/judex
+sudo chown judex:judex /var/lib/judex
+sudo chmod 750 /var/lib/judex
 ```
 
 ### Network Security
@@ -613,13 +613,13 @@ sudo apt-get install chromium-chromedriver
 
 ```bash
 # Check database integrity
-sqlite3 lexicon.db "PRAGMA integrity_check;"
+sqlite3 judex.db "PRAGMA integrity_check;"
 
 # Repair database
-sqlite3 lexicon.db "VACUUM;"
+sqlite3 judex.db "VACUUM;"
 
 # Backup database
-cp lexicon.db lexicon.db.backup
+cp judex.db judex.db.backup
 ```
 
 #### Memory Issues
@@ -630,20 +630,20 @@ free -h
 ps aux --sort=-%mem | head
 
 # Kill high memory processes
-sudo pkill -f lexicon
+sudo pkill -f judex
 ```
 
 ### Log Analysis
 
 ```bash
 # View recent logs
-tail -f /var/log/lexicon/lexicon.log
+tail -f /var/log/judex/judex.log
 
 # Search for errors
-grep -i error /var/log/lexicon/lexicon.log
+grep -i error /var/log/judex/judex.log
 
 # Monitor real-time logs
-journalctl -u lexicon -f
+journalctl -u judex -f
 ```
 
 ### Performance Monitoring
@@ -655,8 +655,8 @@ iotop
 nethogs
 
 # Monitor database
-sqlite3 lexicon.db "SELECT COUNT(*) FROM processos;"
-sqlite3 lexicon.db ".schema"
+sqlite3 judex.db "SELECT COUNT(*) FROM processos;"
+sqlite3 judex.db ".schema"
 ```
 
-This deployment guide provides comprehensive instructions for deploying Lexicon in various environments, ensuring reliable and scalable operation.
+This deployment guide provides comprehensive instructions for deploying judex in various environments, ensuring reliable and scalable operation.

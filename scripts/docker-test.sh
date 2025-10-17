@@ -1,9 +1,9 @@
 #!/bin/bash
-# Docker testing script for Lexicon across different environments
+# Docker testing script for judex across different environments
 
 set -e
 
-echo "🐳 Lexicon Docker Testing Script"
+echo "🐳 judex Docker Testing Script"
 echo "================================"
 
 # Colors for output
@@ -51,15 +51,15 @@ build_images() {
     
     # Build main image
     print_status "Building main image (Python 3.10)..."
-    docker build -t lexicon:latest .
+    docker build -t judex:latest .
     
     # Build Python 3.9 image
     print_status "Building Python 3.9 image..."
-    docker build -f Dockerfile.python39 -t lexicon:python39 .
+    docker build -f Dockerfile.python39 -t judex:python39 .
     
     # Build Python 3.11 image
     print_status "Building Python 3.11 image..."
-    docker build -f Dockerfile.python311 -t lexicon:python311 .
+    docker build -f Dockerfile.python311 -t judex:python311 .
     
     print_success "All images built successfully!"
 }
@@ -70,7 +70,7 @@ test_python_versions() {
     
     # Test Python 3.9
     print_status "Testing Python 3.9..."
-    if docker run --rm -v "$(pwd):/app" lexicon:python39; then
+    if docker run --rm -v "$(pwd):/app" judex:python39; then
         print_success "Python 3.9 tests passed!"
     else
         print_error "Python 3.9 tests failed!"
@@ -79,7 +79,7 @@ test_python_versions() {
     
     # Test Python 3.10
     print_status "Testing Python 3.10..."
-    if docker run --rm -v "$(pwd):/app" lexicon:latest; then
+    if docker run --rm -v "$(pwd):/app" judex:latest; then
         print_success "Python 3.10 tests passed!"
     else
         print_error "Python 3.10 tests failed!"
@@ -88,7 +88,7 @@ test_python_versions() {
     
     # Test Python 3.11
     print_status "Testing Python 3.11..."
-    if docker run --rm -v "$(pwd):/app" lexicon:python311; then
+    if docker run --rm -v "$(pwd):/app" judex:python311; then
         print_success "Python 3.11 tests passed!"
     else
         print_error "Python 3.11 tests failed!"
@@ -107,7 +107,7 @@ test_with_compose() {
     sleep 5
     
     # Run tests
-    $COMPOSE_CMD exec lexicon-linux uv run python -m pytest tests/ -v
+    $COMPOSE_CMD exec judex-linux uv run python -m pytest tests/ -v
     
     # Cleanup
     $COMPOSE_CMD down
@@ -122,19 +122,19 @@ test_specific() {
     case "$test_suite" in
         "models")
             print_status "Running model tests..."
-            docker run --rm -v "$(pwd):/app" lexicon:latest uv run python -m pytest tests/test_models.py -v
+            docker run --rm -v "$(pwd):/app" judex:latest uv run python -m pytest tests/test_models.py -v
             ;;
         "database")
             print_status "Running database tests..."
-            docker run --rm -v "$(pwd):/app" lexicon:latest uv run python -m pytest tests/test_database_standalone.py -v
+            docker run --rm -v "$(pwd):/app" judex:latest uv run python -m pytest tests/test_database_standalone.py -v
             ;;
         "pipeline")
             print_status "Running pipeline tests..."
-            docker run --rm -v "$(pwd):/app" lexicon:latest uv run python -m pytest tests/test_pydantic_pipeline.py -v
+            docker run --rm -v "$(pwd):/app" judex:latest uv run python -m pytest tests/test_pydantic_pipeline.py -v
             ;;
         "spider")
             print_status "Running spider tests..."
-            docker run --rm -v "$(pwd):/app" lexicon:latest uv run python -m pytest tests/test_spider_integration.py -v
+            docker run --rm -v "$(pwd):/app" judex:latest uv run python -m pytest tests/test_spider_integration.py -v
             ;;
         *)
             print_error "Unknown test suite: $test_suite"

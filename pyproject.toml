@@ -1,6 +1,6 @@
 [project]
-name = "lexicon"
-version = "0.1.0"
+name = "judex"
+version = "1.0.0"
 description = "Ferramenta para extração de dados jurídicos."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -28,8 +28,14 @@ requires = ["uv_build>=0.9.3,<0.10.0"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
-module-name = "lexicon"
+module-name = "judex"
 module-root = ""
+
+[[tool.uv.index]]
+name = "pypi"
+url = "https://pypi.org/simple/"
+publish-url = "https://upload.pypi.org/legacy/"
+explicit = true
 
 [tool.black]
 line-length = 100

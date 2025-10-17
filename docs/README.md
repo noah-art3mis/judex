@@ -1,4 +1,4 @@
-# Lexicon - STF Data Scraper
+# judex - STF Data Scraper
 
 A web scraper for the Brazilian Supreme Court (STF) with Pydantic data validation.
 
@@ -40,7 +40,7 @@ The robots.txt file disallows access to `/processos` for all user agents, but th
 ```bash
 # Clone and install
 git clone <repository-url>
-cd lexicon
+cd judex
 uv sync
 
 # Install ChromeDriver
@@ -50,10 +50,10 @@ sudo apt-get install chromium-chromedriver
 ## 🚀 Quick Start
 
 ```python
-from lexicon.core import LexiconScraper
+from judex.core import judexScraper
 
 # Initialize and scrape
-scraper = LexiconScraper(output_dir="output", db_path="lexicon.db")
+scraper = judexScraper(output_dir="output", db_path="judex.db")
 scraper.scrape_cases("ADI", "[1234, 5678, 9012]")
 ```
 
@@ -80,7 +80,7 @@ STF Portal → Scrapy Spider → Pydantic Validation → SQLite DB
 ## 📊 Data Models
 
 ```python
-from lexicon.models import STFCaseModel
+from judex.models import STFCaseModel
 
 case = STFCaseModel(
     processo_id=123,
@@ -97,13 +97,13 @@ case = STFCaseModel(
 ## ⚙️ Configuration
 
 ```python
-# lexicon/settings.py
-DATABASE_PATH = "lexicon.db"
+# judex/settings.py
+DATABASE_PATH = "judex.db"
 DOWNLOAD_DELAY = 2.0
 CONCURRENT_REQUESTS = 1
 ITEM_PIPELINES = {
-    "lexicon.pydantic_pipeline.PydanticValidationPipeline": 200,
-    "lexicon.pipelines.DatabasePipeline": 300,
+    "judex.pydantic_pipeline.PydanticValidationPipeline": 200,
+    "judex.pipelines.DatabasePipeline": 300,
 }
 ```
 
@@ -116,7 +116,7 @@ ITEM_PIPELINES = {
 uv run python -m pytest
 
 # Run with coverage
-uv run python -m pytest --cov=lexicon --cov-report=html
+uv run python -m pytest --cov=judex --cov-report=html
 ```
 
 ### Docker Testing (Cross-Platform)
@@ -139,7 +139,7 @@ uv run python -m pytest --cov=lexicon --cov-report=html
 
 ```python
 # Main scraper
-scraper = LexiconScraper(output_dir="output", db_path="lexicon.db")
+scraper = judexScraper(output_dir="output", db_path="judex.db")
 scraper.scrape_cases("ADI", "[1234, 5678]")
 
 # Data model
@@ -158,8 +158,8 @@ chromedriver --version
 sudo apt-get install chromium-chromedriver
 
 # Database locked
-ps aux | grep lexicon
-pkill -f lexicon
+ps aux | grep judex
+pkill -f judex
 ```
 
 ```python
@@ -177,7 +177,7 @@ except ValidationError as e:
 uv sync --group dev
 uv run ruff check .
 uv run black .
-uv run mypy lexicon/
+uv run mypy judex/
 ```
 
 ## 📄 License

@@ -13,14 +13,14 @@ from .spiders.stf import StfSpider
 logger = logging.getLogger(__name__)
 
 
-class LexiconScraper:
+class judexScraper:
     """Main scraper class for STF cases"""
 
     def __init__(
         self,
         input_file: str | None = None,
-        output_dir: str = "lexicon",
-        db_path: str = "lexicon.db",
+        output_dir: str = "judex",
+        db_path: str = "judex.db",
         filename: str = "processos.csv",
         skip_existing: bool = True,
         retry_failed: bool = True,
@@ -65,7 +65,7 @@ class LexiconScraper:
         self.settings.set(
             "ITEM_PIPELINES",
             {
-                "lexicon.pipelines.DatabasePipeline": 300,
+                "judex.pipelines.DatabasePipeline": 300,
             },
         )
 

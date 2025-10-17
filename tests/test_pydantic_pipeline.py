@@ -7,10 +7,9 @@ import tempfile
 from unittest.mock import Mock, patch
 
 import pytest
+from judex.models import STFCaseModel
+from judex.pydantic_pipeline import PydanticValidationPipeline
 from pydantic import ValidationError
-
-from lexicon.models import STFCaseModel
-from lexicon.pydantic_pipeline import PydanticValidationPipeline
 
 
 class TestPydanticValidationPipeline:
@@ -47,7 +46,7 @@ class TestPydanticValidationPipeline:
         }
 
         # Mock ItemAdapter to return a dict-like object
-        with patch("lexicon.pydantic_pipeline.ItemAdapter") as mock_adapter:
+        with patch("judex.pydantic_pipeline.ItemAdapter") as mock_adapter:
             mock_adapter.return_value = item_data
 
             result = self.pipeline.process_item(mock_item, self.mock_spider)
@@ -66,7 +65,7 @@ class TestPydanticValidationPipeline:
         }
 
         # Mock ItemAdapter
-        with patch("lexicon.pydantic_pipeline.ItemAdapter") as mock_adapter:
+        with patch("judex.pydantic_pipeline.ItemAdapter") as mock_adapter:
             mock_adapter.return_value = item_data
 
             # Should not raise exception, but log error
@@ -86,7 +85,7 @@ class TestPydanticValidationPipeline:
         }
 
         # Mock ItemAdapter
-        with patch("lexicon.pydantic_pipeline.ItemAdapter") as mock_adapter:
+        with patch("judex.pydantic_pipeline.ItemAdapter") as mock_adapter:
             mock_adapter.return_value = item_data
 
             result = self.pipeline.process_item(mock_item, self.mock_spider)
@@ -101,11 +100,11 @@ class TestPydanticValidationPipeline:
         item_data = {"processo_id": 123, "incidente": 456, "classe": "ADI"}
 
         # Mock ItemAdapter to return data but then raise an error during processing
-        with patch("lexicon.pydantic_pipeline.ItemAdapter") as mock_adapter:
+        with patch("judex.pydantic_pipeline.ItemAdapter") as mock_adapter:
             mock_adapter.return_value = item_data
 
             # Mock the STFCaseModel to raise an unexpected error
-            with patch("lexicon.pydantic_pipeline.STFCaseModel") as mock_model:
+            with patch("judex.pydantic_pipeline.STFCaseModel") as mock_model:
                 mock_model.side_effect = Exception("Unexpected error")
 
                 result = self.pipeline.process_item(mock_item, self.mock_spider)
@@ -129,7 +128,7 @@ class TestPydanticValidationPipeline:
         }
 
         # Mock ItemAdapter
-        with patch("lexicon.pydantic_pipeline.ItemAdapter") as mock_adapter:
+        with patch("judex.pydantic_pipeline.ItemAdapter") as mock_adapter:
             mock_adapter.return_value = item_data
 
             result = self.pipeline.process_item(mock_item, self.mock_spider)
@@ -149,7 +148,7 @@ class TestPydanticValidationPipeline:
         }
 
         # Mock ItemAdapter
-        with patch("lexicon.pydantic_pipeline.ItemAdapter") as mock_adapter:
+        with patch("judex.pydantic_pipeline.ItemAdapter") as mock_adapter:
             mock_adapter.return_value = item_data
 
             result = self.pipeline.process_item(mock_item, self.mock_spider)
@@ -170,7 +169,7 @@ class TestPydanticValidationPipeline:
             "classe": "ADI",
         }
 
-        with patch("lexicon.pydantic_pipeline.ItemAdapter") as mock_adapter:
+        with patch("judex.pydantic_pipeline.ItemAdapter") as mock_adapter:
             mock_adapter.return_value = item_data
 
             result = self.pipeline.process_item(mock_item, custom_spider)
@@ -191,7 +190,7 @@ class TestPydanticValidationPipeline:
             "classe": "ADI",
         }
 
-        with patch("lexicon.pydantic_pipeline.ItemAdapter") as mock_adapter:
+        with patch("judex.pydantic_pipeline.ItemAdapter") as mock_adapter:
             mock_adapter.return_value = item_data
 
             result = self.pipeline.process_item(mock_item, default_spider)

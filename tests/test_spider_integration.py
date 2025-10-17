@@ -7,11 +7,10 @@ import tempfile
 from unittest.mock import MagicMock, Mock, patch
 
 import pytest
+from judex.models import CaseType, STFCaseModel
+from judex.spiders.stf import StfSpider
 from scrapy import Request
 from scrapy.http import Response
-
-from lexicon.models import CaseType, STFCaseModel
-from lexicon.spiders.stf import StfSpider
 
 
 class TestStfSpiderIntegration:
@@ -61,8 +60,8 @@ class TestStfSpiderIntegration:
         with pytest.raises(ValueError):
             StfSpider(classe="ADI", processos="invalid_json")
 
-    @patch("lexicon.spiders.stf.get_existing_processo_ids")
-    @patch("lexicon.spiders.stf.get_failed_processo_ids")
+    @patch("judex.spiders.stf.get_existing_processo_ids")
+    @patch("judex.spiders.stf.get_failed_processo_ids")
     def test_start_requests_with_database_check(self, mock_failed, mock_existing):
         """Test start_requests with database checks"""
         mock_existing.return_value = {123}
@@ -80,8 +79,8 @@ class TestStfSpiderIntegration:
         mock_existing.assert_called_once()
         mock_failed.assert_called_once()
 
-    @patch("lexicon.spiders.stf.get_existing_processo_ids")
-    @patch("lexicon.spiders.stf.get_failed_processo_ids")
+    @patch("judex.spiders.stf.get_existing_processo_ids")
+    @patch("judex.spiders.stf.get_failed_processo_ids")
     def test_start_requests_skip_existing(self, mock_failed, mock_existing):
         """Test start_requests with skip_existing=True"""
         mock_existing.return_value = {123}
@@ -97,8 +96,8 @@ class TestStfSpiderIntegration:
         assert len(requests) == 1
         assert requests[0].meta["numero"] == 456
 
-    @patch("lexicon.spiders.stf.get_existing_processo_ids")
-    @patch("lexicon.spiders.stf.get_failed_processo_ids")
+    @patch("judex.spiders.stf.get_existing_processo_ids")
+    @patch("judex.spiders.stf.get_failed_processo_ids")
     def test_start_requests_retry_failed(self, mock_failed, mock_existing):
         """Test start_requests with retry_failed=True"""
         mock_existing.return_value = set()
@@ -132,24 +131,24 @@ class TestStfSpiderIntegration:
         result = self.spider.clean_text("   ")
         assert result is None
 
-    @patch("lexicon.spiders.stf.extract_numero_unico")
-    @patch("lexicon.spiders.stf.extract_classe")
-    @patch("lexicon.spiders.stf.extract_liminar")
-    @patch("lexicon.spiders.stf.extract_relator")
-    @patch("lexicon.spiders.stf.extract_tipo_processo")
-    @patch("lexicon.spiders.stf.extract_origem")
-    @patch("lexicon.spiders.stf.extract_data_protocolo")
-    @patch("lexicon.spiders.stf.extract_origem_orgao")
-    @patch("lexicon.spiders.stf.extract_autor1")
-    @patch("lexicon.spiders.stf.extract_assuntos")
-    @patch("lexicon.spiders.stf.extract_partes")
-    @patch("lexicon.spiders.stf.extract_andamentos")
-    @patch("lexicon.spiders.stf.extract_decisoes")
-    @patch("lexicon.spiders.stf.extract_deslocamentos")
-    @patch("lexicon.spiders.stf.extract_peticoes")
-    @patch("lexicon.spiders.stf.extract_recursos")
-    @patch("lexicon.spiders.stf.extract_pautas")
-    @patch("lexicon.spiders.stf.extract_sessao")
+    @patch("judex.spiders.stf.extract_numero_unico")
+    @patch("judex.spiders.stf.extract_classe")
+    @patch("judex.spiders.stf.extract_liminar")
+    @patch("judex.spiders.stf.extract_relator")
+    @patch("judex.spiders.stf.extract_tipo_processo")
+    @patch("judex.spiders.stf.extract_origem")
+    @patch("judex.spiders.stf.extract_data_protocolo")
+    @patch("judex.spiders.stf.extract_origem_orgao")
+    @patch("judex.spiders.stf.extract_autor1")
+    @patch("judex.spiders.stf.extract_assuntos")
+    @patch("judex.spiders.stf.extract_partes")
+    @patch("judex.spiders.stf.extract_andamentos")
+    @patch("judex.spiders.stf.extract_decisoes")
+    @patch("judex.spiders.stf.extract_deslocamentos")
+    @patch("judex.spiders.stf.extract_peticoes")
+    @patch("judex.spiders.stf.extract_recursos")
+    @patch("judex.spiders.stf.extract_pautas")
+    @patch("judex.spiders.stf.extract_sessao")
     def test_parse_main_page_selenium_success(
         self,
         mock_sessao,
@@ -203,14 +202,14 @@ class TestStfSpiderIntegration:
         mock_driver.find_element.return_value.text = "Test origem"
 
         # Mock WebDriverWait
-        with patch("lexicon.spiders.stf.WebDriverWait") as mock_wait:
+        with patch("judex.spiders.stf.WebDriverWait") as mock_wait:
             mock_wait.return_value.until.return_value = None
 
             # Mock get_element_by_id
             self.spider.get_element_by_id = Mock(return_value="456")
 
             # Mock BeautifulSoup
-            with patch("lexicon.spiders.stf.BeautifulSoup") as mock_soup:
+            with patch("judex.spiders.stf.BeautifulSoup") as mock_soup:
                 mock_soup.return_value = Mock()
 
                 # Mock request with driver
@@ -338,7 +337,7 @@ class TestStfSpiderIntegration:
         mock_driver.find_element.return_value = mock_element
 
         # Mock WebDriverWait
-        with patch("lexicon.spiders.stf.WebDriverWait") as mock_wait:
+        with patch("judex.spiders.stf.WebDriverWait") as mock_wait:
             mock_wait.return_value.until.return_value = None
 
             result = self.spider.get_element_by_id(mock_driver, "test_id")
@@ -355,7 +354,7 @@ class TestStfSpiderIntegration:
         mock_driver.find_element.return_value = mock_element
 
         # Mock WebDriverWait
-        with patch("lexicon.spiders.stf.WebDriverWait") as mock_wait:
+        with patch("judex.spiders.stf.WebDriverWait") as mock_wait:
             mock_wait.return_value.until.return_value = None
 
             result = self.spider.get_element_by_xpath(mock_driver, "//test")

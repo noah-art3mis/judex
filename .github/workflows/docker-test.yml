@@ -25,31 +25,31 @@ jobs:
             - name: Build Docker image
               run: |
                   if [ "${{ matrix.python-version }}" = "3.9" ]; then
-                    docker build -f Dockerfile.python39 -t lexicon:python39 .
+                    docker build -f Dockerfile.python39 -t judex:python39 .
                   elif [ "${{ matrix.python-version }}" = "3.11" ]; then
-                    docker build -f Dockerfile.python311 -t lexicon:python311 .
+                    docker build -f Dockerfile.python311 -t judex:python311 .
                   else
-                    docker build -t lexicon:latest .
+                    docker build -t judex:latest .
                   fi
 
             - name: Run tests
               run: |
                   if [ "${{ matrix.python-version }}" = "3.9" ]; then
-                    docker run --rm -v "$(pwd):/app" lexicon:python39 uv run python -m pytest tests/ -v
+                    docker run --rm -v "$(pwd):/app" judex:python39 uv run python -m pytest tests/ -v
                   elif [ "${{ matrix.python-version }}" = "3.11" ]; then
-                    docker run --rm -v "$(pwd):/app" lexicon:python311 uv run python -m pytest tests/ -v
+                    docker run --rm -v "$(pwd):/app" judex:python311 uv run python -m pytest tests/ -v
                   else
-                    docker run --rm -v "$(pwd):/app" lexicon:latest uv run python -m pytest tests/ -v
+                    docker run --rm -v "$(pwd):/app" judex:latest uv run python -m pytest tests/ -v
                   fi
 
             - name: Test specific components
               run: |
                   if [ "${{ matrix.python-version }}" = "3.9" ]; then
-                    IMAGE="lexicon:python39"
+                    IMAGE="judex:python39"
                   elif [ "${{ matrix.python-version }}" = "3.11" ]; then
-                    IMAGE="lexicon:python311"
+                    IMAGE="judex:python311"
                   else
-                    IMAGE="lexicon:latest"
+                    IMAGE="judex:latest"
                   fi
 
                   # Test models
@@ -64,11 +64,11 @@ jobs:
             - name: Test Chrome/ChromeDriver
               run: |
                   if [ "${{ matrix.python-version }}" = "3.9" ]; then
-                    IMAGE="lexicon:python39"
+                    IMAGE="judex:python39"
                   elif [ "${{ matrix.python-version }}" = "3.11" ]; then
-                    IMAGE="lexicon:python311"
+                    IMAGE="judex:python311"
                   else
-                    IMAGE="lexicon:latest"
+                    IMAGE="judex:latest"
                   fi
 
                   # Test Chrome installation
@@ -80,18 +80,18 @@ jobs:
             - name: Test package installation
               run: |
                   if [ "${{ matrix.python-version }}" = "3.9" ]; then
-                    IMAGE="lexicon:python39"
+                    IMAGE="judex:python39"
                   elif [ "${{ matrix.python-version }}" = "3.11" ]; then
-                    IMAGE="lexicon:python311"
+                    IMAGE="judex:python311"
                   else
-                    IMAGE="lexicon:latest"
+                    IMAGE="judex:latest"
                   fi
 
                   # Build package in Docker
                   docker run --rm -v "$(pwd):/app" $IMAGE uv run python -m build
 
                   # Test package installation
-                  docker run --rm -v "$(pwd):/app" $IMAGE pip install dist/lexicon-*.whl
+                  docker run --rm -v "$(pwd):/app" $IMAGE pip install dist/judex-*.whl
 
             - name: Cleanup
               if: always()

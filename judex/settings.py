@@ -1,9 +1,9 @@
 from shutil import which
 
-BOT_NAME = "lexicon"
+BOT_NAME = "judex"
 
-SPIDER_MODULES = ["lexicon.spiders"]
-NEWSPIDER_MODULE = "lexicon.spiders"
+SPIDER_MODULES = ["judex.spiders"]
+NEWSPIDER_MODULE = "judex.spiders"
 
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 
@@ -30,12 +30,12 @@ DOWNLOADER_MIDDLEWARES = {
 # }
 
 ITEM_PIPELINES = {
-    "lexicon.pydantic_pipeline.PydanticValidationPipeline": 200,
-    "lexicon.pipelines.DatabasePipeline": 300,
+    "judex.pydantic_pipeline.PydanticValidationPipeline": 200,
+    "judex.pipelines.DatabasePipeline": 300,
 }
 
 # Database configuration
-DATABASE_PATH = "lexicon.db"
+DATABASE_PATH = "judex.db"
 
 AUTOTHROTTLE_ENABLED = True
 AUTOTHROTTLE_START_DELAY = 1.0

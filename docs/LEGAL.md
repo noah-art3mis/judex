@@ -1,8 +1,8 @@
-# Legal Considerations for Lexicon STF Data Scraper
+# Legal Considerations for judex STF Data Scraper
 
 ## ⚖️ Legal Framework
 
-This document outlines the legal considerations for using the Lexicon STF data scraper, including analysis of the STF portal's robots.txt file and terms of service.
+This document outlines the legal considerations for using the judex STF data scraper, including analysis of the STF portal's robots.txt file and terms of service.
 
 ## 🤖 Robots.txt Analysis
 
@@ -33,9 +33,9 @@ The STF portal's robots.txt:
 
 -   Disallows access to `/processos` directory for all user agents
 -   Disallows all access for AhrefsBot specifically
--   **Does not affect** individual case page access (which is what Lexicon uses)
+-   **Does not affect** individual case page access (which is what judex uses)
 
-Lexicon accesses individual case pages through direct URLs, not the disallowed `/processos` directory.
+judex accesses individual case pages through direct URLs, not the disallowed `/processos` directory.
 
 ## 📋 Terms of Service Analysis
 
@@ -59,9 +59,9 @@ Since no terms of service exist:
 
 ## 🌐 Public Data Access
 
-### What Lexicon Accesses
+### What judex Accesses
 
-Lexicon only accesses **publicly available data**:
+judex only accesses **publicly available data**:
 
 -   Case information already accessible through the web interface
 -   No login or authentication required
@@ -79,7 +79,7 @@ Lexicon only accesses **publicly available data**:
 
 ### Implemented Safeguards
 
-Lexicon implements several ethical practices:
+judex implements several ethical practices:
 
 -   **Download delays**: 2-second delays between requests
 -   **Concurrent limits**: Maximum 1 concurrent request

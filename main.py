@@ -1,11 +1,11 @@
-from lexicon.core import LexiconScraper
+from judex.core import judexScraper
 
 
 def main():
-    scraper = LexiconScraper(
+    scraper = judexScraper(
         input_file="processos.yaml",
         output_dir="output",
-        db_path="lexicon.db",
+        db_path="judex.db",
         filename="processos.csv",
         skip_existing=True,  # Skip cases already in database
         retry_failed=True,  # Retry cases that previously failed

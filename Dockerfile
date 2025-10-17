@@ -1,4 +1,4 @@
-# Multi-stage Dockerfile for Lexicon testing across platforms
+# Multi-stage Dockerfile for judex testing across platforms
 FROM python:3.10-slim as base
 
 # Install system dependencies

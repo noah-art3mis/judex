@@ -1,8 +1,8 @@
-!# Docker Testing Guide for Lexicon
+!# Docker Testing Guide for judex
 
 ## 🐳 Overview
 
-This guide covers using Docker for testing Lexicon across different environments (Windows, Mac, Linux) and Python versions.
+This guide covers using Docker for testing judex across different environments (Windows, Mac, Linux) and Python versions.
 
 ## 🚀 Quick Start
 
@@ -31,8 +31,8 @@ This guide covers using Docker for testing Lexicon across different environments
 ./scripts/docker-test.sh build
 
 # Build specific Python version
-docker build -f Dockerfile.python39 -t lexicon:python39 .
-docker build -f Dockerfile.python311 -t lexicon:python311 .
+docker build -f Dockerfile.python39 -t judex:python39 .
+docker build -f Dockerfile.python311 -t judex:python311 .
 ```
 
 ### Testing Commands
@@ -85,10 +85,10 @@ FROM python:3.11-slim
 
 ### Services Available
 
--   **lexicon-linux**: Main testing environment
--   **lexicon-dev**: Development environment with live reload
--   **lexicon-python39**: Python 3.9 testing
--   **lexicon-python311**: Python 3.11 testing
+-   **judex-linux**: Main testing environment
+-   **judex-dev**: Development environment with live reload
+-   **judex-python39**: Python 3.9 testing
+-   **judex-python311**: Python 3.11 testing
 
 ### Using Docker Compose
 
@@ -97,7 +97,7 @@ FROM python:3.11-slim
 docker-compose up --build
 
 # Run tests in specific service
-docker-compose exec lexicon-linux uv run python -m pytest tests/ -v
+docker-compose exec judex-linux uv run python -m pytest tests/ -v
 
 # Stop services
 docker-compose down
@@ -109,28 +109,28 @@ docker-compose down
 
 ```bash
 # Test on different Python versions
-docker run --rm -v "$(pwd):/app" lexicon:python39
-docker run --rm -v "$(pwd):/app" lexicon:latest
-docker run --rm -v "$(pwd):/app" lexicon:python311
+docker run --rm -v "$(pwd):/app" judex:python39
+docker run --rm -v "$(pwd):/app" judex:latest
+docker run --rm -v "$(pwd):/app" judex:python311
 ```
 
 ### Specific Test Suites
 
 ```bash
 # Model tests
-docker run --rm -v "$(pwd):/app" lexicon:latest \
+docker run --rm -v "$(pwd):/app" judex:latest \
   uv run python -m pytest tests/test_models.py -v
 
 # Database tests
-docker run --rm -v "$(pwd):/app" lexicon:latest \
+docker run --rm -v "$(pwd):/app" judex:latest \
   uv run python -m pytest tests/test_database_standalone.py -v
 
 # Pipeline tests
-docker run --rm -v "$(pwd):/app" lexicon:latest \
+docker run --rm -v "$(pwd):/app" judex:latest \
   uv run python -m pytest tests/test_pydantic_pipeline.py -v
 
 # Spider tests
-docker run --rm -v "$(pwd):/app" lexicon:latest \
+docker run --rm -v "$(pwd):/app" judex:latest \
   uv run python -m pytest tests/test_spider_integration.py -v
 ```
 
@@ -140,13 +140,13 @@ docker run --rm -v "$(pwd):/app" lexicon:latest \
 
 ```bash
 # Start development container
-docker-compose up lexicon-dev
+docker-compose up judex-dev
 
 # Access container shell
-docker-compose exec lexicon-dev bash
+docker-compose exec judex-dev bash
 
 # Run scraper
-docker-compose exec lexicon-dev uv run python -m lexicon.core
+docker-compose exec judex-dev uv run python -m judex.core
 ```
 
 ### Live Development
@@ -156,7 +156,7 @@ docker-compose exec lexicon-dev uv run python -m lexicon.core
 docker run -it --rm \
   -v "$(pwd):/app" \
   -v "$(pwd)/output:/app/output" \
-  lexicon:latest bash
+  judex:latest bash
 ```
 
 ## 🔍 Debugging
@@ -167,22 +167,22 @@ docker run -it --rm \
 # Run container with debug shell
 docker run -it --rm \
   -v "$(pwd):/app" \
-  lexicon:latest bash
+  judex:latest bash
 
 # Check Chrome installation
-docker run --rm lexicon:latest chromium --version
-docker run --rm lexicon:latest chromedriver --version
+docker run --rm judex:latest chromium --version
+docker run --rm judex:latest chromedriver --version
 ```
 
 ### Test Debugging
 
 ```bash
 # Run tests with verbose output
-docker run --rm -v "$(pwd):/app" lexicon:latest \
+docker run --rm -v "$(pwd):/app" judex:latest \
   uv run python -m pytest tests/ -v -s
 
 # Run specific test with debugging
-docker run --rm -v "$(pwd):/app" lexicon:latest \
+docker run --rm -v "$(pwd):/app" judex:latest \
   uv run python -m pytest tests/test_models.py::TestSTFCaseModel::test_minimal_valid_case -v -s
 ```
 
@@ -208,12 +208,12 @@ jobs:
             - name: Build Docker image
               run: |
                   docker build -f Dockerfile.python${{ matrix.python-version }} \
-                    -t lexicon:python${{ matrix.python-version }} .
+                    -t judex:python${{ matrix.python-version }} .
 
             - name: Run tests
               run: |
                   docker run --rm -v "$(pwd):/app" \
-                    lexicon:python${{ matrix.python-version }} \
+                    judex:python${{ matrix.python-version }} \
                     uv run python -m pytest tests/ -v
 ```
 
@@ -224,8 +224,8 @@ jobs:
 docker run --rm \
   -e CI=true \
   -v "$(pwd):/app" \
-  lexicon:latest \
-  uv run python -m pytest tests/ --cov=lexicon --cov-report=xml
+  judex:latest \
+  uv run python -m pytest tests/ --cov=judex --cov-report=xml
 ```
 
 ## 🚨 Troubleshooting
@@ -236,31 +236,31 @@ docker run --rm \
 
     ```bash
     # Check Chrome installation
-    docker run --rm lexicon:latest chromium --version
+    docker run --rm judex:latest chromium --version
 
     # Check ChromeDriver
-    docker run --rm lexicon:latest chromedriver --version
+    docker run --rm judex:latest chromedriver --version
     ```
 
 2. **Permission Issues**:
 
     ```bash
     # Fix file permissions
-    docker run --rm -v "$(pwd):/app" lexicon:latest \
+    docker run --rm -v "$(pwd):/app" judex:latest \
       chown -R $(id -u):$(id -g) /app
     ```
 
 3. **Memory Issues**:
     ```bash
     # Run with memory limits
-    docker run --rm --memory=2g -v "$(pwd):/app" lexicon:latest
+    docker run --rm --memory=2g -v "$(pwd):/app" judex:latest
     ```
 
 ### Performance Optimization
 
 ```bash
 # Use multi-stage builds for smaller images
-docker build --target base -t lexicon:base .
+docker build --target base -t judex:base .
 
 # Use .dockerignore to exclude unnecessary files
 # (Already configured in .dockerignore)
@@ -282,10 +282,10 @@ docker build --target base -t lexicon:base .
 docker image prune -f
 
 # Remove specific images
-docker rmi lexicon:python39 lexicon:python311
+docker rmi judex:python39 judex:python311
 
 # List all images
-docker images | grep lexicon
+docker images | grep judex
 ```
 
 ## 🔗 Integration with Publishing
@@ -297,12 +297,12 @@ docker images | grep lexicon
 ./scripts/docker-test.sh test
 
 # Build package in Docker
-docker run --rm -v "$(pwd):/app" lexicon:latest \
+docker run --rm -v "$(pwd):/app" judex:latest \
   uv run python -m build
 
 # Test package installation
-docker run --rm -v "$(pwd):/app" lexicon:latest \
-  pip install dist/lexicon-*.whl
+docker run --rm -v "$(pwd):/app" judex:latest \
+  pip install dist/judex-*.whl
 ```
 
-This Docker setup ensures Lexicon works consistently across all platforms and Python versions before publishing to PyPI.
+This Docker setup ensures judex works consistently across all platforms and Python versions before publishing to PyPI.

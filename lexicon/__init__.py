@@ -1,4 +1,0 @@
-from .core import LexiconScraper
-
-__version__ = "1.0.0"
-__all__ = ["LexiconScraper"]

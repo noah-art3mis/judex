@@ -1,8 +1,8 @@
-# Lexicon Testing Guide
+# judex Testing Guide
 
 ## 🧪 Testing Overview
 
-Lexicon uses a comprehensive testing strategy with 86+ unit tests covering all major components. The testing framework ensures data integrity, type safety, and system reliability.
+judex uses a comprehensive testing strategy with 86+ unit tests covering all major components. The testing framework ensures data integrity, type safety, and system reliability.
 
 ## 📊 Test Coverage
 
@@ -61,13 +61,13 @@ uv run python -m pytest tests/test_spider_integration.py -v
 
 ```bash
 # Run with coverage
-uv run python -m pytest --cov=lexicon --cov-report=html
+uv run python -m pytest --cov=judex --cov-report=html
 
 # Coverage report
-uv run python -m pytest --cov=lexicon --cov-report=term-missing
+uv run python -m pytest --cov=judex --cov-report=term-missing
 
 # Coverage threshold
-uv run python -m pytest --cov=lexicon --cov-fail-under=80
+uv run python -m pytest --cov=judex --cov-fail-under=80
 ```
 
 ## 📋 Test Structure
@@ -245,7 +245,7 @@ def test_valid_item_processing(self, mock_save):
         "classe": "ADI",
     }
 
-    with patch("lexicon.pydantic_pipeline.ItemAdapter") as mock_adapter:
+    with patch("judex.pydantic_pipeline.ItemAdapter") as mock_adapter:
         mock_adapter.return_value = item_data
 
         result = self.pipeline.process_item(mock_item, self.mock_spider)
@@ -292,7 +292,7 @@ def test_parse_main_page_selenium_success(self):
 #### Database Mocking
 
 ```python
-@patch("lexicon.pydantic_pipeline.save_processo_data")
+@patch("judex.pydantic_pipeline.save_processo_data")
 def test_database_save_failure(self, mock_save):
     """Test handling of database save failures"""
     mock_save.return_value = False  # Simulate save failure
@@ -309,7 +309,7 @@ def test_get_element_by_id(self):
     mock_element.get_attribute.return_value = "test_value"
     mock_driver.find_element.return_value = mock_element
 
-    with patch("lexicon.spiders.stf.WebDriverWait") as mock_wait:
+    with patch("judex.spiders.stf.WebDriverWait") as mock_wait:
         mock_wait.return_value.until.return_value = None
 
         result = self.spider.get_element_by_id(mock_driver, "test_id")
@@ -319,7 +319,7 @@ def test_get_element_by_id(self):
 #### ItemAdapter Mocking
 
 ```python
-with patch("lexicon.pydantic_pipeline.ItemAdapter") as mock_adapter:
+with patch("judex.pydantic_pipeline.ItemAdapter") as mock_adapter:
     mock_adapter.return_value = item_data
     # Test pipeline processing
 ```
@@ -431,7 +431,7 @@ jobs:
               with:
                   python-version: '3.10'
             - run: uv sync
-            - run: uv run python -m pytest --cov=lexicon --cov-report=xml
+            - run: uv run python -m pytest --cov=judex --cov-report=xml
             - uses: codecov/codecov-action@v3
 ```
 
@@ -474,4 +474,4 @@ repos:
 3. **Fixtures**: Use pytest fixtures for common setup
 4. **Factories**: Use factory functions for test data generation
 
-This testing guide provides comprehensive coverage of the Lexicon testing strategy, enabling developers to write, run, and maintain high-quality tests for the system.
+This testing guide provides comprehensive coverage of the judex testing strategy, enabling developers to write, run, and maintain high-quality tests for the system.

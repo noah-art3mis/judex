@@ -1,14 +1,14 @@
-# Lexicon Architecture Documentation
+# judex Architecture Documentation
 
 ## 🏗 System Architecture Overview
 
-Lexicon is a sophisticated web scraping system designed to extract and validate data from the Brazilian Supreme Court (STF) portal. The architecture emphasizes data integrity, type safety, and maintainability through the use of Pydantic for data validation.
+judex is a sophisticated web scraping system designed to extract and validate data from the Brazilian Supreme Court (STF) portal. The architecture emphasizes data integrity, type safety, and maintainability through the use of Pydantic for data validation.
 
 ## 📊 High-Level Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                        Lexicon System                           │
+│                        judex System                           │
 ├─────────────────────────────────────────────────────────────────┤
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐            │
 │  │   Input     │  │  Processing │  │   Output    │            │
@@ -42,17 +42,19 @@ Lexicon is a sophisticated web scraping system designed to extract and validate 
 
 ### 1. Web Scraping Layer
 
-#### `StfSpider` (`lexicon/spiders/stf.py`)
+#### `StfSpider` (`judex/spiders/stf.py`)
 
 **Purpose**: Extracts data from STF portal using Selenium WebDriver
 
 **Key Features**:
-- Selenium-based dynamic content handling
-- CAPTCHA and error detection
-- Robust error handling and retry logic
-- Database-aware skipping of existing data
+
+-   Selenium-based dynamic content handling
+-   CAPTCHA and error detection
+-   Robust error handling and retry logic
+-   Database-aware skipping of existing data
 
 **Architecture**:
+
 ```python
 class StfSpider(scrapy.Spider):
     def start_requests(self) -> Iterator[scrapy.Request]
@@ -63,23 +65,26 @@ class StfSpider(scrapy.Spider):
 ```
 
 **Data Flow**:
+
 ```
 STF Portal → Selenium WebDriver → BeautifulSoup → Raw Data Dictionary
 ```
 
 ### 2. Data Validation Layer
 
-#### `STFCaseModel` (`lexicon/models.py`)
+#### `STFCaseModel` (`judex/models.py`)
 
 **Purpose**: Pydantic models for data validation and type safety
 
 **Key Features**:
-- Runtime type checking
-- Automatic field mapping (scraping → database)
-- Type conversion (lists → JSON, booleans → integers)
-- Comprehensive validation rules
+
+-   Runtime type checking
+-   Automatic field mapping (scraping → database)
+-   Type conversion (lists → JSON, booleans → integers)
+-   Comprehensive validation rules
 
 **Model Hierarchy**:
+
 ```python
 STFCaseModel (Main Model)
 ├── CaseType (Enum)
@@ -95,6 +100,7 @@ STFCaseModel (Main Model)
 ```
 
 **Field Mapping**:
+
 ```python
 # Scraping field names → Database field names
 "index" → "index_num"
@@ -104,38 +110,42 @@ STFCaseModel (Main Model)
 
 ### 3. Pipeline Layer
 
-#### `PydanticValidationPipeline` (`lexicon/pydantic_pipeline.py`)
+#### `PydanticValidationPipeline` (`judex/pydantic_pipeline.py`)
 
 **Purpose**: Validates scraped data using Pydantic models
 
 **Key Features**:
-- Automatic data validation
-- Type conversion and field mapping
-- Error logging and handling
-- Database integration
+
+-   Automatic data validation
+-   Type conversion and field mapping
+-   Error logging and handling
+-   Database integration
 
 **Pipeline Flow**:
+
 ```
 Raw Item → ItemAdapter → Pydantic Validation → Database Save → Return Item
 ```
 
-#### `DatabasePipeline` (`lexicon/pipelines.py`)
+#### `DatabasePipeline` (`judex/pipelines.py`)
 
 **Purpose**: Saves validated data to SQLite database
 
 **Key Features**:
-- Normalized table structure
-- Foreign key relationships
-- Data integrity constraints
-- Batch operations
+
+-   Normalized table structure
+-   Foreign key relationships
+-   Data integrity constraints
+-   Batch operations
 
 ### 4. Database Layer
 
-#### Database Schema (`lexicon/database.py`)
+#### Database Schema (`judex/database.py`)
 
 **Purpose**: Structured data storage with normalized tables
 
 **Table Structure**:
+
 ```sql
 -- Main table
 processos (
@@ -165,10 +175,11 @@ pautas (numero_unico, index_num, data, nome, complemento, relator)
 **Purpose**: Type validation and case type management
 
 **Key Features**:
-- STF case type validation
-- Enum consistency checking
-- Error message generation
-- Integration with Pydantic models
+
+-   STF case type validation
+-   Enum consistency checking
+-   Error message generation
+-   Integration with Pydantic models
 
 ## 🔄 Data Flow Architecture
 
@@ -235,28 +246,31 @@ Command Line Args → Environment Variables → Settings File → Defaults
 ### Key Configuration Areas
 
 1. **Scraping Settings**:
-   - Download delays
-   - Concurrency limits
-   - Retry policies
-   - User agents
+
+    - Download delays
+    - Concurrency limits
+    - Retry policies
+    - User agents
 
 2. **Database Settings**:
-   - Connection strings
-   - Pool sizes
-   - Transaction timeouts
-   - Backup strategies
+
+    - Connection strings
+    - Pool sizes
+    - Transaction timeouts
+    - Backup strategies
 
 3. **Validation Settings**:
-   - Strict mode
-   - Error handling
-   - Field mapping rules
-   - Type conversion policies
+
+    - Strict mode
+    - Error handling
+    - Field mapping rules
+    - Type conversion policies
 
 4. **Selenium Settings**:
-   - Driver paths
-   - Browser options
-   - Timeout values
-   - Proxy configurations
+    - Driver paths
+    - Browser options
+    - Timeout values
+    - Proxy configurations
 
 ## 📊 Monitoring and Observability
 
@@ -269,22 +283,24 @@ Application Logs → Structured Logging → Log Aggregation → Monitoring
 ### Key Metrics
 
 1. **Scraping Metrics**:
-   - Success/failure rates
-   - Processing times
-   - Data quality scores
-   - Error frequencies
+
+    - Success/failure rates
+    - Processing times
+    - Data quality scores
+    - Error frequencies
 
 2. **Database Metrics**:
-   - Query performance
-   - Storage utilization
-   - Connection pools
-   - Transaction rates
+
+    - Query performance
+    - Storage utilization
+    - Connection pools
+    - Transaction rates
 
 3. **System Metrics**:
-   - Memory usage
-   - CPU utilization
-   - Network I/O
-   - Disk I/O
+    - Memory usage
+    - CPU utilization
+    - Network I/O
+    - Disk I/O
 
 ## 🚀 Deployment Architecture
 

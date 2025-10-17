@@ -1,4 +1,4 @@
-# Docker ignore file for Lexicon
+# Docker ignore file for judex
 # Exclude unnecessary files from Docker build context
 
 # Git
@@ -58,7 +58,7 @@ logs/
 *.log
 *.db
 test.db
-lexicon.db
+judex.db
 httpcache/
 .scrapy/
 
