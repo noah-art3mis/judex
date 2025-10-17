@@ -9,7 +9,6 @@ from itemadapter import ItemAdapter
 from pydantic import ValidationError
 from scrapy import Item
 
-from .database import save_processo_data
 from .models import STFCaseModel
 
 logger = logging.getLogger(__name__)
@@ -27,22 +26,14 @@ class PydanticValidationPipeline:
             # Validate with Pydantic model
             validated_item = STFCaseModel(**item_dict)
 
-            # Convert back to dict for database saving
-            validated_dict = validated_item.dict()
+            # Convert back to dict and update the item with validated data
+            validated_dict = validated_item.model_dump()
 
-            # Save to database
-            success = save_processo_data(
-                spider.settings.get("DATABASE_PATH", "lexicon.db"), validated_dict
-            )
+            # Update the item with validated data
+            for key, value in validated_dict.items():
+                item[key] = value
 
-            if success:
-                logger.info(
-                    f"Validated and saved case: {validated_dict.get('numero_unico', 'unknown')}"
-                )
-            else:
-                logger.error(
-                    f"Failed to save validated case: {validated_dict.get('numero_unico', 'unknown')}"
-                )
+            logger.info(f"Validated case: {validated_dict.get('numero_unico', 'unknown')}")
 
             return item
 

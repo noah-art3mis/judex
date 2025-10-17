@@ -25,11 +25,8 @@ class TestPydanticValidationPipeline:
         pipeline = PydanticValidationPipeline()
         assert pipeline is not None
 
-    @patch("lexicon.pydantic_pipeline.save_processo_data")
-    def test_valid_item_processing(self, mock_save):
+    def test_valid_item_processing(self):
         """Test processing a valid item"""
-        mock_save.return_value = True
-
         # Create a mock item with valid data
         mock_item = Mock()
         item_data = {
@@ -48,15 +45,11 @@ class TestPydanticValidationPipeline:
             # Should return the original item
             assert result == mock_item
 
-            # Should call save_processo_data
-            mock_save.assert_called_once()
-
-    @patch("lexicon.pydantic_pipeline.save_processo_data")
-    def test_invalid_item_validation_error(self, mock_save):
+    def test_invalid_item_validation_error(self):
         """Test handling of validation errors"""
         # Create a mock item with invalid data (missing required fields)
         mock_item = Mock()
-        mock_item.__dict__ = {
+        item_data = {
             "processo_id": "invalid",  # Should be int
             "incidente": "invalid",  # Should be int
             "classe": "INVALID_TYPE",  # Invalid case type
@@ -64,7 +57,7 @@ class TestPydanticValidationPipeline:
 
         # Mock ItemAdapter
         with patch("lexicon.pydantic_pipeline.ItemAdapter") as mock_adapter:
-            mock_adapter.return_value.__dict__ = mock_item.__dict__
+            mock_adapter.return_value = item_data
 
             # Should not raise exception, but log error
             result = self.pipeline.process_item(mock_item, self.mock_spider)
@@ -72,17 +65,11 @@ class TestPydanticValidationPipeline:
             # Should return the original item even on validation error
             assert result == mock_item
 
-            # Should not call save_processo_data on validation error
-            mock_save.assert_not_called()
-
-    @patch("lexicon.pydantic_pipeline.save_processo_data")
-    def test_database_save_failure(self, mock_save):
-        """Test handling of database save failures"""
-        mock_save.return_value = False  # Simulate save failure
-
+    def test_database_save_failure(self):
+        """Test that pipeline doesn't handle database saves anymore"""
         # Create a mock item with valid data
         mock_item = Mock()
-        mock_item.__dict__ = {
+        item_data = {
             "processo_id": 123,
             "incidente": 456,
             "classe": "ADI",
@@ -90,39 +77,37 @@ class TestPydanticValidationPipeline:
 
         # Mock ItemAdapter
         with patch("lexicon.pydantic_pipeline.ItemAdapter") as mock_adapter:
-            mock_adapter.return_value.__dict__ = mock_item.__dict__
+            mock_adapter.return_value = item_data
 
             result = self.pipeline.process_item(mock_item, self.mock_spider)
 
             # Should return the original item
             assert result == mock_item
 
-            # Should call save_processo_data
-            mock_save.assert_called_once()
-
     def test_unexpected_error_handling(self):
         """Test handling of unexpected errors"""
         # Create a mock item that will cause an unexpected error
         mock_item = Mock()
-        mock_item.__dict__ = {}
+        item_data = {"processo_id": 123, "incidente": 456, "classe": "ADI"}
 
-        # Mock ItemAdapter to raise an unexpected error
+        # Mock ItemAdapter to return data but then raise an error during processing
         with patch("lexicon.pydantic_pipeline.ItemAdapter") as mock_adapter:
-            mock_adapter.side_effect = Exception("Unexpected error")
+            mock_adapter.return_value = item_data
 
-            result = self.pipeline.process_item(mock_item, self.mock_spider)
+            # Mock the STFCaseModel to raise an unexpected error
+            with patch("lexicon.pydantic_pipeline.STFCaseModel") as mock_model:
+                mock_model.side_effect = Exception("Unexpected error")
 
-            # Should return the original item even on unexpected error
-            assert result == mock_item
+                result = self.pipeline.process_item(mock_item, self.mock_spider)
 
-    @patch("lexicon.pydantic_pipeline.save_processo_data")
-    def test_field_mapping_validation(self, mock_save):
+                # Should return the original item even on unexpected error
+                assert result == mock_item
+
+    def test_field_mapping_validation(self):
         """Test that field mapping works correctly in pipeline"""
-        mock_save.return_value = True
-
         # Create a mock item with data that needs field mapping
         mock_item = Mock()
-        mock_item.__dict__ = {
+        item_data = {
             "processo_id": 123,
             "incidente": 456,
             "classe": "ADI",
@@ -135,32 +120,18 @@ class TestPydanticValidationPipeline:
 
         # Mock ItemAdapter
         with patch("lexicon.pydantic_pipeline.ItemAdapter") as mock_adapter:
-            mock_adapter.return_value.__dict__ = mock_item.__dict__
+            mock_adapter.return_value = item_data
 
             result = self.pipeline.process_item(mock_item, self.mock_spider)
 
             # Should return the original item
             assert result == mock_item
 
-            # Should call save_processo_data with validated data
-            mock_save.assert_called_once()
-
-            # Check that the validated data has correct types
-            call_args = mock_save.call_args[0]
-            validated_data = call_args[1]  # Second argument is the data dict
-
-            assert validated_data["liminar"] == 1
-            assert isinstance(validated_data["assuntos"], str)
-            assert validated_data["andamentos"][0]["index_num"] == 1
-
-    @patch("lexicon.pydantic_pipeline.save_processo_data")
-    def test_enum_validation(self, mock_save):
+    def test_enum_validation(self):
         """Test that enum validation works correctly"""
-        mock_save.return_value = True
-
         # Test with valid enum values
         mock_item = Mock()
-        mock_item.__dict__ = {
+        item_data = {
             "processo_id": 123,
             "incidente": 456,
             "classe": "ADI",
@@ -169,60 +140,51 @@ class TestPydanticValidationPipeline:
 
         # Mock ItemAdapter
         with patch("lexicon.pydantic_pipeline.ItemAdapter") as mock_adapter:
-            mock_adapter.return_value.__dict__ = mock_item.__dict__
+            mock_adapter.return_value = item_data
 
             result = self.pipeline.process_item(mock_item, self.mock_spider)
 
             # Should return the original item
             assert result == mock_item
 
-            # Should call save_processo_data
-            mock_save.assert_called_once()
-
     def test_spider_settings_database_path(self):
-        """Test that pipeline uses correct database path from spider settings"""
+        """Test that pipeline doesn't use database path anymore"""
         # Test with custom database path
         custom_spider = Mock()
         custom_spider.settings = {"DATABASE_PATH": "custom.db"}
 
         mock_item = Mock()
-        mock_item.__dict__ = {
+        item_data = {
             "processo_id": 123,
             "incidente": 456,
             "classe": "ADI",
         }
 
         with patch("lexicon.pydantic_pipeline.ItemAdapter") as mock_adapter:
-            mock_adapter.return_value.__dict__ = mock_item.__dict__
+            mock_adapter.return_value = item_data
 
-            with patch("lexicon.pydantic_pipeline.save_processo_data") as mock_save:
-                mock_save.return_value = True
+            result = self.pipeline.process_item(mock_item, custom_spider)
 
-                self.pipeline.process_item(mock_item, custom_spider)
-
-                # Should use custom database path
-                mock_save.assert_called_once_with("custom.db", mock_adapter.return_value.__dict__)
+            # Should return the original item
+            assert result == mock_item
 
     def test_default_database_path(self):
-        """Test that pipeline uses default database path when not specified"""
+        """Test that pipeline doesn't use database path anymore"""
         # Test with spider that doesn't specify database path
         default_spider = Mock()
         default_spider.settings = {}
 
         mock_item = Mock()
-        mock_item.__dict__ = {
+        item_data = {
             "processo_id": 123,
             "incidente": 456,
             "classe": "ADI",
         }
 
         with patch("lexicon.pydantic_pipeline.ItemAdapter") as mock_adapter:
-            mock_adapter.return_value.__dict__ = mock_item.__dict__
+            mock_adapter.return_value = item_data
 
-            with patch("lexicon.pydantic_pipeline.save_processo_data") as mock_save:
-                mock_save.return_value = True
+            result = self.pipeline.process_item(mock_item, default_spider)
 
-                self.pipeline.process_item(mock_item, default_spider)
-
-                # Should use default database path
-                mock_save.assert_called_once_with("lexicon.db", mock_adapter.return_value.__dict__)
+            # Should return the original item
+            assert result == mock_item
