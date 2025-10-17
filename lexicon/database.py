@@ -1,6 +1,10 @@
 import json
+import logging
 import sqlite3
 from datetime import datetime
+from typing import Any
+
+logger = logging.getLogger(__name__)
 
 
 def init_database(db_path: str):
@@ -18,7 +22,7 @@ def init_database(db_path: str):
                 processo_id INTEGER UNIQUE,
                 -- info
                 classe TEXT CHECK (classe IN ('AC', 'ACO', 'ADC', 'ADI', 'ADO', 'ADPF', 'AI', 'AImp', 'AO', 'AOE', 'AP', 'AR', 'ARE', 'AS', 'CC', 'Cm', 'EI', 'EL', 'EP', 'Ext', 'HC', 'HD', 'IF', 'Inq', 'MI', 'MS', 'PADM', 'Pet', 'PPE', 'PSV', 'RC', 'Rcl', 'RE', 'RHC', 'RHD', 'RMI', 'RMS', 'RvC', 'SE', 'SIRDR', 'SL', 'SS', 'STA', 'STP', 'TPA')),
-                tipo_processo TEXT CHECK (classe IN (Físico, Eletrônico)),
+                tipo_processo TEXT CHECK (tipo_processo IN ('Físico', 'Eletrônico')),
                 liminar INT CHECK (liminar IN (0, 1)),
                 relator TEXT,
                 origem TEXT,
@@ -53,6 +57,7 @@ def init_database(db_path: str):
             "CREATE INDEX IF NOT EXISTS idx_processos_incidente ON processos (processo_id)"
         )
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_processos_classe ON processos (classe)")
+
         cursor.execute(
             "CREATE INDEX IF NOT EXISTS idx_processos_created_at ON processos (created_at)"
         )
@@ -60,7 +65,7 @@ def init_database(db_path: str):
         conn.commit()
 
 
-def save_processo_data(db_path: str, processo_data: dict[str, any]) -> bool:
+def save_processo_data(db_path: str, processo_data: dict[str, Any]) -> bool:
     try:
         with sqlite3.connect(db_path) as conn:
             cursor = conn.cursor()
@@ -107,10 +112,11 @@ def save_processo_data(db_path: str, processo_data: dict[str, any]) -> bool:
             )
 
             conn.commit()
+            logger.info(f"Saved processo data for {numero_unico}")
             return True
 
     except Exception as e:
-        print(f"Error saving case data: {str(e)}")
+        logger.error(f"Error saving case data: {str(e)}")
         return False
 
 
@@ -134,11 +140,11 @@ def mark_error(db_path: str, numero_unico: int, error_message: str) -> bool:
             conn.commit()
             return True
     except Exception as e:
-        print(f"Error marking error: {str(e)}")
+        logger.error(f"Error marking error: {str(e)}")
         return False
 
 
-def get_processo_data(db_path: str, numero_unico: int) -> dict[str, any]:
+def get_processo_data(db_path: str, numero_unico: int) -> dict[str, Any]:
     try:
         with sqlite3.connect(db_path) as conn:
             cursor = conn.cursor()
@@ -147,16 +153,89 @@ def get_processo_data(db_path: str, numero_unico: int) -> dict[str, any]:
             return cursor.fetchone() or {}
 
     except Exception as e:
-        print(f"Error getting processo data: {str(e)}")
+        logger.error(f"Error getting processo data: {str(e)}")
         return {}
 
 
-def get_all_processos(db_path: str) -> list[dict[str, any]]:
+def get_all_processos(db_path: str) -> list[dict[str, Any]]:
     try:
         with sqlite3.connect(db_path) as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM processos")
             return cursor.fetchall() or []
     except Exception as e:
-        print(f"Error getting all processos: {str(e)}")
+        logger.error(f"Error getting all processos: {str(e)}")
         return []
+
+
+def has_recent_data(db_path: str, processo_id: int, classe: str, max_age_hours: int = 24) -> bool:
+    """Check if we have recent data for a processo_id and classe combination"""
+    try:
+        with sqlite3.connect(db_path) as conn:
+            cursor = conn.cursor()
+
+            # Check for recent data (within max_age_hours)
+            cursor.execute(
+                f"""
+                SELECT COUNT(*) FROM processos
+                WHERE processo_id = ? AND classe = ?
+                AND created_at > datetime('now', '-{max_age_hours} hours')
+                AND error_message IS NULL
+                """,
+                (processo_id, classe)
+            )
+
+            count = cursor.fetchone()[0]
+            return count > 0
+
+    except Exception as e:
+        logger.error(f"Error checking recent data: {str(e)}")
+        return False
+
+
+def get_existing_processo_ids(db_path: str, classe: str, max_age_hours: int = 24) -> set[int]:
+    """Get all processo_ids that already have recent data for a given classe"""
+    try:
+        with sqlite3.connect(db_path) as conn:
+            cursor = conn.cursor()
+
+            cursor.execute(
+                f"""
+                SELECT processo_id FROM processos
+                WHERE classe = ?
+                AND created_at > datetime('now', '-{max_age_hours} hours')
+                AND error_message IS NULL
+                """,
+                (classe,)
+            )
+
+            results = cursor.fetchall()
+            return {row[0] for row in results}
+
+    except Exception as e:
+        logger.error(f"Error getting existing processo IDs: {str(e)}")
+        return set()
+
+
+def get_failed_processo_ids(db_path: str, classe: str, max_age_hours: int = 24) -> set[int]:
+    """Get all processo_ids that failed recently and should be retried"""
+    try:
+        with sqlite3.connect(db_path) as conn:
+            cursor = conn.cursor()
+
+            cursor.execute(
+                f"""
+                SELECT processo_id FROM processos
+                WHERE classe = ?
+                AND created_at > datetime('now', '-{max_age_hours} hours')
+                AND error_message IS NOT NULL
+                """,
+                (classe,)
+            )
+
+            results = cursor.fetchall()
+            return {row[0] for row in results}
+
+    except Exception as e:
+        logger.error(f"Error getting failed processo IDs: {str(e)}")
+        return set()

@@ -1,5 +1,6 @@
 import datetime
 import json
+import time
 from collections.abc import Iterator
 
 import scrapy
@@ -33,6 +34,7 @@ from lexicon.extract import (
 )
 from lexicon.items import STFCaseItem
 from lexicon.types import validate_case_type
+from lexicon.database import get_existing_processo_ids, get_failed_processo_ids
 
 
 class StfSpider(scrapy.Spider):
@@ -51,9 +53,22 @@ class StfSpider(scrapy.Spider):
     allowed_domains = ["portal.stf.jus.br"]
 
     def __init__(
-        self, classe: str | None = None, processos: str | None = None, *args, **kwargs
+        self,
+        classe: str | None = None,
+        processos: str | None = None,
+        internal_delay: float = 1.0,
+        skip_existing: bool = True,
+        retry_failed: bool = True,
+        max_age_hours: int = 24,
+        *args,
+        **kwargs,
     ) -> None:
         super().__init__(*args, **kwargs)
+
+        self.internal_delay = internal_delay
+        self.skip_existing = skip_existing
+        self.retry_failed = retry_failed
+        self.max_age_hours = max_age_hours
 
         if not classe:
             raise ValueError("classe is required, e.g., -a classe=ADI")
@@ -71,8 +86,47 @@ class StfSpider(scrapy.Spider):
 
     def start_requests(self) -> Iterator[scrapy.Request]:
         base = "https://portal.stf.jus.br"
+        
+        # Get database path from settings
+        db_path = self.settings.get("DATABASE_PATH", "lexicon.db")
+        
+        # Get existing and failed processo IDs from database
+        existing_ids = set()
+        failed_ids = set()
+        
+        if self.skip_existing or self.retry_failed:
+            try:
+                if self.skip_existing:
+                    existing_ids = get_existing_processo_ids(db_path, self.classe, self.max_age_hours)
+                    self.logger.info(f"Found {len(existing_ids)} existing processo IDs to skip")
+                
+                if self.retry_failed:
+                    failed_ids = get_failed_processo_ids(db_path, self.classe, self.max_age_hours)
+                    self.logger.info(f"Found {len(failed_ids)} failed processo IDs to retry")
+                    
+            except Exception as e:
+                self.logger.warning(f"Could not check database for existing data: {e}")
+        
+        # Filter numeros based on database check
+        numeros_to_scrape = []
+        skipped_count = 0
+        
         for numero in self.numeros:
-            # First, get the main page to extract the incidente number
+            if self.skip_existing and numero in existing_ids:
+                self.logger.info(f"Skipping {numero} - already exists in database")
+                skipped_count += 1
+                continue
+            
+            # Always retry failed cases if retry_failed is True
+            if self.retry_failed and numero in failed_ids:
+                self.logger.info(f"Retrying {numero} - previously failed")
+            
+            numeros_to_scrape.append(numero)
+        
+        self.logger.info(f"Scraping {len(numeros_to_scrape)} out of {len(self.numeros)} processos (skipped {skipped_count})")
+        
+        # Generate requests only for numeros that need scraping
+        for numero in numeros_to_scrape:
             url = (
                 f"{base}/processos/listarProcessos.asp?classe={self.classe}&numeroProcesso={numero}"
             )
@@ -86,11 +140,13 @@ class StfSpider(scrapy.Spider):
             )
 
     def get_element_by_id(self, driver: WebDriver, id: str) -> str:
+        time.sleep(self.internal_delay)
         Wait = WebDriverWait(driver, 40)
         Wait.until(EC.presence_of_element_located((By.ID, id)))
         return driver.find_element(By.ID, id).get_attribute("value")
 
     def get_element_by_xpath(self, driver: WebDriver, xpath: str) -> str:
+        time.sleep(self.internal_delay)
         Wait = WebDriverWait(driver, 40)
         Wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
         return driver.find_element(By.XPATH, xpath).get_attribute("innerHTML")

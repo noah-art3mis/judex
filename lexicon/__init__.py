@@ -1,10 +1,4 @@
-"""
-Lexicon - STF Case Scraping Library
-"""
-
-from .database import LexiconDatabase
-from .export import LexiconExporter
-from .spiders import StfSpider
+from .core import LexiconScraper
 
 __version__ = "1.0.0"
-__all__ = ["LexiconScraper", "LexiconDatabase", "LexiconExporter"]
+__all__ = ["LexiconScraper"]

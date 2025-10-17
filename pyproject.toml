@@ -8,6 +8,7 @@ dependencies = [
     "beautifulsoup4>=4.14.2",
     "pandas>=2.3.3",
     "pydantic>=2.12.2",
+    "pyyaml>=6.0.3",
     "scrapy>=2.13.3",
     "scrapy-selenium>=0.0.7",
     "selenium<4.0.0", # selenium 4 is not compatible with scrapy-selenium
@@ -20,6 +21,14 @@ dev = [
     "mypy>=1.18.2", 
     "ruff>=0.14.0"
 ]
+
+[build-system]
+requires = ["uv_build>=0.9.3,<0.10.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "lexicon"
+module-root = ""
 
 [tool.black]
 line-length = 100
