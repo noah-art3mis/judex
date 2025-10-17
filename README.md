@@ -235,10 +235,6 @@ scrapy crawl stf -a classe=ADPF -a processos=[165, 568]
 scrapy crawl stf -a classe=ADPF -a processos=[165,568]
 ```
 
-## Performance
-
--   **Velocidade**: ~4 processos por minuto
-
 ## Considerações Legais e Éticas
 
 Este projeto faz scraping de dados publicamente disponíveis do portal do STF. Por favor, note:
