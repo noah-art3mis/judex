@@ -13,36 +13,23 @@ Utiliza scrapy-selenium. Tem performance de ~4 processos por minuto.
 -   **Mapeamento de Campos**: Conversão automática entre schemas de scraping e banco de dados
 -   **Exportação Flexível**: Suporte a JSON e CSV
 
-## Pré-requisitos
-
--   **Python**: 3.10 ou superior
--   **ChromeDriver**: para simulação de browser
-
-## Instalação
+## Uso simples via scrapy (Linux)
 
 ```bash
-pip install judex
-```
+# instalar uv
+curl -LsSf https://astral.sh/uv/install.sh | sh
 
-### Instalação do ChromeDriver (Linux)
-
-```bash
-# Ubuntu/Debian
+# instalar chromedriver (pode demorar um pouco)
 sudo apt install chromium-chromedriver
 
-# Ou baixar manualmente do site oficial
-```
+# clonar repositório
+git clone https://github.com/noah-art3mis/judex 
 
-## Uso
+# baixar dependências
+cd judex && uv sync
 
-### 1. Via scrapy CLI (recomendado)
-
-```bash
-# Extrair casos específicos
-scrapy crawl stf -a classe=ADI -a processos=[4916,4917,4918]
-
-# Extrair com configurações customizadas
-scrapy crawl stf -a classe=ADPF -a processos=[165,568] -s DATABASE_PATH="meus_casos".db -O output.json"
+# scrape
+scrapy crawl stf -a classe=ADI -a processos=[4916,4917,4918] -O output.json
 ```
 
 -   _classe_: classe dos processos de interesse (e.g., ADI, AR, etc.)
@@ -52,19 +39,38 @@ Para outros parâmetros, ver `settings.py` ou a documentação do scrapy.
 
 ### 2. Como biblioteca
 
+```bash
+pip install judex
+```
+
+The main entry point is the `JudexScraper` class and the `scrape_cases` method, which takes a class and a list of cases.
+
 ```python
+from judex import judexScraper
+
+scraper = JudexScraper(
+    output_dir="output",
+    db_path="judex.db",
+    filename="processos.csv")
+scraper.scrape_cases("ADI", "[4916, 4917]")
+```
+
+For finer control, you can use the StfSpider directly.
+
+```python
+# main.py
 from judex import StfSpider, init_database
 
 init_database("casos.db") # opcional
 
 spider = StfSpider(classe="ADI", casos=[123, 456])
-spider.scrape_cases("ADI", "[4916, 4917]")
+spider.scrape("ADI", "[4916, 4917]")
 ```
 
 Com mais parâmetros:
 
 ```python
-scrape = judexScraper(
+scrape = JudexScraper(
     output_dir="output",
     db_path="judex.db",
     filename="processos.csv",
@@ -72,7 +78,7 @@ scrape = judexScraper(
     retry_failed=True,  # Retry cases that previously failed
     max_age_hours=24,  # Only skip cases scraped within last 24 hours
 )
-scraper.scrape_cases("ADI", "[4916, 4917]")
+scraper.scrape("ADI", "[4916, 4917]")
 ```
 
 ### 3. Exemplos Avançados
@@ -90,9 +96,9 @@ ADPF:
   - 568
 
 # main.py
-from judex.core import judexScraper
+from judex.core import JudexScraper
 
-scraper = judexScraper(
+scraper = JudexScraper(
     input_file="processos.yaml",
     output_dir="output",
     db_path="judex.db"
@@ -102,7 +108,7 @@ scraper = judexScraper(
 #### Configurações de Performance
 
 ```python
-scraper = judexScraper(
+scraper = JudexScraper(
     skip_existing=True,    # Pular casos já no banco
     retry_failed=True,     # Tentar novamente casos que falharam
     max_age_hours=24,      # Só pular casos extraídos nas últimas 24h
@@ -234,10 +240,6 @@ scrapy crawl stf -a classe=ADPF -a processos=[165, 568]
 # YES
 scrapy crawl stf -a classe=ADPF -a processos=[165,568]
 ```
-
-## Performance
-
--   **Velocidade**: ~4 processos por minuto
 
 ## Considerações Legais e Éticas
 

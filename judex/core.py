@@ -11,7 +11,7 @@ from .spiders.stf import StfSpider
 logger = logging.getLogger(__name__)
 
 
-class judexScraper:
+class JudexScraper:
     """Main scraper class for STF cases"""
 
     def __init__(
@@ -23,7 +23,19 @@ class judexScraper:
         skip_existing: bool = True,
         retry_failed: bool = True,
         max_age_hours: int = 24,
+        scraper_kind: str = "stf",
     ):
+        if scraper_kind == "stf":
+            self.spider = StfSpider(
+                classe=classe,
+                processos=processos,
+                skip_existing=skip_existing,
+                retry_failed=retry_failed,
+                max_age_hours=max_age_hours,
+            )
+        else:
+            raise ValueError(f"Invalid scraper kind: {scraper_kind}")
+
         self.output_dir = output_dir
         self.db_path = db_path
         self.settings = get_project_settings()
@@ -34,7 +46,7 @@ class judexScraper:
         # Ensure output directory exists
         os.makedirs(output_dir, exist_ok=True)
 
-    def scrape_cases(self, classe: str, processos: str) -> None:
+    def scrape(self, classe: str, processos: str) -> None:
         spider_results = self._run_spider(classe, processos)
         logger.info(f"Processos scraped for {classe}: {len(spider_results)} cases")
         # Database saving is now handled by the pipeline
