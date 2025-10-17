@@ -29,12 +29,17 @@ DOWNLOADER_MIDDLEWARES = {
 #    'scrapy.extensions.telnet.TelnetConsole': None,
 # }
 
+# Simple pipeline configuration - just enable/disable what you need
 ITEM_PIPELINES = {
     "judex.pydantic_pipeline.PydanticValidationPipeline": 200,
-    "judex.pipelines.DatabasePipeline": 300,
+    # "judex.pipelines.DatabasePipeline": 300,  # SQLite database
+    "judex.pipelines.MetadataPipeline": 400,  # Add metadata
+    # "judex.pipelines.JSONPipeline": 500,     # JSON export
+    # "judex.pipelines.CSVPipeline": 600,     # CSV export
 }
 
-# Database configuration
+JSON_OUTPUT_FILE = "output.json"
+CSV_OUTPUT_FILE = "output.csv"
 DATABASE_PATH = "judex.db"
 
 AUTOTHROTTLE_ENABLED = True

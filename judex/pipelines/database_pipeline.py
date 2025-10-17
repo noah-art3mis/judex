@@ -3,7 +3,7 @@ import logging
 import scrapy
 from itemadapter import ItemAdapter
 
-from .database import init_database, save_processo_data
+from ..database import init_database, processo_write
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +26,7 @@ class DatabasePipeline:
         """Process each item and save to database"""
         adapter = ItemAdapter(item)
         item_dict = dict(adapter)
-        success = save_processo_data(self.db_path, item_dict)
+        success = processo_write(self.db_path, item_dict)
 
         if success:
             logger.info(f"Saved item to database: {item_dict.get('numero_unico', 'unknown')}")

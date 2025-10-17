@@ -382,7 +382,7 @@ class DatabasePipeline:
 
 ## 🗄 Database Functions
 
-### `save_processo_data(db_path: str, processo_data: dict[str, Any]) -> bool`
+### `processo_write(db_path: str, processo_data: dict[str, Any]) -> bool`
 
 Save processed case data to database.
 
@@ -396,7 +396,7 @@ Save processed case data to database.
 **Example**:
 
 ```python
-success = save_processo_data("judex.db", {
+success = processo_write("judex.db", {
     "processo_id": 123,
     "incidente": 456,
     "classe": "ADI",

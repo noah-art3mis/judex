@@ -54,8 +54,8 @@ class StfSpider(scrapy.Spider):
 
     def __init__(
         self,
-        classe: str | None = None,
-        processos: str | None = None,
+        classe: str,
+        processos: str,
         internal_delay: float = 1.0,
         skip_existing: bool = True,
         retry_failed: bool = True,
@@ -88,7 +88,7 @@ class StfSpider(scrapy.Spider):
         base = "https://portal.stf.jus.br"
 
         # Get database path from settings
-        db_path = self.settings.get("DATABASE_PATH", "judex.db")
+        db_path = self.settings.get("DATABASE_PATH")
 
         # Get existing and failed processo IDs from database
         existing_ids = set()

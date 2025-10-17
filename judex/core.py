@@ -3,97 +3,75 @@ import logging
 import os
 
 from scrapy.crawler import CrawlerProcess
+from scrapy.spiders import Spider
 from scrapy.utils.project import get_project_settings
 
-from .database import get_all_processos, save_processo_data
-from .exporters import export_to_csv
-from .loaders import load_yaml
+from .pipelines.manager import PersistenceTypes, PipelineManager
 from .spiders.stf import StfSpider
 
 logger = logging.getLogger(__name__)
 
 
 class JudexScraper:
-    """Main scraper class for STF cases"""
+    """Main scraper class"""
 
     def __init__(
         self,
-        input_file: str | None = None,
-        output_dir: str = "judex",
-        db_path: str = "judex.db",
-        filename: str = "processos.csv",
+        classe: str,
+        processos: str,
+        scraper_kind: str = "stf",
+        output_path: str = "judex_output",
+        persistence_types: PersistenceTypes = None,
         skip_existing: bool = True,
         retry_failed: bool = True,
         max_age_hours: int = 24,
-        scraper_kind: str = "stf",
     ):
-        if scraper_kind == "stf":
-            self.spider = StfSpider(
-                classe=classe,
-                processos=processos,
+        if not isinstance(processos, str):
+            raise Exception("processos must be a string")
+        if not isinstance(persistence_types, (list, tuple)):
+            raise Exception("persistence_types must be a list or tuple")
+        if not all(isinstance(item, str) for item in persistence_types):
+            raise Exception("persistence_types must be a list or tuple of strings")
+        if not all(item in ["json", "csv", "sql"] for item in persistence_types):
+            raise Exception(
+                "persistence_types must be a list of any of: 'json', 'csv', 'sql' or None"
+            )
+
+        os.makedirs(output_path, exist_ok=True)
+        PipelineManager.select_persistence(persistence_types, output_path)
+        self.spider = self.select_spider(
+            scraper_kind, classe, processos, skip_existing, retry_failed, max_age_hours
+        )
+
+    def select_spider(
+        self,
+        spider_kind: str,
+        classe: str,
+        processos: str,
+        skip_existing: bool,
+        retry_failed: bool,
+        max_age_hours: int,
+    ) -> Spider:
+        if spider_kind == "stf":
+            return StfSpider(
+                classe,
+                processos,
                 skip_existing=skip_existing,
                 retry_failed=retry_failed,
                 max_age_hours=max_age_hours,
             )
         else:
-            raise ValueError(f"Invalid scraper kind: {scraper_kind}")
+            raise ValueError(f"Invalid spider kind: {spider_kind}")
 
-        self.output_dir = output_dir
-        self.db_path = db_path
-        self.settings = get_project_settings()
-        self.skip_existing = skip_existing
-        self.retry_failed = retry_failed
-        self.max_age_hours = max_age_hours
-
-        # Ensure output directory exists
-        os.makedirs(output_dir, exist_ok=True)
-
-    def scrape(self, classe: str, processos: str) -> None:
-        spider_results = self._run_spider(classe, processos)
-        logger.info(f"Processos scraped for {classe}: {len(spider_results)} cases")
-        # Database saving is now handled by the pipeline
-        export_to_csv(spider_results, os.path.join(self.output_dir, f"{classe}_processos.csv"))
-        logger.info(f"Processos scraped for {classe} exported to CSV")
-
-    def _run_spider(self, classe: str, processos: str) -> list[dict]:
-        """Run the spider for a specific class and process list"""
-
-        output_file = os.path.join(self.output_dir, f"{classe}_cases.json")
-
-        # Update settings
-        self.settings.set(
-            "FEEDS",
-            {
-                output_file: {
-                    "format": "json",
-                    "indent": 2,
-                    "encoding": "utf8",
-                    "store_empty": False,
-                }
-            },
-        )
-
-        # Add database pipeline
-        self.settings.set(
-            "ITEM_PIPELINES",
-            {
-                "judex.pipelines.DatabasePipeline": 300,
-            },
-        )
-
-        # Set database path
-        self.settings.set("DATABASE_PATH", self.db_path)
-
-        process = CrawlerProcess(self.settings)
+    def scrape(self) -> None:
+        settings = get_project_settings()
+        process = CrawlerProcess(settings)
         process.crawl(
-            StfSpider,
-            classe=classe,
-            processos=processos,
-            skip_existing=self.skip_existing,
-            retry_failed=self.retry_failed,
-            max_age_hours=self.max_age_hours,
+            self.spider.__class__,
+            classe=self.spider.classe,
+            processos=json.dumps(self.spider.numeros),
+            skip_existing=self.spider.skip_existing,
+            retry_failed=self.spider.retry_failed,
+            max_age_hours=self.spider.max_age_hours,
         )
         process.start()
-
-        with open(output_file, encoding="utf-8") as f:
-            return json.load(f)

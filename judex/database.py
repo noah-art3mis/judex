@@ -196,7 +196,7 @@ def init_database(db_path: str):
         conn.commit()
 
 
-def save_processo_data(db_path: str, processo_data: dict[str, Any]) -> bool:
+def processo_write(db_path: str, processo_data: dict[str, Any]) -> bool:
     try:
         with sqlite3.connect(db_path) as conn:
             cursor = conn.cursor()
@@ -386,7 +386,7 @@ def mark_error(db_path: str, numero_unico: int, error_message: str) -> bool:
         return False
 
 
-def get_processo_data(db_path: str, numero_unico: int) -> dict[str, Any]:
+def processo_read(db_path: str, numero_unico: int) -> dict[str, Any]:
     try:
         with sqlite3.connect(db_path) as conn:
             cursor = conn.cursor()
@@ -399,7 +399,7 @@ def get_processo_data(db_path: str, numero_unico: int) -> dict[str, Any]:
         return {}
 
 
-def get_all_processos(db_path: str) -> list[dict[str, Any]]:
+def processo_read_all(db_path: str) -> list[dict[str, Any]]:
     try:
         with sqlite3.connect(db_path) as conn:
             cursor = conn.cursor()
@@ -597,7 +597,7 @@ def get_processo_pautas(db_path: str, numero_unico: str) -> list[dict[str, Any]]
         return []
 
 
-def get_complete_processo_data(db_path: str, numero_unico: str) -> dict[str, Any]:
+def get_complete_processo(db_path: str, numero_unico: str) -> dict[str, Any]:
     """Get complete processo data including all normalized tables"""
     try:
         with sqlite3.connect(db_path) as conn:

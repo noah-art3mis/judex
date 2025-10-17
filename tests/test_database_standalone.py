@@ -22,8 +22,8 @@ spec.loader.exec_module(database)
 
 # Get the functions we need
 init_database = database.init_database
-save_processo_data = database.save_processo_data
-get_complete_processo_data = database.get_complete_processo_data
+processo_write = database.processo_write
+get_complete_processo = database.get_complete_processo
 get_processo_andamentos = database.get_processo_andamentos
 get_processo_partes = database.get_processo_partes
 get_processo_decisoes = database.get_processo_decisoes
@@ -175,18 +175,18 @@ class TestDatabaseStructure:
         """Test that database initializes correctly."""
         assert os.path.exists(temp_db)
 
-    def test_save_processo_data(self, temp_db, sample_processo_data):
+    def test_processo_write(self, temp_db, sample_processo_data):
         """Test saving processo data."""
-        result = save_processo_data(temp_db, sample_processo_data)
+        result = processo_write(temp_db, sample_processo_data)
         assert result is True
 
-    def test_get_complete_processo_data(self, temp_db, sample_processo_data):
+    def test_get_complete_processo(self, temp_db, sample_processo_data):
         """Test retrieving complete processo data."""
         # Save data first
-        save_processo_data(temp_db, sample_processo_data)
+        processo_write(temp_db, sample_processo_data)
 
         # Retrieve complete data
-        complete_data = get_complete_processo_data(temp_db, sample_processo_data["numero_unico"])
+        complete_data = get_complete_processo(temp_db, sample_processo_data["numero_unico"])
 
         # Verify main data
         assert complete_data["numero_unico"] == sample_processo_data["numero_unico"]
@@ -209,7 +209,7 @@ class TestNormalizedTables:
 
     def test_partes_table(self, temp_db, sample_processo_data):
         """Test partes table functionality."""
-        save_processo_data(temp_db, sample_processo_data)
+        processo_write(temp_db, sample_processo_data)
 
         partes = get_processo_partes(temp_db, sample_processo_data["numero_unico"])
 
@@ -220,7 +220,7 @@ class TestNormalizedTables:
 
     def test_andamentos_table(self, temp_db, sample_processo_data):
         """Test andamentos table functionality."""
-        save_processo_data(temp_db, sample_processo_data)
+        processo_write(temp_db, sample_processo_data)
 
         andamentos = get_processo_andamentos(temp_db, sample_processo_data["numero_unico"])
 
@@ -231,7 +231,7 @@ class TestNormalizedTables:
 
     def test_decisoes_table(self, temp_db, sample_processo_data):
         """Test decisoes table functionality."""
-        save_processo_data(temp_db, sample_processo_data)
+        processo_write(temp_db, sample_processo_data)
 
         decisoes = get_processo_decisoes(temp_db, sample_processo_data["numero_unico"])
 
@@ -241,7 +241,7 @@ class TestNormalizedTables:
 
     def test_deslocamentos_table(self, temp_db, sample_processo_data):
         """Test deslocamentos table functionality."""
-        save_processo_data(temp_db, sample_processo_data)
+        processo_write(temp_db, sample_processo_data)
 
         deslocamentos = get_processo_deslocamentos(temp_db, sample_processo_data["numero_unico"])
 
@@ -251,7 +251,7 @@ class TestNormalizedTables:
 
     def test_peticoes_table(self, temp_db, sample_processo_data):
         """Test peticoes table functionality."""
-        save_processo_data(temp_db, sample_processo_data)
+        processo_write(temp_db, sample_processo_data)
 
         peticoes = get_processo_peticoes(temp_db, sample_processo_data["numero_unico"])
 
@@ -261,7 +261,7 @@ class TestNormalizedTables:
 
     def test_recursos_table(self, temp_db, sample_processo_data):
         """Test recursos table functionality."""
-        save_processo_data(temp_db, sample_processo_data)
+        processo_write(temp_db, sample_processo_data)
 
         recursos = get_processo_recursos(temp_db, sample_processo_data["numero_unico"])
 
@@ -271,7 +271,7 @@ class TestNormalizedTables:
 
     def test_pautas_table(self, temp_db, sample_processo_data):
         """Test pautas table functionality."""
-        save_processo_data(temp_db, sample_processo_data)
+        processo_write(temp_db, sample_processo_data)
 
         pautas = get_processo_pautas(temp_db, sample_processo_data["numero_unico"])
 
@@ -307,10 +307,10 @@ class TestEdgeCases:
             "pautas": [],
         }
 
-        result = save_processo_data(temp_db, empty_data)
+        result = processo_write(temp_db, empty_data)
         assert result is True
 
-        complete_data = get_complete_processo_data(temp_db, empty_data["numero_unico"])
+        complete_data = get_complete_processo(temp_db, empty_data["numero_unico"])
         assert len(complete_data["partes"]) == 0
         assert len(complete_data["andamentos"]) == 0
         assert len(complete_data["decisoes"]) == 0
@@ -372,10 +372,10 @@ class TestEdgeCases:
             "pautas": [],
         }
 
-        result = save_processo_data(temp_db, unicode_data)
+        result = processo_write(temp_db, unicode_data)
         assert result is True
 
-        complete_data = get_complete_processo_data(temp_db, unicode_data["numero_unico"])
+        complete_data = get_complete_processo(temp_db, unicode_data["numero_unico"])
         assert complete_data["relator"] == "MIN. CÁRMEN LÚCIA"
         assert "CÁRMEN LÚCIA" in complete_data["decisoes"][0]["julgador"]
         assert "seqüência" in complete_data["decisoes"][0]["complemento"]
@@ -383,7 +383,7 @@ class TestEdgeCases:
     def test_data_updates(self, temp_db, sample_processo_data):
         """Test data updates and replacements."""
         # Save initial data
-        save_processo_data(temp_db, sample_processo_data)
+        processo_write(temp_db, sample_processo_data)
 
         # Update data
         updated_data = sample_processo_data.copy()
@@ -398,11 +398,11 @@ class TestEdgeCases:
             }
         )
 
-        result = save_processo_data(temp_db, updated_data)
+        result = processo_write(temp_db, updated_data)
         assert result is True
 
         # Verify update
-        updated_complete = get_complete_processo_data(temp_db, sample_processo_data["numero_unico"])
+        updated_complete = get_complete_processo(temp_db, sample_processo_data["numero_unico"])
         assert updated_complete["relator"] == "MIN. ALEXANDRE DE MORAES"
         assert len(updated_complete["andamentos"]) == 4  # Original 3 + 1 new
 
@@ -412,9 +412,9 @@ class TestForeignKeys:
 
     def test_foreign_key_relationships(self, temp_db, sample_processo_data):
         """Test that all normalized data has correct foreign key relationships."""
-        save_processo_data(temp_db, sample_processo_data)
+        processo_write(temp_db, sample_processo_data)
 
-        complete_data = get_complete_processo_data(temp_db, sample_processo_data["numero_unico"])
+        complete_data = get_complete_processo(temp_db, sample_processo_data["numero_unico"])
 
         # Verify all normalized data has correct numero_unico
         for parte in complete_data["partes"]:

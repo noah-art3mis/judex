@@ -201,7 +201,7 @@ def test_database_initialization(self):
         if os.path.exists(temp_db.name):
             os.unlink(temp_db.name)
 
-def test_save_processo_data(self):
+def test_processo_write(self):
     """Test saving processo data to database"""
     # Use temporary database for testing
     import tempfile
@@ -212,7 +212,7 @@ def test_save_processo_data(self):
 
     try:
         data = sample_processo_data()
-        success = save_processo_data(temp_db.name, data)
+        success = processo_write(temp_db.name, data)
         assert success is True
     finally:
         # Clean up temporary database
@@ -292,7 +292,7 @@ def test_parse_main_page_selenium_success(self):
 #### Database Mocking
 
 ```python
-@patch("judex.pydantic_pipeline.save_processo_data")
+@patch("judex.pydantic_pipeline.processo_write")
 def test_database_save_failure(self, mock_save):
     """Test handling of database save failures"""
     mock_save.return_value = False  # Simulate save failure
