@@ -3,7 +3,6 @@ Pydantic models for STF case data validation and serialization
 """
 
 from enum import Enum
-from typing import Optional
 
 from pydantic import BaseModel, Field, validator
 

@@ -6,10 +6,7 @@ import os
 import tempfile
 from unittest.mock import Mock, patch
 
-import pytest
-from judex.models import STFCaseModel
 from judex.pydantic_pipeline import PydanticValidationPipeline
-from pydantic import ValidationError
 
 
 class TestPydanticValidationPipeline:

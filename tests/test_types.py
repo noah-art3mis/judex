@@ -3,6 +3,8 @@ Unit tests for types module with Pydantic integration
 """
 
 import pytest
+from pydantic import ValidationError
+
 from judex.models import CaseType
 from judex.types import (
     CaseTypeValidator,
@@ -10,7 +12,6 @@ from judex.types import (
     is_valid_case_type,
     validate_case_type,
 )
-from pydantic import ValidationError
 
 
 class TestCaseTypeValidator:
