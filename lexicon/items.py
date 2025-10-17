@@ -15,7 +15,6 @@ class STFCaseItem(scrapy.Item):
     # detalhes do processo
     origem = scrapy.Field()
     relator = scrapy.Field()
-    liminar = scrapy.Field()
     data_protocolo = scrapy.Field()
     origem_orgao = scrapy.Field()
     autor1 = scrapy.Field()
@@ -32,18 +31,18 @@ class STFCaseItem(scrapy.Item):
     informacoes = scrapy.Field()
     sessao = scrapy.Field()
 
-    # Debug fields for AJAX responses
-    ajax_html_partes = scrapy.Field()
-    ajax_html_andamentos = scrapy.Field()
-    ajax_html_informacoes = scrapy.Field()
-    ajax_html_decisoes = scrapy.Field()
-    ajax_html_sessao = scrapy.Field()
-    ajax_html_deslocamentos = scrapy.Field()
-    ajax_html_peticoes = scrapy.Field()
-    ajax_html_recursos = scrapy.Field()
-    ajax_html_pautas = scrapy.Field()
+    # AJAX status fields
+    ajax_status_partes = scrapy.Field()
+    ajax_status_andamentos = scrapy.Field()
+    ajax_status_informacoes = scrapy.Field()
+    ajax_status_decisoes = scrapy.Field()
+    ajax_status_sessao = scrapy.Field()
+    ajax_status_deslocamentos = scrapy.Field()
+    ajax_status_peticoes = scrapy.Field()
+    ajax_status_recursos = scrapy.Field()
+    ajax_status_pautas = scrapy.Field()
     ajax_completed = scrapy.Field()
-    
+
     # Error fields for AJAX responses
     ajax_error_partes = scrapy.Field()
     ajax_error_andamentos = scrapy.Field()

@@ -14,7 +14,7 @@ NEWSPIDER_MODULE = "lexicon.spiders"
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0"
+USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
@@ -59,9 +59,11 @@ DEFAULT_REQUEST_HEADERS = {
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-# DOWNLOADER_MIDDLEWARES = {
-#     'lexicon.middlewares.CurlCFFIDownloaderMiddleware': 543,
-# }
+DOWNLOADER_MIDDLEWARES = {
+    "lexicon.middlewares.RateLimitMiddleware": 100,
+    # 'lexicon.middlewares.CurlCFFIDownloaderMiddleware': 543,
+    "lexicon.middlewares.SeleniumMiddleware": 544,
+}
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
@@ -112,7 +114,11 @@ COOKIES_DEBUG = True
 
 # Add random delay to avoid detection
 RANDOMIZE_DOWNLOAD_DELAY = True
-RANDOMIZE_DOWNLOAD_DELAY_RANGE = (1.0, 3.0)
+RANDOMIZE_DOWNLOAD_DELAY_RANGE = (2.0, 5.0)
+
+# Rate limiting similar to the working version
+DOWNLOAD_DELAY = 3  # Base delay between requests
+RANDOMIZE_DOWNLOAD_DELAY = True
 
 # Better retry settings for session issues
 RETRY_ENABLED = True
@@ -121,3 +127,16 @@ RETRY_HTTP_CODES = [403, 408, 429, 500, 502, 503, 504, 520, 521, 522, 523, 524]
 
 # Add timeout settings
 DOWNLOAD_TIMEOUT = 30
+
+# Selenium settings
+SELENIUM_DRIVER_NAME = "chrome"
+SELENIUM_DRIVER_EXECUTABLE_PATH = None  # Will use system PATH
+SELENIUM_DRIVER_ARGUMENTS = [
+    "--headless",
+    "--no-sandbox",
+    "--disable-dev-shm-usage",
+    "--disable-gpu",
+    "--disable-web-security",
+    "--disable-features=VizDisplayCompositor",
+    "--window-size=1920,1080",
+]

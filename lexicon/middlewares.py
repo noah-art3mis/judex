@@ -102,15 +102,52 @@ class LexiconDownloaderMiddleware:
 
 
 from urllib.parse import urlparse
+import time
 
 from curl_cffi import requests as curl_requests
 from scrapy.http import HtmlResponse
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException, WebDriverException
+
+
+class RateLimitMiddleware:
+    """Middleware to implement rate limiting similar to the working version"""
+
+    def __init__(self):
+        self.request_count = 0
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls()
+
+    def process_request(self, request, spider):
+        self.request_count += 1
+
+        # Pause every 20 requests (5 seconds)
+        if self.request_count % 20 == 0:
+            spider.logger.info(
+                f"Rate limiting: Pausing 5 seconds after {self.request_count} requests"
+            )
+            time.sleep(5)
+
+        # Longer pause every 50 requests (20 seconds)
+        if self.request_count % 50 == 0:
+            spider.logger.info(
+                f"Rate limiting: Pausing 20 seconds after {self.request_count} requests"
+            )
+            time.sleep(20)
+
+        return None
 
 
 class CurlCFFIDownloaderMiddleware:
     def __init__(self):
         # Reuse one session to retain connection pooling/cookies
-        self.session = curl_requests.Session(impersonate="firefox120", verify=False)
+        self.session = curl_requests.Session(impersonate="chrome120", verify=False)
 
     @classmethod
     def from_crawler(cls, crawler):
@@ -135,7 +172,7 @@ class CurlCFFIDownloaderMiddleware:
         # Merge a realistic UA if one isn’t already present
         headers.setdefault(
             "User-Agent",
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
         )
 
         # Send the request with curl-cffi
@@ -163,7 +200,7 @@ class CurlCFFIDownloaderMiddleware:
         clean_headers = {}
         for k, v in resp.headers.items():
             # Skip content-encoding to avoid gzip decompression issues
-            if k.lower() not in ['content-encoding', 'transfer-encoding']:
+            if k.lower() not in ["content-encoding", "transfer-encoding"]:
                 clean_headers[k] = v
 
         # Build a Scrapy HtmlResponse
@@ -175,3 +212,184 @@ class CurlCFFIDownloaderMiddleware:
             request=request,
             encoding=resp.encoding or "utf-8",
         )
+
+
+class SeleniumMiddleware:
+    """Middleware to handle JavaScript-heavy pages using Selenium WebDriver"""
+
+    def __init__(self):
+        self.driver = None
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls()
+
+    def process_request(self, request, spider):
+        # Only use Selenium if explicitly requested
+        if not request.meta.get("use_selenium", False):
+            return None
+
+        spider.logger.info(f"Using Selenium for {request.url}")
+
+        max_retries = 5
+        retry_count = 0
+        success = False
+
+        while not success and retry_count < max_retries:
+            try:
+                # Initialize driver if not already done
+                if not self.driver:
+                    self._init_driver(spider)
+
+                # Navigate to the page
+                if self.driver:
+                    self.driver.get(request.url)
+
+                    # Check for common error pages
+                    page_source = self.driver.page_source
+                    if "403 Forbidden" in page_source or "CAPTCHA" in page_source:
+                        raise Exception("Access denied - 403 or CAPTCHA detected")
+                    if "502 Bad Gateway" in page_source:
+                        raise Exception("502 Bad Gateway error")
+
+                    # Wait for page to load
+                    time.sleep(2)
+
+                    # Wait for specific element if specified
+                    if request.meta.get("wait_for_element"):
+                        try:
+                            WebDriverWait(self.driver, 10).until(
+                                EC.presence_of_element_located(
+                                    (By.CSS_SELECTOR, request.meta["wait_for_element"])
+                                )
+                            )
+                            spider.logger.info(f"Found element: {request.meta['wait_for_element']}")
+                        except TimeoutException:
+                            spider.logger.warning(
+                                f"Timeout waiting for element: {request.meta['wait_for_element']}"
+                            )
+
+                    # Execute custom JavaScript if specified
+                    if request.meta.get("execute_js"):
+                        try:
+                            self.driver.execute_script(request.meta["execute_js"])
+                            time.sleep(1)
+                            spider.logger.info("Executed custom JavaScript")
+                        except Exception as e:
+                            spider.logger.warning(f"Error executing JavaScript: {e}")
+
+                    # Wait for AJAX requests to complete if specified
+                    if request.meta.get("wait_for_ajax"):
+                        try:
+                            # Wait for jQuery to be available and AJAX to complete
+                            WebDriverWait(self.driver, 10).until(
+                                lambda driver: driver.execute_script("return jQuery.active == 0")
+                            )
+                            spider.logger.info("AJAX requests completed")
+                        except TimeoutException:
+                            spider.logger.warning("Timeout waiting for AJAX requests to complete")
+
+                success = True
+
+            except Exception as e:
+                retry_count += 1
+                spider.logger.warning(f"Attempt {retry_count} failed: {e}")
+
+                if retry_count < max_retries:
+                    # Close and recreate driver on error
+                    if self.driver:
+                        try:
+                            self.driver.quit()
+                        except:
+                            pass
+                        self.driver = None
+
+                    # Wait before retry with exponential backoff
+                    wait_time = min(5 * (2**retry_count), 60)  # Max 60 seconds
+                    spider.logger.info(f"Waiting {wait_time} seconds before retry...")
+                    time.sleep(wait_time)
+                else:
+                    spider.logger.error(f"All {max_retries} attempts failed for {request.url}")
+                    return None
+
+        if success and self.driver:
+            # Create response with the page source
+            response = HtmlResponse(
+                url=request.url,
+                body=self.driver.page_source.encode("utf-8"),
+                encoding="utf-8",
+                request=request,
+            )
+
+            # Let Scrapy's CookiesMiddleware handle cookie management automatically
+            # The middleware will extract cookies from Set-Cookie headers in responses
+            return response
+
+        return None
+
+    def _init_driver(self, spider):
+        """Initialize Chrome WebDriver with advanced anti-detection options"""
+        options = Options()
+
+        # Custom user agent that mimics real browser
+        my_user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+
+        # Advanced Chrome options for anti-detection
+        options.add_argument("--incognito")
+        options.add_argument("--headless")  # Can be disabled for debugging
+        options.add_argument("--window-size=920,600")
+        options.add_argument("--disable-blink-features=AutomationControlled")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
+        options.add_argument("--disable-gpu")
+        options.add_argument("--disable-web-security")
+        options.add_argument("--disable-features=VizDisplayCompositor")
+        options.add_argument("--disable-extensions")
+        options.add_argument("--disable-plugins")
+        options.add_argument("--disable-images")
+        # Fix for DevToolsActivePort error in headless environments
+        options.add_argument("--remote-debugging-port=9222")
+        options.add_argument("--disable-dev-tools")
+        options.add_argument("--disable-background-timer-throttling")
+        options.add_argument("--disable-backgrounding-occluded-windows")
+        options.add_argument("--disable-renderer-backgrounding")
+        options.add_argument("--disable-field-trial-config")
+        options.add_argument("--disable-ipc-flooding-protection")
+        options.add_argument(f"--user-agent={my_user_agent}")
+
+        # Additional experimental options for stealth
+        options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        options.add_experimental_option("useAutomationExtension", False)
+
+        # Disable images and CSS for faster loading (optional)
+        prefs = {
+            "profile.managed_default_content_settings.images": 2,
+            "profile.default_content_setting_values.stylesheets": 2,
+            "profile.default_content_settings.popups": 0,
+            "profile.managed_default_content_settings.media_stream": 2,
+        }
+        options.add_experimental_option("prefs", prefs)
+
+        try:
+            self.driver = webdriver.Chrome(options=options)
+
+            # Execute script to remove webdriver property
+            self.driver.execute_script(
+                "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
+            )
+
+            spider.logger.info(
+                "Selenium WebDriver initialized successfully with anti-detection features"
+            )
+        except Exception as e:
+            spider.logger.error(f"Failed to initialize Selenium WebDriver: {e}")
+            raise
+
+    def spider_closed(self, spider):
+        """Clean up WebDriver when spider closes"""
+        if self.driver:
+            try:
+                self.driver.quit()
+                spider.logger.info("Selenium WebDriver closed")
+            except Exception as e:
+                spider.logger.warning(f"Error closing WebDriver: {e}")
