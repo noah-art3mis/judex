@@ -74,12 +74,12 @@ class LexiconScraper:
 
         process = CrawlerProcess(self.settings)
         process.crawl(
-            StfSpider, 
-            classe=classe, 
+            StfSpider,
+            classe=classe,
             processos=processos,
             skip_existing=self.skip_existing,
             retry_failed=self.retry_failed,
-            max_age_hours=self.max_age_hours
+            max_age_hours=self.max_age_hours,
         )
         process.start()
 
