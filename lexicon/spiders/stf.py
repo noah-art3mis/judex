@@ -1,14 +1,18 @@
 import datetime
 import json
-import re
 from collections.abc import Iterator
 
 import scrapy
 from bs4 import BeautifulSoup
 from scrapy.http import Response
+from scrapy_selenium import SeleniumRequest
+from selenium.webdriver.common.by import By
+from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
-from ..items import STFCaseItem
-from ..types import is_valid_case_type, validate_case_type
+from lexicon.items import STFCaseItem
+from lexicon.types import validate_case_type
 
 
 class StfSpider(scrapy.Spider):
@@ -48,301 +52,141 @@ class StfSpider(scrapy.Spider):
     def start_requests(self) -> Iterator[scrapy.Request]:
         base = "https://portal.stf.jus.br"
         for numero in self.numeros:
+            # First, get the main page to extract the incidente number
             url = (
                 f"{base}/processos/listarProcessos.asp?classe={self.classe}&numeroProcesso={numero}"
             )
-            yield scrapy.Request(url=url, callback=self.parse, meta={"numero": numero})
 
-    def parse(self, response: Response) -> Iterator[STFCaseItem]:
-        # Parse HTML content
-        soup = BeautifulSoup(response.text, "html.parser")
+            yield SeleniumRequest(
+                url=url,
+                callback=self.parse_main_page_selenium,
+                meta={"numero": numero},
+                wait_time=10,
+                wait_until=EC.presence_of_element_located((By.ID, "conteudo")),
+            )
 
-        # Create STF case item
+    def get_element_by_id(self, driver: WebDriver, id: str) -> str:
+        Wait = WebDriverWait(driver, 40)
+        Wait.until(EC.presence_of_element_located((By.ID, id)))
+        return driver.find_element(By.ID, id).get_attribute("value")
+
+    def get_element_by_xpath(self, driver: WebDriver, xpath: str) -> str:
+        Wait = WebDriverWait(driver, 40)
+        Wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
+        return driver.find_element(By.XPATH, xpath).get_attribute("innerHTML")
+
+    def clean_text(self, html_text: str) -> str:
+        """Clean HTML text by removing extra whitespace and HTML entities"""
+        if not html_text:
+            return ""
+
+        # Parse with BeautifulSoup to handle HTML entities and tags
+        soup = BeautifulSoup(html_text, "html.parser")
+        # Get text content and strip whitespace
+        text = soup.get_text(strip=True)
+        # Clean up any remaining extra whitespace
+        text = " ".join(text.split())
+        return text
+
+    def parse_main_page_selenium(self, response: Response) -> Iterator[scrapy.Request]:
+        """Parse the main page and extract incidente number, then make AJAX requests"""
+        # soup = BeautifulSoup(response.text, "html.parser")
+        driver = response.request.meta["driver"]
+
+        if "CAPTCHA" in driver.page_source:
+            self.logger.error(f"CAPTCHA detected in {response.url}")
+            return
+        if "403 Forbidden" in driver.page_source:
+            self.logger.error(f"403 Forbidden detected in {response.url}")
+            return
+        if "502 Bad Gateway" in driver.page_source:
+            self.logger.error(f"502 Bad Gateway detected in {response.url}")
+            return
+
+        # Extract incidente number from the page
+        incidente = self.get_element_by_id(driver, "incidente")
+        if not incidente:
+            self.logger.error(f"Could not extract incidente number from {response.url}")
+            return
+
+        # Create the main item with basic info
         item = STFCaseItem()
-
-        # ids
         item["processo_id"] = response.meta["numero"]
-        item["incidente"] = self.extract_incidente(soup)
-        item["numero_unico"] = self.extract_numero_unico(soup)
-
-        # classificacao
-        item["classe"] = self.extract_classe(soup)
-        item["liminar"] = self.extract_liminar(soup)
-        item["tipo_processo"] = self.extract_tipo_processo(soup)
-
-        # detalhes
-        item["origem"] = self.extract_origem(soup)
-        item["relator"] = self.extract_relator(soup)
-        item["liminar"] = self.extract_liminar(soup)
-        item["data_protocolo"] = self.extract_data_protocolo(soup)
-        item["origem_orgao"] = self.extract_origem_orgao(soup)
-        item["autor1"] = self.extract_autor1(soup)
-        item["assuntos"] = self.extract_assuntos(soup)
-
-        # metadados
+        item["incidente"] = incidente
+        # item["numero_unico"] = extract_numero_unico(soup)
+        # item["classe"] = extract_classe(soup)
+        # item["liminar"] = extract_liminar(soup)
+        # item["tipo_processo"] = extract_tipo_processo(soup)
+        item["origem"] = self.clean_text(
+            self.get_element_by_xpath(driver, '//*[@id="descricao-procedencia"]')
+        )
+        # item["origem"] = response.selector.xpath('//*[@id="descricao-procedencia"]/text()').get()
+        # item["relator"] = extract_relator(soup)
+        item["data_protocolo"] = self.clean_text(
+            self.get_element_by_xpath(
+                driver, '//*[@id="informacoes-completas"]/div[2]/div[1]/div[2]/div[2]'
+            )
+        )
+        item["origem_orgao"] = self.clean_text(
+            self.get_element_by_xpath(
+                driver, '//*[@id="informacoes-completas"]/div[2]/div[1]/div[2]/div[4]'
+            )
+        )
+        # item["autor1"] = extract_autor1(soup)
+        assuntos_html = self.get_element_by_xpath(
+            driver, '//*[@id="informacoes-completas"]/div[1]/div[2]'
+        )
+        # Parse the HTML to extract clean subject text
+        soup = BeautifulSoup(assuntos_html, "html.parser")
+        item["assuntos"] = [
+            self.clean_text(li.get_text()) for li in soup.find_all("li") if li.get_text().strip()
+        ]
         item["status"] = response.status
-        item["html"] = response.text or None
-        item["extraido"] = datetime.datetime.now().isoformat() + "Z"
+
+        item["extraido"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+
+        # Initialize AJAX fields as empty
+        item["partes"] = []
+        item["andamentos"] = []
+        item["decisoes"] = []
+        item["deslocamentos"] = []
+        item["peticoes"] = []
+        item["recursos"] = []
+        item["pautas"] = []
+        item["informacoes"] = {}
+        item["sessao"] = {}
 
         yield item
 
-    def extract_incidente(self, soup) -> int | None:
-        """Extract incidente ID from hidden input"""
-        try:
-            incidente_input = soup.find("input", {"id": "incidente"})
-            if incidente_input:
-                value = incidente_input.get("value")
-                return int(value) if value else None
-            return None
-        except:
-            return None
+    # def parse(self, response: Response) -> Iterator[STFCaseItem]:
+    #     # Parse HTML content
+    #     soup = BeautifulSoup(response.text, "html.parser")
 
-    def extract_classe(self, soup: BeautifulSoup) -> str | None:
-        """Extract case class (ADI, ADPF, etc.) and validate against enum"""
-        try:
-            # From the process title
-            processo_titulo = soup.find("div", class_="processo-titulo")
-            if processo_titulo:
-                classe_text = processo_titulo.get_text().strip()
-                # Extract class from text like "ADI 4436"
-                classe = classe_text.split()[0] if classe_text else None
+    #     # Create STF case item
+    #     item = STFCaseItem()
 
-                # Validate the extracted class
-                if classe:
-                    if is_valid_case_type(classe):
-                        return classe
-                    else:
-                        # If not found in set, return the original value but log a warning
-                        self.logger.warning(f"Unknown case type extracted: '{classe}'")
-                        return classe
-                return classe
-            return None
-        except Exception as e:
-            self.logger.error(f"Error extracting classe: {e}")
-            return None
+    #     # ids
+    #     item["processo_id"] = response.meta["numero"]
+    #     item["incidente"] = extract_incidente(soup)
+    #     item["numero_unico"] = extract_numero_unico(soup)
 
+    #     # classificacao
+    #     item["classe"] = extract_classe(soup)
+    #     item["liminar"] = extract_liminar(soup)
+    #     item["tipo_processo"] = extract_tipo_processo(soup)
 
-    def extract_tipo_processo(self, soup: BeautifulSoup) -> str | None:
-        """Extract process type from badges"""
-        try:
-            # From badges or process type indicators
-            badges = soup.find_all("span", class_="badge")
-            if badges:
-                # Return the first badge (usually "Processo Eletrônico")
-                return badges[0].get_text().strip()
-            return None
-        except:
-            return None
+    #     # detalhes
+    #     item["origem"] = extract_origem(soup)
+    #     item["relator"] = extract_relator(soup)
+    #     item["liminar"] = extract_liminar(soup)
+    #     item["data_protocolo"] = extract_data_protocolo(soup)
+    #     item["origem_orgao"] = extract_origem_orgao(soup)
+    #     item["autor1"] = extract_autor1(soup)
+    #     item["assuntos"] = extract_assuntos(soup)
 
-    def extract_numero_unico(self, soup: BeautifulSoup) -> str | None:
-        """Extract unique process number"""
-        try:
-            # From the process number field
-            processo_rotulo = soup.find("div", class_="processo-rotulo")
-            if processo_rotulo:
-                text = processo_rotulo.get_text().strip()
-                # Remove "Número Único: " prefix if present
-                if "Número Único:" in text:
-                    return text.split("Número Único:")[1].strip()
-                return text
-            return None
-        except:
-            return None
+    #     # metadados
+    #     item["status"] = response.status
+    #     # Don't store large HTML content to avoid memory issues
+    #     item["extraido"] = datetime.datetime.now().isoformat() + "Z"
 
-    def extract_origem(self, soup: BeautifulSoup) -> str | None:
-        """Extract origin information"""
-        try:
-            # Look for origin information in the process data section
-            # The HTML structure shows: <div class="processo-dados"><a href="#" data-toggle="tooltip" title="...">Origem:</a>&nbsp;<span id="descricao-procedencia"></span></div>
-            processo_dados = soup.find("div", class_="processo-dados")
-            if processo_dados:
-                # Look for the span with id="descricao-procedencia"
-                origem_span = processo_dados.find("span", {"id": "descricao-procedencia"})
-                if origem_span:
-                    return origem_span.get_text().strip()
-                # Fallback: look for text after "Origem:"
-                origem_text = processo_dados.get_text()
-                if "Origem:" in origem_text:
-                    origem = origem_text.split("Origem:")[1].strip()
-                    return origem
-            return None
-        except:
-            return None
-
-    def extract_relator(self, soup: BeautifulSoup) -> str | None:
-        """Extract relator information"""
-        try:
-            # Look for relator information in the process data section
-            # The HTML structure shows: <div class="processo-dados">Relator(a):  </div>
-            processo_dados = soup.find("div", class_="processo-dados")
-            if processo_dados:
-                # Look for text containing "Relator"
-                relator_text = processo_dados.get_text()
-                if "Relator" in relator_text:
-                    # Extract text after "Relator(a):"
-                    if "Relator(a):" in relator_text:
-                        relator = relator_text.split("Relator(a):")[1].strip()
-                        # Remove "(a): MIN." prefix if present
-                        if relator.startswith("(a): MIN."):
-                            relator = relator.replace("(a): MIN.", "").strip()
-                        return relator if relator else None
-                    elif "Relator:" in relator_text:
-                        relator = relator_text.split("Relator:")[1].strip()
-                        # Remove "(a): MIN." prefix if present
-                        if relator.startswith("(a): MIN."):
-                            relator = relator.replace("(a): MIN.", "").strip()
-                        return relator if relator else None
-
-            # Fallback: search for any div containing "Relator"
-            relator_elements = soup.find_all("div")
-            for element in relator_elements:
-                if element.string and "Relator" in element.string:
-                    relator_element = element
-                    break
-            else:
-                relator_element = None
-            if relator_element:
-                relator_text = relator_element.get_text()
-                if "Relator" in relator_text:
-                    relator = relator_text.split("Relator")[1].strip()
-                    # Remove "(a): MIN." prefix if present
-                    if relator.startswith("(a): MIN."):
-                        relator = relator.replace("(a): MIN.", "").strip()
-                    return relator if relator else None
-            return None
-        except:
-            return None
-
-    def extract_liminar(self, soup: BeautifulSoup) -> str | None:
-        """Extract liminar information"""
-        try:
-            # Look for "Medida Liminar" in badges or text
-            badges = soup.find_all("span", class_="badge")
-            for badge in badges:
-                if "liminar" in badge.get_text().lower():
-                    return badge.get_text().strip()
-
-            # Look for liminar in process title
-            processo_titulo = soup.find("div", class_="processo-titulo")
-            if processo_titulo and "liminar" in processo_titulo.get_text().lower():
-                return "Medida Liminar"
-            return None
-        except:
-            return None
-
-    def extract_data_protocolo(self, soup: BeautifulSoup) -> str | None:
-        """Extract protocol date"""
-        try:
-            # Look for date patterns in process information
-            date_pattern = r"\d{2}/\d{2}/\d{4}"
-            text_elements = soup.find_all(text=re.compile(date_pattern))
-            for text in text_elements:
-                if (
-                    text
-                    and isinstance(text, str)
-                    and ("protocolo" in text.lower() or "data" in text.lower())
-                ):
-                    return text.strip()
-            return None
-        except:
-            return None
-
-    def extract_origem_orgao(self, soup: BeautifulSoup) -> str | None:
-        """Extract origin organ"""
-        try:
-            # Look for origin organ information
-            orgao_elements = soup.find_all("div")
-            for element in orgao_elements:
-                if element.string and "Órgão" in element.string:
-                    orgao_element = element
-                    break
-            else:
-                orgao_element = None
-            if orgao_element:
-                return orgao_element.get_text().strip()
-            return None
-        except:
-            return None
-
-    def extract_autor1(self, soup: BeautifulSoup) -> str | None:
-        """Extract first author/plaintiff"""
-        try:
-            # From the parties section
-            resumo_partes = soup.find("div", class_="resumo-partes")
-            if resumo_partes:
-                autor_text = resumo_partes.get_text()
-                # Extract first author from the parties list
-                if "Autor" in autor_text:
-                    autor = autor_text.split("Autor")[1].split()[0]
-                    return autor
-            return None
-        except:
-            return None
-
-    def extract_assuntos(self, soup: BeautifulSoup) -> list[str]:
-        """Extract subjects/topics"""
-        try:
-            # From the subjects section
-            assuntos_elements = soup.find_all("div", class_="assunto")
-            assuntos_list = [assunto.get_text().strip() for assunto in assuntos_elements]
-            return assuntos_list
-        except:
-            return []
-
-    def extract_liminar(self, soup: BeautifulSoup) -> list[str]:
-        """Extract meaningful information from nome_processo field"""
-        try:
-            # Extract nome_processo from the soup
-            processo_titulo = soup.find("div", class_="processo-titulo")
-            if not processo_titulo:
-                return []
-            
-            nome_processo = processo_titulo.get_text().strip()
-            if not nome_processo:
-                return []
-            
-            # Clean up the text - remove extra whitespace and normalize
-            cleaned = re.sub(r'\r\n\s+', '\n', nome_processo)
-            cleaned = re.sub(r'\s+', ' ', cleaned.strip())
-            
-            # Split by newlines to get individual lines
-            lines = [line.strip() for line in cleaned.split('\n') if line.strip()]
-            
-            result = []
-            
-            # Look for specific patterns and extract meaningful information
-            for line in lines:
-                line_upper = line.upper()
-                
-                # Extract process type (ADI, etc.) - but don't add to result yet
-                if re.match(r'^ADI\s*\d+', line_upper):
-                    # Extract the ADI number but don't add it to the main result
-                    # as it's not one of the requested output items
-                    pass
-                
-                # Check for "Processo Eletrônico" - convert to meaningful status
-                if 'PROCESSO ELETRÔNICO' in line_upper or 'PROCESSO ELETRONICO' in line_upper:
-                    result.append('CONVERTIDO EM PROCESSO ELETRÔNICO')
-                
-                # Check for "Medida Liminar"
-                if 'MEDIDA LIMINAR' in line_upper:
-                    result.append('MEDIDA LIMINAR')
-                
-                # Check for "Público" - this might indicate public access
-                if 'PÚBLICO' in line_upper or 'PUBLICO' in line_upper:
-                    result.append('PROCESSO PÚBLICO')
-            
-            # If no specific patterns found, try to extract meaningful words
-            if not result:
-                # Look for capitalized words that might be meaningful
-                words = re.findall(r'\b[A-Z][A-Z\s]+\b', cleaned)
-                for word in words:
-                    word_clean = word.strip()
-                    if len(word_clean) > 3:  # Only include words longer than 3 characters
-                        result.append(word_clean)
-            
-            return result
-            
-        except Exception as e:
-            self.logger.error(f"Error parsing nome_processo: {e}")
-            return []
+    #     yield item

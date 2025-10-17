@@ -15,11 +15,21 @@ class STFCaseItem(scrapy.Item):
     # detalhes do processo
     origem = scrapy.Field()
     relator = scrapy.Field()
-    liminar = scrapy.Field()
     data_protocolo = scrapy.Field()
     origem_orgao = scrapy.Field()
     autor1 = scrapy.Field()
     assuntos = scrapy.Field()
+
+    # AJAX-loaded content
+    partes = scrapy.Field()
+    andamentos = scrapy.Field()
+    decisoes = scrapy.Field()
+    deslocamentos = scrapy.Field()
+    peticoes = scrapy.Field()
+    recursos = scrapy.Field()
+    pautas = scrapy.Field()
+    informacoes = scrapy.Field()
+    sessao = scrapy.Field()
 
     # metadados
     status = scrapy.Field()
