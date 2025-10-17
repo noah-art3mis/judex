@@ -60,6 +60,25 @@ HTTPCACHE_DIR = "httpcache"
 HTTPCACHE_IGNORE_HTTP_CODES = []
 HTTPCACHE_STORAGE = "scrapy.extensions.httpcache.FilesystemCacheStorage"
 
+# JSON output settings for indented output
+FEEDS = {
+    "out.json": {
+        "format": "json",
+        "indent": 2,
+        "encoding": "utf8",
+        "store_empty": False,
+        "fields": None,
+        "item_export_kwargs": {
+            "export_empty_fields": True,
+        },
+    },
+    "out.csv": {
+        "format": "csv",
+        "encoding": "utf8",
+        "store_empty": False,
+    },
+}
+
 ###
 
 # Make retries a bit more forgiving when sites rate-limit

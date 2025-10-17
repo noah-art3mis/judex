@@ -24,7 +24,11 @@ from lexicon.extract import (
     extract_origem,
     extract_origem_orgao,
     extract_partes,
+    extract_pautas,
+    extract_peticoes,
+    extract_recursos,
     extract_relator,
+    extract_sessao,
     extract_tipo_processo,
 )
 from lexicon.items import STFCaseItem
@@ -165,10 +169,16 @@ class StfSpider(scrapy.Spider):
                 item["tipo_processo"] = None
 
         try:
-            item["origem"] = extract_origem(soup, driver)
+            item["origem"] = extract_origem(self, driver, soup)
         except Exception as e:
             self.logger.warning(f"Could not extract origem with extract function: {e}")
             # Fallback to Selenium
+            try:
+                origem_element = driver.find_element(By.ID, "descricao-procedencia")
+                item["origem"] = self.clean_text(origem_element.text)
+            except Exception as e2:
+                self.logger.warning(f"Could not extract origem with Selenium fallback: {e2}")
+                item["origem"] = None
 
         try:
             item["data_protocolo"] = extract_data_protocolo(self, driver, soup)
@@ -219,11 +229,30 @@ class StfSpider(scrapy.Spider):
             self.logger.warning(f"Could not extract deslocamentos: {e}")
             item["deslocamentos"] = []
 
-        # remaining fields
-        item["peticoes"] = []
-        item["recursos"] = []
-        item["pautas"] = []
-        item["sessao"] = {}
+        # Try to extract remaining AJAX content using extract functions
+        try:
+            item["peticoes"] = extract_peticoes(self, driver, soup)
+        except Exception as e:
+            self.logger.warning(f"Could not extract peticoes: {e}")
+            item["peticoes"] = []
+
+        try:
+            item["recursos"] = extract_recursos(self, driver, soup)
+        except Exception as e:
+            self.logger.warning(f"Could not extract recursos: {e}")
+            item["recursos"] = []
+
+        try:
+            item["pautas"] = extract_pautas(self, driver, soup)
+        except Exception as e:
+            self.logger.warning(f"Could not extract pautas: {e}")
+            item["pautas"] = []
+
+        try:
+            item["sessao"] = extract_sessao(self, driver, soup)
+        except Exception as e:
+            self.logger.warning(f"Could not extract sessao: {e}")
+            item["sessao"] = {}
 
         # metadados
         item["status"] = response.status

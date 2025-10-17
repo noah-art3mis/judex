@@ -61,10 +61,14 @@ def extract_incidente(soup) -> str | None:
     return None
 
 
-def extract_origem(spider, soup, driver: WebDriver) -> str | None:
-    return spider.clean_text(
-        spider.get_element_by_xpath(driver, '//*[@id="descricao-procedencia"]')
-    )
+def extract_origem(spider, driver: WebDriver, soup) -> str | None:
+    """Extract origem from descricao-procedencia span"""
+    try:
+        element = driver.find_element(By.ID, "descricao-procedencia")
+        return spider.clean_text(element.text)
+    except Exception as e:
+        spider.logger.warning(f"Could not extract origem: {e}")
+        return None
 
 
 def extract_liminar(spider, driver: WebDriver, soup: BeautifulSoup) -> list:
@@ -91,9 +95,9 @@ def extract_autor1(spider, driver: WebDriver, soup) -> str | None:
         if partes_nome:
             primeiro_autor = partes_nome[0].get_attribute("innerHTML")
             return spider.clean_text(primeiro_autor)
-    except Exception:
-        pass
-    return None
+    except Exception as e:
+        spider.logger.warning(f"Could not extract autor1: {e}")
+        return None
 
 
 def extract_partes(spider, driver: WebDriver, soup) -> list:
@@ -265,8 +269,8 @@ def extract_deslocamentos(spider, driver: WebDriver, soup) -> list:
                 import re
 
                 enviado_match = re.search(r'"processo-detalhes-bold">([^<]+)', html)
-                recebido_match = re.search(r'"processo-detalhes">([^<]+)', html)
                 data_recebido_match = re.search(r'processo-detalhes bg-font-success">([^<]+)', html)
+                recebido_match = re.search(r'"processo-detalhes">([^<]+)', html)
                 data_enviado_match = re.search(r'processo-detalhes bg-font-info">([^<]+)', html)
                 guia_match = re.search(
                     r'text-right">\s*<span class="processo-detalhes">([^<]+)', html
@@ -344,3 +348,199 @@ def extract_deslocamentos(spider, driver: WebDriver, soup) -> list:
     except Exception as e:
         spider.logger.warning(f"Could not extract deslocamentos: {e}")
         return []
+
+
+def extract_peticoes(spider, driver: WebDriver, soup) -> list:
+    """Extract peticoes from AJAX-loaded content"""
+    try:
+        peticoes_info = driver.find_element(By.XPATH, '//*[@id="peticoes"]')
+        peticoes = peticoes_info.find_elements(By.CLASS_NAME, "lista-dados")
+
+        peticoes_list = []
+        for i, peticao in enumerate(peticoes):
+            try:
+                index = len(peticoes) - i
+                html = peticao.get_attribute("innerHTML")
+
+                # Extract data from HTML using text parsing
+                import re
+
+                # Look for different patterns to extract all fields
+                data_match = re.search(r'processo-detalhes bg-font-info">([^<]+)', html)
+                tipo_match = re.search(r'processo-detalhes-bold">([^<]+)', html)
+                autor_match = re.search(r'processo-detalhes">([^<]+)', html)
+
+                # Also look for "Recebido em" pattern
+                recebido_match = re.search(r"Recebido em ([^<]+)", html)
+
+                data = data_match.group(1) if data_match else None
+                tipo = tipo_match.group(1) if tipo_match else None
+                autor = autor_match.group(1) if autor_match else None
+                recebido = recebido_match.group(1) if recebido_match else None
+
+                # Clean the extracted data
+                if data is not None:
+                    data = spider.clean_text(data)
+                if tipo is not None:
+                    tipo = spider.clean_text(tipo)
+                if autor is not None:
+                    autor = spider.clean_text(autor)
+                if recebido is not None:
+                    recebido = spider.clean_text(recebido)
+
+                # Parse recebido into recebido_data and recebido_por
+                recebido_data = None
+                recebido_por = None
+                if recebido is not None:
+                    # Extract date and organization from "04/05/1994 00:00:00 por DIVISAO DE PROCESSOS ORIGINARIOS"
+                    recebido_parts = recebido.split(" por ")
+                    if len(recebido_parts) == 2:
+                        recebido_data = recebido_parts[0].strip()  # "04/05/1994 00:00:00"
+                        recebido_por = recebido_parts[
+                            1
+                        ].strip()  # "DIVISAO DE PROCESSOS ORIGINARIOS"
+                    else:
+                        recebido_data = recebido  # Fallback to full string
+
+                # The autor field seems to contain the petition date, not the author
+                # Let's use it as the petition date and leave autor as None for now
+                peticao_data = {
+                    "index": index,
+                    "data": autor,  # This seems to be the petition date
+                    "tipo": tipo,
+                    "autor": None,  # We don't have the actual author
+                    "recebido_data": recebido_data,  # "04/05/1994 00:00:00"
+                    "recebido_por": recebido_por,  # "DIVISAO DE PROCESSOS ORIGINARIOS"
+                }
+                peticoes_list.append(peticao_data)
+            except Exception as e:
+                spider.logger.warning(f"Could not extract peticao {i}: {e}")
+                continue
+
+        return peticoes_list
+    except Exception as e:
+        spider.logger.warning(f"Could not extract peticoes: {e}")
+        return []
+
+
+def extract_recursos(spider, driver: WebDriver, soup) -> list:
+    """Extract recursos from AJAX-loaded content"""
+    try:
+        recursos_info = driver.find_element(By.XPATH, '//*[@id="recursos"]')
+        recursos = recursos_info.find_elements(By.CLASS_NAME, "lista-dados")
+
+        recursos_list = []
+        for i, recurso in enumerate(recursos):
+            try:
+                index = len(recursos) - i
+                html = recurso.get_attribute("innerHTML")
+
+                # Extract data from HTML using text parsing
+                import re
+
+                data_match = re.search(r'processo-detalhes bg-font-info">([^<]+)', html)
+                tipo_match = re.search(r'processo-detalhes-bold">([^<]+)', html)
+                autor_match = re.search(r'processo-detalhes">([^<]+)', html)
+
+                data = data_match.group(1) if data_match else None
+                tipo = tipo_match.group(1) if tipo_match else None
+                autor = autor_match.group(1) if autor_match else None
+
+                # Clean the extracted data
+                if data is not None:
+                    data = spider.clean_text(data)
+                if tipo is not None:
+                    tipo = spider.clean_text(tipo)
+                if autor is not None:
+                    autor = spider.clean_text(autor)
+
+                recurso_data = {
+                    "index": index,
+                    "data": data,
+                    "tipo": tipo,
+                    "autor": autor,
+                }
+                recursos_list.append(recurso_data)
+            except Exception as e:
+                spider.logger.warning(f"Could not extract recurso {i}: {e}")
+                continue
+
+        return recursos_list
+    except Exception as e:
+        spider.logger.warning(f"Could not extract recursos: {e}")
+        return []
+
+
+def extract_pautas(spider, driver: WebDriver, soup) -> list:
+    """Extract pautas from AJAX-loaded content"""
+    try:
+        pautas_info = driver.find_element(By.XPATH, '//*[@id="pautas"]')
+        pautas = pautas_info.find_elements(By.CLASS_NAME, "lista-dados")
+
+        pautas_list = []
+        for i, pauta in enumerate(pautas):
+            try:
+                index = len(pautas) - i
+                html = pauta.get_attribute("innerHTML")
+
+                # Extract data from HTML using text parsing
+                import re
+
+                data_match = re.search(r'processo-detalhes bg-font-info">([^<]+)', html)
+                sessao_match = re.search(r'processo-detalhes-bold">([^<]+)', html)
+                relator_match = re.search(r'processo-detalhes">([^<]+)', html)
+
+                data = data_match.group(1) if data_match else None
+                sessao = sessao_match.group(1) if sessao_match else None
+                relator = relator_match.group(1) if relator_match else None
+
+                # Clean the extracted data
+                if data is not None:
+                    data = spider.clean_text(data)
+                if sessao is not None:
+                    sessao = spider.clean_text(sessao)
+                if relator is not None:
+                    relator = spider.clean_text(relator)
+
+                pauta_data = {
+                    "index": index,
+                    "data": data,
+                    "sessao": sessao,
+                    "relator": relator,
+                }
+                pautas_list.append(pauta_data)
+            except Exception as e:
+                spider.logger.warning(f"Could not extract pauta {i}: {e}")
+                continue
+
+        return pautas_list
+    except Exception as e:
+        spider.logger.warning(f"Could not extract pautas: {e}")
+        return []
+
+
+def extract_sessao(spider, driver: WebDriver, soup) -> dict:
+    """Extract sessao from AJAX-loaded content"""
+    try:
+        sessao_info = driver.find_element(By.XPATH, '//*[@id="sessao-virtual"]')
+
+        # Extract session information
+        sessao_data = {"data": None, "tipo": None, "status": None, "participantes": []}
+
+        # Try to extract basic session info
+        try:
+            data_element = sessao_info.find_element(By.CLASS_NAME, "processo-detalhes")
+            sessao_data["data"] = spider.clean_text(data_element.text)
+        except:
+            pass
+
+        try:
+            tipo_element = sessao_info.find_element(By.CLASS_NAME, "processo-detalhes-bold")
+            sessao_data["tipo"] = spider.clean_text(tipo_element.text)
+        except:
+            pass
+
+        return sessao_data
+    except Exception as e:
+        spider.logger.warning(f"Could not extract sessao: {e}")
+        return {}
