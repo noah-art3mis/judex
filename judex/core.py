@@ -6,8 +6,8 @@ from scrapy.crawler import CrawlerProcess
 from scrapy.spiders import Spider
 from scrapy.utils.project import get_project_settings
 
-from .pipelines.manager import PersistenceTypes, PipelineManager
 from .exporters import export_to_csv
+from .pipelines.manager import PersistenceTypes, PipelineManager
 from .spiders.stf import StfSpider
 
 logger = logging.getLogger(__name__)
