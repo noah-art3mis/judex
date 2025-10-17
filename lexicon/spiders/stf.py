@@ -196,25 +196,25 @@ class StfSpider(scrapy.Spider):
 
         # Try to extract AJAX content using extract functions
         try:
-            item["partes"] = extract_partes(soup)
+            item["partes"] = extract_partes(self, driver, soup)
         except Exception as e:
             self.logger.warning(f"Could not extract partes: {e}")
             item["partes"] = []
 
         try:
-            item["andamentos"] = extract_andamentos(soup)
+            item["andamentos"] = extract_andamentos(self, driver, soup)
         except Exception as e:
             self.logger.warning(f"Could not extract andamentos: {e}")
             item["andamentos"] = []
 
         try:
-            item["decisoes"] = extract_decisoes(soup)
+            item["decisoes"] = extract_decisoes(self, driver, soup)
         except Exception as e:
             self.logger.warning(f"Could not extract decisoes: {e}")
             item["decisoes"] = []
 
         try:
-            item["deslocamentos"] = extract_deslocamentos(soup)
+            item["deslocamentos"] = extract_deslocamentos(self, driver, soup)
         except Exception as e:
             self.logger.warning(f"Could not extract deslocamentos: {e}")
             item["deslocamentos"] = []

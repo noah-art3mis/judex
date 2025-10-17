@@ -96,29 +96,26 @@ def extract_autor1(spider, driver: WebDriver, soup) -> str | None:
     return None
 
 
-def extract_partes(soup):
-    partes_elements = soup.find_all("div", class_="parte")
-    partes_list = []
+def extract_partes(spider, driver: WebDriver, soup) -> list:
+    """Extract partes using class selectors from backup"""
+    try:
+        partes_tipo = driver.find_elements(By.CLASS_NAME, "detalhe-parte")
+        partes_nome = driver.find_elements(By.CLASS_NAME, "nome-parte")
 
-    for parte in partes_elements:
-        parte_data = {
-            "nome": (
-                parte.find("div", class_="nome-parte").get_text().strip()
-                if parte.find("div", class_="nome-parte")
-                else ""
-            ),
-            "tipo": (
-                parte.find("div", class_="tipo-parte").get_text().strip()
-                if parte.find("div", class_="tipo-parte")
-                else ""
-            ),
-            "advogados": [
-                adv.get_text().strip() for adv in parte.find_all("div", class_="advogado")
-            ],
-        }
-        partes_list.append(parte_data)
+        partes_list = []
+        for i in range(len(partes_tipo)):
+            if i < len(partes_nome):
+                parte_data = {
+                    "_index": i + 1,
+                    "tipo": spider.clean_text(partes_tipo[i].get_attribute("innerHTML")),
+                    "nome": spider.clean_text(partes_nome[i].get_attribute("innerHTML")),
+                }
+                partes_list.append(parte_data)
 
-    return partes_list
+        return partes_list
+    except Exception as e:
+        spider.logger.warning(f"Could not extract partes: {e}")
+        return []
 
 
 def extract_data_protocolo(spider, driver: WebDriver, soup) -> str | None:
@@ -179,31 +176,45 @@ def extract_assuntos(spider, driver: WebDriver, soup) -> list:
         return []
 
 
-def extract_andamentos(soup):
-    andamentos_elements = soup.find_all("div", class_="andamento")
-    andamentos_list = []
+def extract_andamentos(spider, driver: WebDriver, soup) -> list:
+    """Extract andamentos using class selectors from backup"""
+    try:
+        andamentos_info = driver.find_element(By.CLASS_NAME, "processo-andamentos")
+        andamentos = andamentos_info.find_elements(By.CLASS_NAME, "andamento-item")
 
-    for andamento in andamentos_elements:
-        andamento_data = {
-            "data": (
-                andamento.find("div", class_="data-andamento").get_text().strip()
-                if andamento.find("div", class_="data-andamento")
-                else ""
-            ),
-            "descricao": (
-                andamento.find("div", class_="descricao-andamento").get_text().strip()
-                if andamento.find("div", class_="descricao-andamento")
-                else ""
-            ),
-            "tipo": (
-                andamento.find("div", class_="tipo-andamento").get_text().strip()
-                if andamento.find("div", class_="tipo-andamento")
-                else ""
-            ),
-        }
-        andamentos_list.append(andamento_data)
+        andamentos_list = []
+        for i, andamento in enumerate(andamentos):
+            try:
+                index = len(andamentos) - i
+                html = andamento.get_attribute("innerHTML")
 
-    return andamentos_list
+                # Extract data, nome, complemento, julgador
+                data = andamento.find_element(By.CLASS_NAME, "andamento-data").text
+                nome = andamento.find_element(By.CLASS_NAME, "andamento-nome").text
+                complemento = andamento.find_element(By.CLASS_NAME, "col-md-9").text
+
+                # Check for julgador
+                try:
+                    julgador = andamento.find_element(By.CLASS_NAME, "andamento-julgador").text
+                except:
+                    julgador = None
+
+                andamento_data = {
+                    "index": index,
+                    "data": data,
+                    "nome": nome,
+                    "complemento": complemento,
+                    "julgador": julgador,
+                }
+                andamentos_list.append(andamento_data)
+            except Exception as e:
+                spider.logger.warning(f"Could not extract andamento {i}: {e}")
+                continue
+
+        return andamentos_list
+    except Exception as e:
+        spider.logger.warning(f"Could not extract andamentos: {e}")
+        return []
 
 
 def extract_decisoes(soup):
@@ -215,22 +226,22 @@ def extract_decisoes(soup):
             "data": (
                 decisao.find("div", class_="data-decisao").get_text().strip()
                 if decisao.find("div", class_="data-decisao")
-                else ""
+                else None
             ),
             "tipo": (
                 decisao.find("div", class_="tipo-decisao").get_text().strip()
                 if decisao.find("div", class_="tipo-decisao")
-                else ""
+                else None
             ),
             "relator": (
                 decisao.find("div", class_="relator-decisao").get_text().strip()
                 if decisao.find("div", class_="relator-decisao")
-                else ""
+                else None
             ),
             "texto": (
                 decisao.find("div", class_="texto-decisao").get_text().strip()
                 if decisao.find("div", class_="texto-decisao")
-                else ""
+                else None
             ),
         }
         decisoes_list.append(decisao_data)
@@ -238,28 +249,98 @@ def extract_decisoes(soup):
     return decisoes_list
 
 
-def extract_deslocamentos(soup):
-    deslocamentos_elements = soup.find_all("div", class_="deslocamento")
-    deslocamentos_list = []
+def extract_deslocamentos(spider, driver: WebDriver, soup) -> list:
+    """Extract deslocamentos using XPath and class selectors from backup"""
+    try:
+        deslocamentos_info = driver.find_element(By.XPATH, '//*[@id="deslocamentos"]')
+        deslocamentos = deslocamentos_info.find_elements(By.CLASS_NAME, "lista-dados")
 
-    for deslocamento in deslocamentos_elements:
-        deslocamento_data = {
-            "data": (
-                deslocamento.find("div", class_="data-deslocamento").get_text().strip()
-                if deslocamento.find("div", class_="data-deslocamento")
-                else ""
-            ),
-            "destino": (
-                deslocamento.find("div", class_="destino-deslocamento").get_text().strip()
-                if deslocamento.find("div", class_="destino-deslocamento")
-                else ""
-            ),
-            "motivo": (
-                deslocamento.find("div", class_="motivo-deslocamento").get_text().strip()
-                if deslocamento.find("div", class_="motivo-deslocamento")
-                else ""
-            ),
-        }
-        deslocamentos_list.append(deslocamento_data)
+        deslocamentos_list = []
+        for i, deslocamento in enumerate(deslocamentos):
+            try:
+                index = len(deslocamentos) - i
+                html = deslocamento.get_attribute("innerHTML")
 
-    return deslocamentos_list
+                # Extract data from HTML using text parsing (like backup)
+                import re
+
+                enviado_match = re.search(r'"processo-detalhes-bold">([^<]+)', html)
+                recebido_match = re.search(r'"processo-detalhes">([^<]+)', html)
+                data_recebido_match = re.search(r'processo-detalhes bg-font-success">([^<]+)', html)
+                data_enviado_match = re.search(r'processo-detalhes bg-font-info">([^<]+)', html)
+                guia_match = re.search(
+                    r'text-right">\s*<span class="processo-detalhes">([^<]+)', html
+                )
+
+                # Clean the extracted data
+                data_recebido = data_recebido_match.group(1) if data_recebido_match else None
+                data_enviado = data_enviado_match.group(1) if data_enviado_match else None
+                guia = guia_match.group(1) if guia_match else None
+
+                # Get raw text for parsing
+                enviado_raw = recebido_match.group(1) if recebido_match else None
+                recebido_raw = enviado_match.group(1) if enviado_match else None
+
+                # Clean data_recebido - remove extra text, keep only date
+                if data_recebido is not None:
+                    data_recebido = spider.clean_text(data_recebido)
+                    # Remove common prefixes/suffixes
+                    data_recebido = (
+                        data_recebido.replace("Recebido em ", "").replace(" em ", "").strip()
+                    )
+
+                # Clean data_enviado - remove extra text, keep only date
+                if data_enviado is not None:
+                    data_enviado = spider.clean_text(data_enviado)
+                    # Remove common prefixes/suffixes
+                    data_enviado = (
+                        data_enviado.replace("Enviado em ", "").replace(" em ", "").strip()
+                    )
+
+                # Extract date from enviado_por text and clean it
+                enviado_por_clean = enviado_raw
+                if enviado_raw is not None:
+                    enviado_por_clean = spider.clean_text(enviado_raw)
+                    # Extract date from "Enviado por X em DD/MM/YYYY" format
+                    date_match = re.search(r"em (\d{2}/\d{2}/\d{4})", enviado_por_clean)
+                    if date_match and data_enviado is None:
+                        data_enviado = date_match.group(1)
+                    # Remove boilerplate text
+                    enviado_por_clean = re.sub(r"^Enviado por ", "", enviado_por_clean)
+                    enviado_por_clean = re.sub(r" em \d{2}/\d{2}/\d{4}$", "", enviado_por_clean)
+
+                # Extract date from recebido_por text and clean it
+                recebido_por_clean = recebido_raw
+                if recebido_raw is not None:
+                    recebido_por_clean = spider.clean_text(recebido_raw)
+                    # Extract date from "Recebido por X em DD/MM/YYYY" format
+                    date_match = re.search(r"em (\d{2}/\d{2}/\d{4})", recebido_por_clean)
+                    if date_match and data_recebido is None:
+                        data_recebido = date_match.group(1)
+                    # Remove boilerplate text
+                    recebido_por_clean = re.sub(r"^Recebido por ", "", recebido_por_clean)
+                    recebido_por_clean = re.sub(r" em \d{2}/\d{2}/\d{4}$", "", recebido_por_clean)
+
+                # Clean guia - remove extra text, keep only number
+                if guia is not None:
+                    guia = spider.clean_text(guia)
+                    # Remove common prefixes/suffixes
+                    guia = guia.replace("Guia: ", "").replace("Nº ", "").strip()
+
+                deslocamento_data = {
+                    "index": index,
+                    "data_enviado": data_enviado,
+                    "data_recebido": data_recebido,
+                    "enviado_por": enviado_por_clean,
+                    "recebido_por": recebido_por_clean,
+                    "guia": guia,
+                }
+                deslocamentos_list.append(deslocamento_data)
+            except Exception as e:
+                spider.logger.warning(f"Could not extract deslocamento {i}: {e}")
+                continue
+
+        return deslocamentos_list
+    except Exception as e:
+        spider.logger.warning(f"Could not extract deslocamentos: {e}")
+        return []
