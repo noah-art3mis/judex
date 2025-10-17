@@ -69,21 +69,16 @@ def extract_origem(spider, driver: WebDriver, soup) -> str | None:
         return None
 
 
-def extract_liminar(spider, driver: WebDriver, soup: BeautifulSoup) -> list:
-    """Extract liminar from bg-danger elements like in backup"""
+def extract_liminar(spider, driver: WebDriver, soup: BeautifulSoup) -> bool:
+    """Extract liminar from bg-danger elements and return True if any found"""
     try:
         liminar_elements = driver.find_elements(By.CLASS_NAME, "bg-danger")
-        liminar_list = []
 
-        for element in liminar_elements:
-            text = element.text.strip()
-            if text:
-                liminar_list.append(text)
-
-        return liminar_list
+        # Return True if any liminar elements are found, False otherwise
+        return len(liminar_elements) > 0
     except Exception as e:
         spider.logger.warning(f"Could not extract liminar: {e}")
-        return []
+        return False
 
 
 def extract_autor1(spider, driver: WebDriver, soup) -> str | None:
