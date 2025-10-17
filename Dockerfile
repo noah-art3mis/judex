@@ -1,0 +1,36 @@
+# Multi-stage Dockerfile for Lexicon testing across platforms
+FROM python:3.10-slim as base
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    wget \
+    gnupg \
+    unzip \
+    curl \
+    chromium \
+    chromium-driver \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set Chrome environment variables
+ENV CHROME_BIN=/usr/bin/chromium
+ENV CHROMEDRIVER_PATH=/usr/bin/chromedriver
+
+# Create app directory
+WORKDIR /app
+
+# Copy requirements first for better caching
+COPY pyproject.toml ./
+COPY uv.lock* ./
+
+# Install uv and dependencies
+RUN pip install uv
+RUN uv sync --frozen
+
+# Copy source code
+COPY . .
+
+# Install the package in development mode
+RUN uv pip install -e .
+
+# Default command for testing
+CMD ["uv", "run", "python", "-m", "pytest", "tests/", "-v"]

@@ -10,6 +10,31 @@ A web scraper for the Brazilian Supreme Court (STF) with Pydantic data validatio
 -   **Type Safety**: Runtime validation with clear error messages
 -   **Field Mapping**: Automatic conversion between scraping and database schemas
 
+## ⚖️ Legal and Ethical Considerations
+
+### Robots.txt and Terms of Service
+
+**Important Legal Notice**: This project scrapes publicly available data from the STF (Supreme Federal Court) portal. Please note:
+
+-   **robots.txt is not legally binding** - It's a voluntary protocol that websites use to communicate with web crawlers, but it has no legal force
+-   **No Terms of Service found** - Despite extensive searching, the STF portal does not have publicly accessible terms of service that would legally restrict data access
+-   **Public data only** - This scraper only accesses publicly available case information that is already accessible through the web interface
+-   **Respectful scraping** - The scraper implements delays and follows ethical scraping practices to avoid overloading the server
+
+### STF Portal robots.txt Analysis
+
+```
+User-agent: *
+Disallow: /processos
+
+User-agent: AhrefsBot
+Disallow: /
+```
+
+The robots.txt file disallows access to `/processos` for all user agents, but this is not legally enforceable. The scraper accesses individual case pages through direct URLs, not the disallowed `/processos` directory.
+
+> 📋 **For detailed legal analysis**, see [LEGAL.md](LEGAL.md) for comprehensive information about robots.txt, terms of service, and legal considerations.
+
 ## 🛠 Installation
 
 ```bash
@@ -84,6 +109,8 @@ ITEM_PIPELINES = {
 
 ## 🧪 Testing
 
+### Local Testing
+
 ```bash
 # Run all tests
 uv run python -m pytest
@@ -92,7 +119,21 @@ uv run python -m pytest
 uv run python -m pytest --cov=lexicon --cov-report=html
 ```
 
+### Docker Testing (Cross-Platform)
+
+```bash
+# Test across Python versions (3.9, 3.10, 3.11)
+./scripts/docker-test.sh build
+./scripts/docker-test.sh test
+
+# Test specific components
+./scripts/docker-test.sh test-models
+./scripts/docker-test.sh test-database
+```
+
 **Test Coverage**: 89.5% (77/86 tests passing)
+
+> 📋 **For detailed Docker testing**, see [DOCKER.md](DOCKER.md) for cross-platform testing instructions.
 
 ## 📚 API Reference
 

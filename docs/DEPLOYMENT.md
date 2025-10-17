@@ -4,20 +4,52 @@
 
 This guide covers deploying the Lexicon STF data scraper in various environments, from development to production.
 
+## ⚖️ Legal and Compliance Considerations
+
+### Important Legal Notice
+
+Before deploying this scraper, please be aware of the following legal considerations:
+
+-   **robots.txt is not legally binding** - The STF portal's robots.txt file is a voluntary protocol with no legal force
+-   **No Terms of Service found** - Despite extensive searching, the STF portal does not have publicly accessible terms of service
+-   **Public data only** - This scraper only accesses publicly available case information
+-   **Respectful scraping** - The scraper implements delays and follows ethical practices
+
+### STF Portal robots.txt Analysis
+
+```
+User-agent: *
+Disallow: /processos
+
+User-agent: AhrefsBot
+Disallow: /
+```
+
+The robots.txt disallows access to `/processos`, but this is not legally enforceable. The scraper accesses individual case pages through direct URLs, not the disallowed directory.
+
+### Ethical Scraping Practices
+
+The scraper implements several ethical practices:
+
+-   **Download delays**: 2-second delays between requests
+-   **Concurrent request limits**: Maximum 1 concurrent request
+-   **Error handling**: Graceful handling of rate limits and errors
+-   **Respectful user agent**: Identifies itself as a research tool
+
 ## 📋 Prerequisites
 
 ### System Requirements
 
-- **Python**: 3.10 or higher
-- **Memory**: Minimum 2GB RAM (4GB+ recommended)
-- **Storage**: 10GB+ free space for database and logs
-- **Network**: Stable internet connection for web scraping
+-   **Python**: 3.10 or higher
+-   **Memory**: Minimum 2GB RAM (4GB+ recommended)
+-   **Storage**: 10GB+ free space for database and logs
+-   **Network**: Stable internet connection for web scraping
 
 ### Software Dependencies
 
-- **Chrome/Chromium**: Latest stable version
-- **ChromeDriver**: Compatible with Chrome version
-- **SQLite**: 3.8+ (usually included with Python)
+-   **Chrome/Chromium**: Latest stable version
+-   **ChromeDriver**: Compatible with Chrome version
+-   **SQLite**: 3.8+ (usually included with Python)
 
 ### Python Dependencies
 
@@ -197,41 +229,41 @@ EXPORT_FORMATS = os.getenv("EXPORT_FORMAT", "csv").split(",")
 ```yaml
 # Database configuration
 database:
-  path: "lexicon.db"
-  backup_enabled: true
-  backup_interval: 3600
-  max_connections: 10
+    path: 'lexicon.db'
+    backup_enabled: true
+    backup_interval: 3600
+    max_connections: 10
 
 # Scraping configuration
 scraping:
-  download_delay: 2.0
-  concurrent_requests: 1
-  autothrottle_enabled: true
-  retry_times: 3
-  retry_http_codes: [403, 408, 429, 500, 502, 503, 504]
+    download_delay: 2.0
+    concurrent_requests: 1
+    autothrottle_enabled: true
+    retry_times: 3
+    retry_http_codes: [403, 408, 429, 500, 502, 503, 504]
 
 # Selenium configuration
 selenium:
-  driver_name: "chrome"
-  headless: true
-  window_size: "920,600"
-  arguments:
-    - "--incognito"
-    - "--no-sandbox"
-    - "--disable-dev-shm-usage"
+    driver_name: 'chrome'
+    headless: true
+    window_size: '920,600'
+    arguments:
+        - '--incognito'
+        - '--no-sandbox'
+        - '--disable-dev-shm-usage'
 
 # Logging configuration
 logging:
-  level: "INFO"
-  file: "lexicon.log"
-  max_size: "10MB"
-  backup_count: 5
+    level: 'INFO'
+    file: 'lexicon.log'
+    max_size: '10MB'
+    backup_count: 5
 
 # Output configuration
 output:
-  directory: "output"
-  formats: ["csv", "json"]
-  compression: false
+    directory: 'output'
+    formats: ['csv', 'json']
+    compression: false
 ```
 
 ## 🏗 Deployment Environments
@@ -306,30 +338,30 @@ sudo systemctl status lexicon
 version: '3.8'
 
 services:
-  lexicon:
-    build: .
-    container_name: lexicon
-    restart: unless-stopped
-    volumes:
-      - ./data:/app/data
-      - ./logs:/app/logs
-      - ./config:/app/config
-    environment:
-      - DATABASE_PATH=/app/data/lexicon.db
-      - LOG_LEVEL=INFO
-      - OUTPUT_DIR=/app/data/output
-    command: python -m lexicon.core --config /app/config/config.yaml
+    lexicon:
+        build: .
+        container_name: lexicon
+        restart: unless-stopped
+        volumes:
+            - ./data:/app/data
+            - ./logs:/app/logs
+            - ./config:/app/config
+        environment:
+            - DATABASE_PATH=/app/data/lexicon.db
+            - LOG_LEVEL=INFO
+            - OUTPUT_DIR=/app/data/output
+        command: python -m lexicon.core --config /app/config/config.yaml
 
-  nginx:
-    image: nginx:alpine
-    container_name: lexicon-nginx
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-      - ./data:/var/www/html
-    depends_on:
-      - lexicon
+    nginx:
+        image: nginx:alpine
+        container_name: lexicon-nginx
+        ports:
+            - '80:80'
+        volumes:
+            - ./nginx.conf:/etc/nginx/nginx.conf
+            - ./data:/var/www/html
+        depends_on:
+            - lexicon
 ```
 
 ## 📊 Monitoring and Logging
@@ -344,11 +376,11 @@ from pathlib import Path
 
 def setup_logging(log_level="INFO", log_file="lexicon.log"):
     """Setup logging configuration"""
-    
+
     # Create logs directory
     log_dir = Path("logs")
     log_dir.mkdir(exist_ok=True)
-    
+
     # Configure logging
     logging.basicConfig(
         level=getattr(logging, log_level.upper()),
@@ -362,7 +394,7 @@ def setup_logging(log_level="INFO", log_file="lexicon.log"):
             logging.StreamHandler()
         ]
     )
-    
+
     return logging.getLogger("lexicon")
 ```
 
@@ -390,11 +422,11 @@ def check_selenium_health():
     try:
         from selenium import webdriver
         from selenium.webdriver.chrome.options import Options
-        
+
         options = Options()
         options.add_argument("--headless")
         options.add_argument("--no-sandbox")
-        
+
         driver = webdriver.Chrome(options=options)
         driver.get("https://www.google.com")
         driver.quit()
@@ -469,14 +501,14 @@ def encrypt_database(db_path, key_path):
     """Encrypt database file"""
     with open(key_path, 'rb') as f:
         key = f.read()
-    
+
     fernet = Fernet(key)
-    
+
     with open(db_path, 'rb') as f:
         data = f.read()
-    
+
     encrypted_data = fernet.encrypt(data)
-    
+
     with open(f"{db_path}.encrypted", 'wb') as f:
         f.write(encrypted_data)
 
@@ -484,14 +516,14 @@ def decrypt_database(encrypted_path, key_path, output_path):
     """Decrypt database file"""
     with open(key_path, 'rb') as f:
         key = f.read()
-    
+
     fernet = Fernet(key)
-    
+
     with open(encrypted_path, 'rb') as f:
         encrypted_data = f.read()
-    
+
     decrypted_data = fernet.decrypt(encrypted_data)
-    
+
     with open(output_path, 'wb') as f:
         f.write(decrypted_data)
 ```
@@ -524,14 +556,14 @@ def optimize_memory():
     """Optimize memory usage"""
     # Force garbage collection
     gc.collect()
-    
+
     # Monitor memory usage
     process = psutil.Process(os.getpid())
     memory_info = process.memory_info()
-    
+
     # Log memory usage
     logger.info(f"Memory usage: {memory_info.rss / 1024 / 1024:.2f} MB")
-    
+
     # Cleanup if memory usage is high
     if memory_info.rss > 1024 * 1024 * 1024:  # 1GB
         logger.warning("High memory usage detected, forcing cleanup")

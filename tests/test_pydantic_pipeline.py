@@ -2,6 +2,8 @@
 Unit tests for Pydantic validation pipeline
 """
 
+import os
+import tempfile
 from unittest.mock import Mock, patch
 
 import pytest
@@ -18,7 +20,15 @@ class TestPydanticValidationPipeline:
         """Set up test fixtures"""
         self.pipeline = PydanticValidationPipeline()
         self.mock_spider = Mock()
-        self.mock_spider.settings = {"DATABASE_PATH": "test.db"}
+        # Use temporary database for testing
+        self.temp_db = tempfile.NamedTemporaryFile(suffix=".db", delete=False)
+        self.temp_db.close()
+        self.mock_spider.settings = {"DATABASE_PATH": self.temp_db.name}
+
+    def teardown_method(self):
+        """Clean up test fixtures"""
+        if os.path.exists(self.temp_db.name):
+            os.unlink(self.temp_db.name)
 
     def test_pipeline_initialization(self):
         """Test pipeline can be initialized"""

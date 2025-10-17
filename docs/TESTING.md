@@ -8,14 +8,14 @@ Lexicon uses a comprehensive testing strategy with 86+ unit tests covering all m
 
 **Current Status**: 89.5% pass rate (77/86 tests passing)
 
-| Component | Tests | Status | Coverage |
-|-----------|-------|--------|----------|
-| **Models** | 24 | ✅ 100% | Pydantic validation |
-| **Types** | 20 | ✅ 100% | Type validation |
-| **Database** | 13 | ✅ 100% | Database operations |
-| **Pipeline** | 8 | ⚠️ 12.5% | Data validation |
-| **Spider Integration** | 8 | ⚠️ 87.5% | Web scraping |
-| **Edge Cases** | 13 | ✅ 100% | Error handling |
+| Component              | Tests | Status   | Coverage            |
+| ---------------------- | ----- | -------- | ------------------- |
+| **Models**             | 24    | ✅ 100%  | Pydantic validation |
+| **Types**              | 20    | ✅ 100%  | Type validation     |
+| **Database**           | 13    | ✅ 100%  | Database operations |
+| **Pipeline**           | 8     | ⚠️ 12.5% | Data validation     |
+| **Spider Integration** | 8     | ⚠️ 87.5% | Web scraping        |
+| **Edge Cases**         | 13    | ✅ 100%  | Error handling      |
 
 ## 🚀 Running Tests
 
@@ -104,14 +104,16 @@ def test_field_mapping_validation(self): # Test field mapping
 **Purpose**: Test Pydantic model validation and data integrity
 
 **Key Test Areas**:
-- Model creation and validation
-- Field type checking
-- Enum validation
-- Field mapping (scraping → database)
-- Type conversion (lists → JSON, booleans → integers)
-- Error handling and validation messages
+
+-   Model creation and validation
+-   Field type checking
+-   Enum validation
+-   Field mapping (scraping → database)
+-   Type conversion (lists → JSON, booleans → integers)
+-   Error handling and validation messages
 
 **Example Tests**:
+
 ```python
 def test_minimal_valid_case(self):
     """Test creating a minimal valid case"""
@@ -142,12 +144,14 @@ def test_liminar_conversion(self):
 **Purpose**: Test type validation utilities and case type management
 
 **Key Test Areas**:
-- Case type validation
-- Enum consistency
-- Error message generation
-- Edge cases and error handling
+
+-   Case type validation
+-   Enum consistency
+-   Error message generation
+-   Edge cases and error handling
 
 **Example Tests**:
+
 ```python
 def test_valid_case_types(self):
     """Test that all valid case types are accepted"""
@@ -159,7 +163,7 @@ def test_invalid_case_type_validation(self):
     """Test validation of invalid case types"""
     with pytest.raises(ValidationError) as exc_info:
         CaseTypeValidator(classe="INVALID")
-    
+
     error_msg = str(exc_info.value)
     assert "Invalid case type" in error_msg
     assert "ADI" in error_msg
@@ -170,24 +174,50 @@ def test_invalid_case_type_validation(self):
 **Purpose**: Test database operations and data persistence
 
 **Key Test Areas**:
-- Database initialization
-- Data saving and retrieval
-- Foreign key relationships
-- Data integrity constraints
-- Unicode and special character handling
+
+-   Database initialization
+-   Data saving and retrieval
+-   Foreign key relationships
+-   Data integrity constraints
+-   Unicode and special character handling
 
 **Example Tests**:
+
 ```python
 def test_database_initialization(self):
     """Test database initialization with proper schema"""
-    init_database("test.db")
-    # Verify tables exist and have correct structure
+    # Use temporary database for testing
+    import tempfile
+    import os
+
+    temp_db = tempfile.NamedTemporaryFile(suffix=".db", delete=False)
+    temp_db.close()
+
+    try:
+        init_database(temp_db.name)
+        # Verify tables exist and have correct structure
+    finally:
+        # Clean up temporary database
+        if os.path.exists(temp_db.name):
+            os.unlink(temp_db.name)
 
 def test_save_processo_data(self):
     """Test saving processo data to database"""
-    data = sample_processo_data()
-    success = save_processo_data("test.db", data)
-    assert success is True
+    # Use temporary database for testing
+    import tempfile
+    import os
+
+    temp_db = tempfile.NamedTemporaryFile(suffix=".db", delete=False)
+    temp_db.close()
+
+    try:
+        data = sample_processo_data()
+        success = save_processo_data(temp_db.name, data)
+        assert success is True
+    finally:
+        # Clean up temporary database
+        if os.path.exists(temp_db.name):
+            os.unlink(temp_db.name)
 ```
 
 ### 4. Pipeline Tests (`test_pydantic_pipeline.py`)
@@ -195,27 +225,29 @@ def test_save_processo_data(self):
 **Purpose**: Test data validation pipeline
 
 **Key Test Areas**:
-- Pipeline initialization
-- Data validation flow
-- Error handling
-- Database integration
-- Field mapping validation
+
+-   Pipeline initialization
+-   Data validation flow
+-   Error handling
+-   Database integration
+-   Field mapping validation
 
 **Example Tests**:
+
 ```python
 def test_valid_item_processing(self, mock_save):
     """Test processing a valid item"""
     mock_save.return_value = True
-    
+
     item_data = {
         "processo_id": 123,
         "incidente": 456,
         "classe": "ADI",
     }
-    
+
     with patch("lexicon.pydantic_pipeline.ItemAdapter") as mock_adapter:
         mock_adapter.return_value = item_data
-        
+
         result = self.pipeline.process_item(mock_item, self.mock_spider)
         assert result == mock_item
         mock_save.assert_called_once()
@@ -226,13 +258,15 @@ def test_valid_item_processing(self, mock_save):
 **Purpose**: Test web scraping integration
 
 **Key Test Areas**:
-- Spider initialization
-- Request generation
-- Data extraction
-- Error handling (CAPTCHA, 403, 502)
-- Selenium integration
+
+-   Spider initialization
+-   Request generation
+-   Data extraction
+-   Error handling (CAPTCHA, 403, 502)
+-   Selenium integration
 
 **Example Tests**:
+
 ```python
 def test_spider_initialization(self):
     """Test spider initialization with Pydantic integration"""
@@ -274,10 +308,10 @@ def test_get_element_by_id(self):
     mock_element = Mock()
     mock_element.get_attribute.return_value = "test_value"
     mock_driver.find_element.return_value = mock_element
-    
+
     with patch("lexicon.spiders.stf.WebDriverWait") as mock_wait:
         mock_wait.return_value.until.return_value = None
-        
+
         result = self.spider.get_element_by_id(mock_driver, "test_id")
         assert result == "test_value"
 ```
@@ -316,10 +350,10 @@ def test_edge_cases(self):
     """Test edge cases and error conditions"""
     # Test None input
     assert is_valid_case_type(None) is False
-    
+
     # Test empty string
     assert is_valid_case_type("") is False
-    
+
     # Test whitespace strings
     assert is_valid_case_type(" ") is False
 ```
@@ -364,22 +398,22 @@ uv run python -m pytest -m "not slow" -v
 
 ### Coverage Goals
 
-- **Overall Coverage**: > 80%
-- **Model Coverage**: > 95%
-- **Pipeline Coverage**: > 85%
-- **Database Coverage**: > 90%
+-   **Overall Coverage**: > 80%
+-   **Model Coverage**: > 95%
+-   **Pipeline Coverage**: > 85%
+-   **Database Coverage**: > 90%
 
 ### Performance Benchmarks
 
-- **Model Validation**: < 10ms per case
-- **Database Operations**: < 100ms per batch
-- **Pipeline Processing**: < 50ms per item
+-   **Model Validation**: < 10ms per case
+-   **Database Operations**: < 100ms per batch
+-   **Pipeline Processing**: < 50ms per item
 
 ### Quality Metrics
 
-- **Test Reliability**: > 95% pass rate
-- **Error Detection**: 100% of known issues covered
-- **Edge Case Coverage**: > 90% of edge cases tested
+-   **Test Reliability**: > 95% pass rate
+-   **Error Detection**: 100% of known issues covered
+-   **Edge Case Coverage**: > 90% of edge cases tested
 
 ## 🔧 Continuous Integration
 
@@ -389,16 +423,16 @@ uv run python -m pytest -m "not slow" -v
 name: Tests
 on: [push, pull_request]
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-      - run: uv sync
-      - run: uv run python -m pytest --cov=lexicon --cov-report=xml
-      - uses: codecov/codecov-action@v3
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - uses: actions/setup-python@v4
+              with:
+                  python-version: '3.10'
+            - run: uv sync
+            - run: uv run python -m pytest --cov=lexicon --cov-report=xml
+            - uses: codecov/codecov-action@v3
 ```
 
 ### Pre-commit Hooks
@@ -406,14 +440,14 @@ jobs:
 ```yaml
 # .pre-commit-config.yaml
 repos:
-  - repo: local
-    hooks:
-      - id: pytest
-        name: pytest
-        entry: uv run python -m pytest
-        language: system
-        pass_filenames: false
-        always_run: true
+    - repo: local
+      hooks:
+          - id: pytest
+            name: pytest
+            entry: uv run python -m pytest
+            language: system
+            pass_filenames: false
+            always_run: true
 ```
 
 ## 🚀 Best Practices

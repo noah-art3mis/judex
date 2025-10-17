@@ -2,6 +2,8 @@
 Unit tests for spider integration with Pydantic
 """
 
+import os
+import tempfile
 from unittest.mock import MagicMock, Mock, patch
 
 import pytest
@@ -24,6 +26,14 @@ class TestStfSpiderIntegration:
             skip_existing=False,
             retry_failed=False,
         )
+        # Use temporary database for testing
+        self.temp_db = tempfile.NamedTemporaryFile(suffix=".db", delete=False)
+        self.temp_db.close()
+
+    def teardown_method(self):
+        """Clean up test fixtures"""
+        if os.path.exists(self.temp_db.name):
+            os.unlink(self.temp_db.name)
 
     def test_spider_initialization(self):
         """Test spider initialization with Pydantic integration"""
@@ -59,7 +69,7 @@ class TestStfSpiderIntegration:
         mock_failed.return_value = {456}
 
         # Mock settings
-        self.spider.settings = {"DATABASE_PATH": "test.db"}
+        self.spider.settings = {"DATABASE_PATH": self.temp_db.name}
 
         requests = list(self.spider.start_requests())
 
@@ -78,7 +88,7 @@ class TestStfSpiderIntegration:
         mock_failed.return_value = set()
 
         # Mock settings
-        self.spider.settings = {"DATABASE_PATH": "test.db"}
+        self.spider.settings = {"DATABASE_PATH": self.temp_db.name}
         self.spider.skip_existing = True
 
         requests = list(self.spider.start_requests())
@@ -95,7 +105,7 @@ class TestStfSpiderIntegration:
         mock_failed.return_value = {123}
 
         # Mock settings
-        self.spider.settings = {"DATABASE_PATH": "test.db"}
+        self.spider.settings = {"DATABASE_PATH": self.temp_db.name}
         self.spider.retry_failed = True
 
         requests = list(self.spider.start_requests())

@@ -1,0 +1,89 @@
+version: '3.8'
+
+services:
+    # Linux testing environment
+    lexicon-linux:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: lexicon:linux
+        container_name: lexicon-linux-test
+        environment:
+            - PLATFORM=linux
+            - PYTHONPATH=/app
+        volumes:
+            - .:/app
+            - ./output:/app/output
+        command:
+            [
+                'uv',
+                'run',
+                'python',
+                '-m',
+                'pytest',
+                'tests/',
+                '-v',
+                '--tb=short',
+            ]
+        networks:
+            - lexicon-network
+
+    # Development environment with live reload
+    lexicon-dev:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: lexicon:dev
+        container_name: lexicon-dev
+        environment:
+            - PLATFORM=linux
+            - PYTHONPATH=/app
+            - PYTHONUNBUFFERED=1
+        volumes:
+            - .:/app
+            - ./output:/app/output
+            - ./logs:/app/logs
+        command: ['uv', 'run', 'python', '-m', 'lexicon.core']
+        networks:
+            - lexicon-network
+        stdin_open: true
+        tty: true
+
+    # Testing with specific Python versions
+    lexicon-python39:
+        build:
+            context: .
+            dockerfile: Dockerfile.python39
+        image: lexicon:python39
+        container_name: lexicon-python39-test
+        environment:
+            - PLATFORM=linux
+            - PYTHONPATH=/app
+        volumes:
+            - .:/app
+        command: ['python', '-m', 'pytest', 'tests/', '-v']
+        networks:
+            - lexicon-network
+
+    lexicon-python311:
+        build:
+            context: .
+            dockerfile: Dockerfile.python311
+        image: lexicon:python311
+        container_name: lexicon-python311-test
+        environment:
+            - PLATFORM=linux
+            - PYTHONPATH=/app
+        volumes:
+            - .:/app
+        command: ['python', '-m', 'pytest', 'tests/', '-v']
+        networks:
+            - lexicon-network
+
+networks:
+    lexicon-network:
+        driver: bridge
+
+volumes:
+    output:
+    logs:

@@ -12,3 +12,7 @@ wheels/
 #
 notes/*
 .scrapy/*
+
+# Docker
+.docker/
+docker-compose.override.yml
