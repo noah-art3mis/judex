@@ -22,12 +22,14 @@ WORKDIR /app
 COPY pyproject.toml ./
 COPY uv.lock* ./
 
-# Install uv and dependencies
+# Install uv
 RUN pip install uv
-RUN uv sync --frozen
 
-# Copy source code
+# Copy source code BEFORE installing dependencies
 COPY . .
+
+# Install dependencies and the package
+RUN uv sync --frozen
 
 # Install the package in development mode
 RUN uv pip install -e .
