@@ -5,6 +5,13 @@ from collections.abc import Iterator
 
 import scrapy
 from bs4 import BeautifulSoup
+from scrapy.http import Response
+from scrapy_selenium import SeleniumRequest
+from selenium.webdriver.common.by import By
+from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
+
 from judex.database import get_existing_processo_ids, get_failed_processo_ids
 from judex.extract import (
     extract_andamentos,
@@ -28,12 +35,6 @@ from judex.extract import (
 )
 from judex.items import STFCaseItem
 from judex.types import validate_case_type
-from scrapy.http import Response
-from scrapy_selenium import SeleniumRequest
-from selenium.webdriver.common.by import By
-from selenium.webdriver.remote.webdriver import WebDriver
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.wait import WebDriverWait
 
 
 class StfSpider(scrapy.Spider):
@@ -343,35 +344,3 @@ class StfSpider(scrapy.Spider):
             item[key] = value
 
         yield item
-
-    # def parse(self, response: Response) -> Iterator[STFCaseItem]:
-    #     # Parse HTML content
-    #     soup = BeautifulSoup(response.text, "html.parser")
-
-    #     # Create STF case item
-    #     item = STFCaseItem()
-
-    #     # ids
-    #     item["processo_id"] = response.meta["numero"]
-    #     item["incidente"] = extract_incidente(soup)
-    #     item["numero_unico"] = extract_numero_unico(soup)
-
-    #     # classificacao
-    #     item["classe"] = extract_classe(soup)
-    #     item["tipo_processo"] = extract_tipo_processo(soup)
-
-    #     # detalhes
-    #     item["origem"] = extract_origem(soup)
-    #     item["relator"] = extract_relator(soup)
-    #     item["liminar"] = extract_liminar(soup)
-    #     item["data_protocolo"] = extract_data_protocolo(soup)
-    #     item["origem_orgao"] = extract_origem_orgao(soup)
-    #     item["autor1"] = extract_autor1(soup)
-    #     item["assuntos"] = extract_assuntos(soup)
-
-    #     # metadados
-    #     item["status"] = response.status
-    #     # Don't store large HTML content to avoid memory issues
-    #     item["extraido"] = datetime.datetime.now().isoformat() + "Z"
-
-    #     yield item
