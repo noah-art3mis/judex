@@ -1,159 +1,132 @@
-import argparse
 import json
-import sys
+from pathlib import Path
+from typing import List, Optional
+
+import typer
+from rich import print
 
 from judex.core import JudexScraper
+from judex.strategies import SpiderStrategyFactory
+
+# Create Typer app
+app = typer.Typer(
+    name="judex",
+    help="Judex - Batedor de processos",
+    add_completion=False,
+)
 
 
-def main():
-    parser = argparse.ArgumentParser(
-        prog="judex",
-        description="Judex Legal Case Scraper - Scrape legal cases from STF",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-Examples:
-  judex -c ADI -p 987 -o json
-  judex -c ADI -p 987 988 989 -o json csv
-  judex -c ADI -p 987 -o jsonlines --output-path ./data --verbose
-  judex -c ADI -p 987 -o json jsonlines csv
-        """,
-    )
+@app.command()
+def batedores():
+    """Listar os batedores disponíveis"""
+    strategies = SpiderStrategyFactory.list_strategies()
+    print("Batedores disponíveis:")
+    for strategy in strategies:
+        print(f"  - {strategy}")
 
-    # Required arguments with short names
-    parser.add_argument(
-        "-c",
+
+@app.command()
+def scrape(
+    classe: str = typer.Option(
+        ...,
         "--classe",
-        required=True,
-        help="The class of the process to scrape (e.g., ADI, ADPF, ACI, etc.)",
-    )
-
-    parser.add_argument(
-        "-p",
+        "-c",
+        help="A classe do processo para raspar (ex: ADI, ADPF, ACI, etc.)",
+    ),
+    processos: List[int] = typer.Option(
+        ...,
         "--processos",
-        nargs="+",
-        type=int,
-        required=True,
-        help="The process numbers to scrape (can specify multiple)",
-    )
-
-    parser.add_argument(
+        "-p",
+        help="Os números dos processos para raspar (pode especificar múltiplos)",
+    ),
+    salvar_como: List[str] = typer.Option(
+        ...,
+        "--salvar-como",
         "-o",
-        "--output",
-        nargs="+",
-        choices=["json", "csv", "sql", "jsonlines"],
-        required=True,
-        help="Persistence types to use: json, csv, sql, jsonlines (required)",
-    )
-
-    # Optional arguments
-    parser.add_argument(
-        "--scraper-kind",
-        default="stf",
-        choices=["stf"],
-        help="The kind of scraper to use (default: stf)",
-    )
-
-    parser.add_argument(
+        help="Tipos de persistência para usar (obrigatório)",
+    ),
+    scraper_kind: str = typer.Option(
+        "stf",
+        "--scraper",
+        help="O tipo de raspador a usar (padrão: stf)",
+    ),
+    output_path: Path = typer.Option(
+        Path("judex_output"),
         "--output-path",
-        default="judex_output",
-        help="The path to the output directory (default: judex_output)",
-    )
-
-    parser.add_argument(
+        help="O caminho para o diretório de saída (padrão: judex_output)",
+    ),
+    verbose: bool = typer.Option(
+        False, "--verbose", "-v", help="Habilitar logging verboso"
+    ),
+    save_to_db: bool = typer.Option(
+        False,
         "--save-to-db",
-        default=False,
-        help="Whether to save to sqlite database (default: false)",
-    )
-
-    parser.add_argument(
-        "--db-path", help="Path to the database file (default: auto-generated)"
-    )
-
-    parser.add_argument(
+        help="Se deve salvar no banco de dados sqlite (padrão: false)",
+    ),
+    db_path: Optional[Path] = typer.Option(
+        None,
+        "--db-path",
+        help="Caminho para o arquivo do banco de dados (padrão: auto-gerado)",
+    ),
+    custom_name: Optional[str] = typer.Option(
+        None,
         "--custom-name",
-        help="Custom name for output files (default: classe + processo)",
-    )
-
-    parser.add_argument(
-        "--skip-existing",
-        type=lambda x: x.lower() in ["true", "1", "yes", "on"],
-        default=True,
-        help="Whether to skip existing processes (default: true)",
-    )
-
-    parser.add_argument(
-        "--retry-failed",
-        type=lambda x: x.lower() in ["true", "1", "yes", "on"],
-        default=True,
-        help="Whether to retry failed processes (default: true)",
-    )
-
-    parser.add_argument(
+        help="Nome personalizado para arquivos de saída (padrão: classe + processo)",
+    ),
+    skip_existing: bool = typer.Option(
+        True,
+        "--skip-existing/--no-skip-existing",
+        help="Se deve pular processos existentes (padrão: true)",
+    ),
+    retry_failed: bool = typer.Option(
+        True,
+        "--retry-failed/--no-retry-failed",
+        help="Se deve tentar novamente processos que falharam (padrão: true)",
+    ),
+    max_age: int = typer.Option(
+        24,
         "--max-age",
-        type=int,
-        default=24,
-        help="Maximum age of processes to scrape in hours (default: 24)",
-    )
-
-    parser.add_argument(
-        "-v", "--verbose", action="store_true", help="Enable verbose logging"
-    )
-
-    parser.add_argument(
-        "--overwrite",
-        action="store_true",
-        help="Overwrite existing output files instead of appending (default: false)",
-    )
-
-    args = parser.parse_args()
-
-    # Validate JSON output requires overwrite flag (JSONLines uses append mode)
-    if "json" in args.output and not args.overwrite:
-        print(
-            "❌ Error: JSON output format requires the --overwrite flag.",
-            file=sys.stderr,
-        )
-        print(
-            "   If you want to append data instead of overwriting, use the 'jsonlines' format instead. )",
-            file=sys.stderr,
-        )
-        sys.exit(1)
-
+        help="Idade máxima dos processos para raspar em horas (padrão: 24)",
+    ),
+):
+    """Raspar casos jurídicos do STF"""
     try:
         # Convert process numbers to JSON string format expected by JudexScraper
-        processos_json = json.dumps(args.processos)
+        processos_json = json.dumps(processos)
 
         # Create and run the scraper
         scraper = JudexScraper(
-            classe=args.classe,
+            classe=classe,
             processos=processos_json,
-            scraper_kind=args.scraper_kind,
-            output_path=args.output_path,
-            salvar_como=args.output,
-            skip_existing=args.skip_existing,
-            retry_failed=args.retry_failed,
-            max_age_hours=args.max_age,
-            db_path=args.db_path,
-            custom_name=args.custom_name,
-            verbose=args.verbose,
-            overwrite=args.overwrite,
+            scraper_kind=scraper_kind,
+            output_path=str(output_path),
+            salvar_como=salvar_como,
+            skip_existing=skip_existing,
+            retry_failed=retry_failed,
+            max_age_hours=max_age,
+            db_path=str(db_path) if db_path else None,
+            custom_name=custom_name,
+            verbose=verbose,
         )
 
+        # Display startup information with rich formatting
         print(
-            f"🚀 Starting scraper for class '{args.classe}' with processes {args.processos}"
+            f"[bold green]🚀 Iniciando raspador para classe '{classe}' com processos {processos}[/bold green]"
         )
-        print(f"📁 Output directory: {args.output_path}")
-        print(f"💾 Output types: {', '.join(args.output)}")
-        print(f"💾 Save to SQL database: {args.save_to_db}")
+        print(f"[blue]📁 Diretório de saída: {output_path}[/blue]")
+        print(f"[blue]💾 Tipos de saída: {', '.join(salvar_como)}[/blue]")
+        print(f"[blue]💾 Salvar no banco SQL: {save_to_db}[/blue]")
 
         scraper.scrape()
 
-        print("✅ Scraping completed successfully!")
+        print(f"[blue]📁 Diretório de saída: {output_path}[/blue]")
+        print(f"[blue]💾 Tipos de saída: {', '.join(salvar_como)}[/blue]")
+        print("[bold green]✅ Raspagem concluída com sucesso![/bold green]")
 
     except Exception as e:
-        print(f"❌ Error: {e}", file=sys.stderr)
-        sys.exit(1)
+        print(f"[bold red]❌ Erro: {e}[/bold red]")
+        raise typer.Exit(1)
 
 
 if __name__ == "__main__":
-    main()
+    app()

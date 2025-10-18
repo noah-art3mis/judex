@@ -30,7 +30,7 @@ class TestE2ECLI:
 
     def test_cli_basic_usage(self):
         """Test basic CLI usage with minimal arguments"""
-        cmd = ["uv", "run", "main.py", "-c", "ADI", "-p", "1", "-o", "json", "--overwrite"]
+        cmd = ["uv", "run", "judex", "-c", "ADI", "-p", "1", "-o", "json"]
 
         # Run the command and capture output
         result = subprocess.run(
@@ -67,14 +67,13 @@ class TestE2ECLI:
         cmd = [
             "uv",
             "run",
-            "main.py",
+            "judex",
             "-c",
             "ADI",
             "-p",
             "1",
             "-o",
             "json",
-            "--overwrite",
             "--output-path",
             self.output_dir,
         ]
@@ -108,14 +107,13 @@ class TestE2ECLI:
         cmd = [
             "uv",
             "run",
-            "main.py",
+            "judex",
             "-c",
             "ADI",
             "-p",
             "1",
             "-o",
             "json",
-            "--overwrite",
             "--output-path",
             self.output_dir,
         ]
@@ -141,7 +139,7 @@ class TestE2ECLI:
         cmd = [
             "uv",
             "run",
-            "main.py",
+            "judex",
             "-c",
             "ADI",
             "-p",
@@ -149,7 +147,6 @@ class TestE2ECLI:
             "12",
             "-o",
             "json",
-            "--overwrite",
             "--output-path",
             self.output_dir,
         ]
@@ -179,14 +176,14 @@ class TestE2ECLI:
         cmd = [
             "uv",
             "run",
-            "main.py",
+            "judex",
             "-c",
             "ADI",
             "-p",
             "1",
             "-o",
             "json",
-            "--overwrite",
+,
             "--verbose",
             "--output-path",
             self.output_dir,
@@ -210,7 +207,7 @@ class TestE2ECLI:
 
     def test_cli_error_handling_invalid_class(self):
         """Test CLI error handling with invalid case class"""
-        cmd = ["uv", "run", "main.py", "-c", "INVALID_CLASS", "-p", "1", "-o", "json", "--overwrite"]
+        cmd = ["uv", "run", "judex", "-c", "INVALID_CLASS", "-p", "1", "-o", "json", ]
 
         result = subprocess.run(
             cmd,
@@ -229,7 +226,7 @@ class TestE2ECLI:
         cmd = [
             "uv",
             "run",
-            "main.py",
+            "judex",
             "-c",
             "ADI",
             "-p",
@@ -251,7 +248,7 @@ class TestE2ECLI:
 
     def test_cli_help_output(self):
         """Test CLI help output"""
-        cmd = ["uv", "run", "main.py", "--help"]
+        cmd = ["uv", "run", "judex", "--help"]
 
         result = subprocess.run(
             cmd,
@@ -273,9 +270,9 @@ class TestE2ECLI:
 
         for case_type, processes in test_cases:
             cmd = (
-                ["uv", "run", "main.py", "-c", case_type, "-p"]
+                ["uv", "run", "judex", "-c", case_type, "-p"]
                 + [str(p) for p in processes]
-                + ["-o", "json", "--overwrite", "--output-path", self.output_dir]
+                + ["-o", "json", , "--output-path", self.output_dir]
             )
 
             result = subprocess.run(
@@ -315,14 +312,13 @@ class TestE2ECLIWithRealData:
         cmd = [
             "uv",
             "run",
-            "main.py",
+            "judex",
             "-c",
             "ADI",
             "-p",
             "1",
             "-o",
             "json",
-            "--overwrite",
             "--output-path",
             self.output_dir,
         ]
@@ -367,7 +363,7 @@ class TestE2ECLIWithRealData:
         cmd = [
             "uv",
             "run",
-            "main.py",
+            "judex",
             "-c",
             "ADI",
             "-p",

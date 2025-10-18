@@ -9,6 +9,7 @@ from scrapy.utils.project import get_project_settings
 
 from .exceptions import JudexScraperError, ValidationError
 from .spiders.stf import StfSpider
+from .strategies import SpiderStrategyFactory
 
 logger = logging.getLogger(__name__)
 
@@ -116,17 +117,25 @@ class JudexScraper:
             return None
 
     def _select_spider(self) -> Spider:
-        """Select and initialize the appropriate spider using instance variables"""
-        if self.scraper_kind == "stf":
-            return StfSpider(
-                self.classe,
-                self.processos,
+        """Select and initialize the appropriate spider using strategy pattern"""
+        try:
+            strategy = SpiderStrategyFactory.get_strategy(self.scraper_kind)
+
+            # Validate inputs using strategy
+            strategy.validate_inputs(self.classe, self.processos)
+
+            # Create spider using strategy
+            return strategy.create_spider(
+                classe=self.classe,
+                processos=self.processos,
                 skip_existing=self.skip_existing,
                 retry_failed=self.retry_failed,
                 max_age_hours=self.max_age_hours,
             )
-        else:
-            raise ValueError(f"Invalid spider kind: {self.scraper_kind}")
+        except Exception as e:
+            raise ValueError(
+                f"Failed to create spider for strategy '{self.scraper_kind}': {e}"
+            ) from e
 
     def scrape(self) -> None:
         """Scrape the processes using instance variables"""
@@ -237,3 +246,7 @@ class JudexScraper:
             "verbose": self.verbose,
             "process_numbers": self.process_numbers,
         }
+
+    def get_available_strategies(self) -> list[str]:
+        """Get list of available spider strategies"""
+        return SpiderStrategyFactory.list_strategies()

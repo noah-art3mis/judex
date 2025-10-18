@@ -15,7 +15,9 @@ dependencies = [
     "beautifulsoup4",
     "pandas",
     "sqlalchemy",
+    "typer[all]>=0.9.0",
     "uv-build>=0.9.3",
+    "pytest>=8.3.5",
 ]
 
 [project.scripts]
