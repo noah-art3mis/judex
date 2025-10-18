@@ -30,7 +30,7 @@ class TestE2ECLI:
 
     def test_cli_basic_usage(self):
         """Test basic CLI usage with minimal arguments"""
-        cmd = ["uv", "run", "judex", "-c", "ADI", "-p", "1", "-o", "json"]
+        cmd = ["uv", "run", "judex", "-c", "ADI", "-p", "1", "-s", "json"]
 
         # Run the command and capture output
         result = subprocess.run(
@@ -72,7 +72,7 @@ class TestE2ECLI:
             "ADI",
             "-p",
             "1",
-            "-o",
+            "-s",
             "json",
             "--output-path",
             self.output_dir,
@@ -112,7 +112,7 @@ class TestE2ECLI:
             "ADI",
             "-p",
             "1",
-            "-o",
+            "-s",
             "json",
             "--output-path",
             self.output_dir,
@@ -145,7 +145,7 @@ class TestE2ECLI:
             "-p",
             "1",
             "12",
-            "-o",
+            "-s",
             "json",
             "--output-path",
             self.output_dir,
@@ -181,9 +181,8 @@ class TestE2ECLI:
             "ADI",
             "-p",
             "1",
-            "-o",
+            "-s",
             "json",
-,
             "--verbose",
             "--output-path",
             self.output_dir,
@@ -207,7 +206,17 @@ class TestE2ECLI:
 
     def test_cli_error_handling_invalid_class(self):
         """Test CLI error handling with invalid case class"""
-        cmd = ["uv", "run", "judex", "-c", "INVALID_CLASS", "-p", "1", "-o", "json", ]
+        cmd = [
+            "uv",
+            "run",
+            "judex",
+            "-c",
+            "INVALID_CLASS",
+            "-p",
+            "1",
+            "-s",
+            "json",
+        ]
 
         result = subprocess.run(
             cmd,
@@ -231,7 +240,7 @@ class TestE2ECLI:
             "ADI",
             "-p",
             "1",
-            # Missing -o argument
+            # Missing -s argument
         ]
 
         result = subprocess.run(
@@ -261,7 +270,10 @@ class TestE2ECLI:
         assert result.returncode == 0
         assert "Judex Legal Case Scraper" in result.stdout
         assert "-c CLASSE, --classe CLASSE" in result.stdout
-        assert "-p PROCESSOS [PROCESSOS ...], --processos PROCESSOS [PROCESSOS ...]" in result.stdout
+        assert (
+            "-p PROCESSOS [PROCESSOS ...], --processos PROCESSOS [PROCESSOS ...]"
+            in result.stdout
+        )
         assert "Examples:" in result.stdout
 
     def test_cli_with_different_case_types(self):
@@ -272,7 +284,7 @@ class TestE2ECLI:
             cmd = (
                 ["uv", "run", "judex", "-c", case_type, "-p"]
                 + [str(p) for p in processes]
-                + ["-o", "json", , "--output-path", self.output_dir]
+                + ["-s", "json", "--output-path", self.output_dir]
             )
 
             result = subprocess.run(
@@ -317,7 +329,7 @@ class TestE2ECLIWithRealData:
             "ADI",
             "-p",
             "1",
-            "-o",
+            "-s",
             "json",
             "--output-path",
             self.output_dir,
@@ -368,7 +380,7 @@ class TestE2ECLIWithRealData:
             "ADI",
             "-p",
             "1",
-            "-o",
+            "-s",
             "sql",
             "--output-path",
             self.output_dir,

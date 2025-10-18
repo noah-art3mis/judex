@@ -170,7 +170,7 @@ class STFCaseModel(BaseModel):
     numero_unico: str | None = None
 
     # Classification
-    classe: str  # Allow strings for backward compatibility
+    classe: CaseType | str  # Allow both enum and string for backward compatibility
     tipo_processo: ProcessType | None = None
     liminar: int | None = None  # Database stores as INT (0 or 1)
     relator: str | None = None

@@ -371,35 +371,35 @@ class TestOutputFileIntegration:
             assert "csv" in error_msg
             assert "sql" in error_msg
 
-    def test_jsonlines_persistence_type_validation(self):
-        """Test that jsonlines persistence type is accepted"""
+    def test_jsonl_persistence_type_validation(self):
+        """Test that jsonl persistence type is accepted"""
         with tempfile.TemporaryDirectory() as temp_dir:
             output_path = os.path.join(temp_dir, "test_output")
 
-            # Test jsonlines persistence type - should NOT raise exception
+            # Test jsonl persistence type - should NOT raise exception
             scraper = JudexScraper(
                 classe="ADI",
                 processos="[123]",
-                salvar_como=["jsonlines"],
+                salvar_como=["jsonl"],
                 output_path=output_path,
             )
 
-            assert scraper.salvar_como == ["jsonlines"]
+            assert scraper.salvar_como == ["jsonl"]
 
-    def test_jsonlines_combined_with_other_formats(self):
-        """Test that jsonlines can be combined with other formats"""
+    def test_jsonl_combined_with_other_formats(self):
+        """Test that jsonl can be combined with other formats"""
         with tempfile.TemporaryDirectory() as temp_dir:
             output_path = os.path.join(temp_dir, "test_output")
 
-            # Test jsonlines combined with other formats
+            # Test jsonl combined with other formats
             scraper = JudexScraper(
                 classe="ADI",
                 processos="[123]",
-                salvar_como=["json", "jsonlines", "csv"],
+                salvar_como=["json", "jsonl", "csv"],
                 output_path=output_path,
             )
 
-            assert "jsonlines" in scraper.salvar_como
+            assert "jsonl" in scraper.salvar_como
             assert "json" in scraper.salvar_como
             assert "csv" in scraper.salvar_como
 
@@ -419,17 +419,17 @@ class TestOutputFileIntegration:
 class TestJSONLinesFormatRegistration:
     """Test JSONLines format registration and configuration"""
 
-    def test_jsonlines_format_is_registered(self):
-        """Test that jsonlines format is registered in the output registry"""
-        jsonlines_config = OutputFormatRegistry.get_format("jsonlines")
+    def test_jsonl_format_is_registered(self):
+        """Test that jsonl format is registered in the output registry"""
+        jsonl_config = OutputFormatRegistry.get_format("jsonl")
 
-        assert jsonlines_config is not None
-        assert jsonlines_config["format"] == "jsonlines"
-        assert jsonlines_config["extension"] == "jsonl"
-        assert jsonlines_config["use_feeds"] is True
+        assert jsonl_config is not None
+        assert jsonl_config["format"] == "jsonl"
+        assert jsonl_config["extension"] == "jsonl"
+        assert jsonl_config["use_feeds"] is True
 
-    def test_jsonlines_feed_configuration(self):
-        """Test that jsonlines format generates correct feed configuration"""
+    def test_jsonl_feed_configuration(self):
+        """Test that jsonl format generates correct feed configuration"""
         with tempfile.TemporaryDirectory() as temp_dir:
             output_path = os.path.join(temp_dir, "test_output")
 
@@ -437,12 +437,12 @@ class TestJSONLinesFormatRegistration:
                 output_path=output_path,
                 classe="ADI",
                 custom_name=None,
-                requested_formats=["jsonlines"],
+                requested_formats=["jsonl"],
                 process_numbers=[123, 456],
                 overwrite=False,
             )
 
-            # Should have one feed for jsonlines
+            # Should have one feed for jsonl
             assert len(feeds) == 1
 
             # Check the feed path and configuration
@@ -451,11 +451,11 @@ class TestJSONLinesFormatRegistration:
             assert "ADI_123_456" in feed_path
 
             feed_config = list(feeds.values())[0]
-            assert feed_config["format"] == "jsonlines"
+            assert feed_config["format"] == "jsonl"
             assert feed_config["use_feeds"] is True
 
-    def test_jsonlines_with_custom_name(self):
-        """Test jsonlines format with custom filename"""
+    def test_jsonl_with_custom_name(self):
+        """Test jsonl format with custom filename"""
         with tempfile.TemporaryDirectory() as temp_dir:
             output_path = os.path.join(temp_dir, "test_output")
 
@@ -463,12 +463,12 @@ class TestJSONLinesFormatRegistration:
                 output_path=output_path,
                 classe="ADI",
                 custom_name="custom_cases",
-                requested_formats=["jsonlines"],
+                requested_formats=["jsonl"],
                 process_numbers=None,
                 overwrite=False,
             )
 
-            # Should have one feed for jsonlines
+            # Should have one feed for jsonl
             assert len(feeds) == 1
 
             # Check the feed path includes custom name

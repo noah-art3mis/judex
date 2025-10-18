@@ -8,7 +8,6 @@ from scrapy.spiders import Spider
 from scrapy.utils.project import get_project_settings
 
 from .exceptions import JudexScraperError, ValidationError
-from .spiders.stf import StfSpider
 from .strategies import SpiderStrategyFactory
 
 logger = logging.getLogger(__name__)
@@ -96,7 +95,7 @@ class JudexScraper:
                 value=[type(item).__name__ for item in salvar_como],
             )
 
-        valid_formats = {"json", "csv", "sql", "jsonlines"}
+        valid_formats = {"json", "csv", "sql", "jsonl"}
         invalid_formats = [item for item in salvar_como if item not in valid_formats]
         if invalid_formats:
             raise ValidationError(
@@ -175,7 +174,7 @@ class JudexScraper:
             )
 
     def select_persistence(self) -> None:
-        """Configure persistence pipelines and output files using instance variables"""
+        """Configure persistence pipelines using instance variables"""
         from judex.output_registry import OutputFormatRegistry
 
         pipelines = self.settings.get("ITEM_PIPELINES", {})
@@ -183,17 +182,8 @@ class JudexScraper:
         # Setup environment
         os.makedirs(self.output_path, exist_ok=True)
 
-        # Configure FEEDS for formats that use it (JSON, CSV)
-        self._configure_feeds(OutputFormatRegistry)
-
-        # Configure pipelines for formats that don't use FEEDS (SQL)
-        self._configure_pipelines(pipelines, OutputFormatRegistry)
-
-        self.settings.set("ITEM_PIPELINES", pipelines)
-
-    def _configure_feeds(self, OutputFormatRegistry) -> None:
-        """Configure FEEDS for JSON and CSV formats"""
-        feeds = OutputFormatRegistry.configure_feeds(
+        # Configure pipelines based on requested formats
+        pipeline_configs = OutputFormatRegistry.configure_pipelines(
             self.output_path,
             self.classe,
             self.custom_name,
@@ -201,24 +191,23 @@ class JudexScraper:
             self.process_numbers,
             self.overwrite,
         )
-        if feeds:
-            self.settings.set("FEEDS", feeds)
 
-    def _configure_pipelines(self, pipelines: dict, OutputFormatRegistry) -> None:
-        """Configure pipelines for formats that don't use FEEDS (SQL)"""
+        # Add pipelines to settings
+        pipelines.update(pipeline_configs)
+
+        # Set configuration for pipelines
+        self.settings.set("OUTPUT_PATH", self.output_path)
+        self.settings.set("CLASSE", self.classe)
+        self.settings.set("CUSTOM_NAME", self.custom_name)
+        self.settings.set("PROCESS_NUMBERS", self.process_numbers)
+        self.settings.set("OVERWRITE", self.overwrite)
+
+        # Handle special cases
         for format_name in self.salvar_como:
-            format_config = OutputFormatRegistry.get_format(format_name)
-            if not format_config or format_config.get("use_feeds", True):
-                continue
+            if format_name == "sql":
+                self._configure_database_path()
 
-            pipeline_class = format_config.get("pipeline")
-            priority = format_config.get("priority", 500)
-
-            if pipeline_class:
-                pipelines[pipeline_class] = priority
-
-                if format_name == "sql":
-                    self._configure_database_path()
+        self.settings.set("ITEM_PIPELINES", pipelines)
 
     def _configure_database_path(self) -> None:
         """Configure database path for SQL persistence"""

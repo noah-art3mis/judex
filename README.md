@@ -4,7 +4,7 @@ Ferramenta para extração automatizada de dados do portal do STF.
 
 Utiliza scrapy-selenium. Tem performance de ~4 processos por minuto. Possui suporte a JSON, JSONLines, CSV e SQLite.
 
-## Uso simples via scrapy (Linux)
+## Uso via CLI (Recomendado)
 
 ```bash
 # instalar uv
@@ -19,20 +19,41 @@ git clone https://github.com/noah-art3mis/judex
 # baixar dependências
 cd judex && uv sync
 
-# scrape
-uv run scrapy crawl stf -a classe=ADI -a processos=[4916,4917] -O output.json
+# instalar em modo editável
+uv pip install -e .
+
+# usar o CLI
+uv run judex scrape --classe ADI --processo 4916 --processo 4917 --salvar-como json
 ```
 
--   _classe_: classe dos processos de interesse (e.g., ADI, AR, etc.)
--   _processo_: número dos processos. Na CLI, devem ter o formato `[165,568]`, sem espaço.
--   _salvar_como_: permite alterar como os dados são armazenados. Pode ser `json`, `jsonlines`, `csv` e/ou `sql`.
+### Parâmetros do CLI
 
-Para outros parâmetros, ver `settings.py` ou a documentação do scrapy. Configurações relevantes do scrapy incluem:
+-   `-c, --classe`: classe do processo de interesse (e.g., ADI, AR, etc.)
+-   `-p, --processo`: número do processo (pode especificar múltiplos)
+-   `-s, --salvar-como`: tipo de persistência (json, csv, jsonl, sql) - pode especificar múltiplos
 
-```json
-LOG_LEVEL = "DEBUG"
-HTTPCACHE_ENABLED = True
-AUTOTHROTTLE_ENABLED = True
+---
+
+-   `--output-path`: diretório de saída (padrão: judex_output)
+-   `--verbose`: habilitar logging verboso
+-   `--skip-existing`: pular processos existentes (padrão: true)
+-   `--retry-failed`: tentar novamente processos que falharam (padrão: true)
+-   `--max-age`: idade máxima dos processos em horas (padrão: 24)
+
+### Exemplos de uso
+
+```bash
+# Uso simples
+uv run judex scrape -c ADI -p 4916 -s csv
+
+# Múltiplos processos
+uv run judex scrape -c ADI -p 4916 -p 4917 -p 4918 -s json
+
+# Múltiplos formatos de saída
+uv run judex scrape -c ADPF -p 123 -s json -s sql
+
+# Com opções avançadas
+uv run judex scrape -c ADI -p 123 --output-path /tmp/output --verbose --max-age 48
 ```
 
 ### 2. Como biblioteca
@@ -41,7 +62,7 @@ AUTOTHROTTLE_ENABLED = True
 pip install judex
 ```
 
-The main entry point is the `JudexScraper` class, which takes a class, a list of cases, and a persistence method ('sql', 'json', 'jsonlines' and/or 'csv').
+O ponto de entrada principal é a classe `JudexScraper`, que recebe uma classe, uma lista de processos e um método de persistência ('sql', 'json', 'jsonl' e/ou 'csv').
 
 ```python
 from judex import judexScraper
@@ -54,11 +75,20 @@ scraper = JudexScraper(
 scraper.scrape()
 ```
 
+## Uso avançado via scrapy
+
+```bash
+# scrape
+uv run scrapy crawl stf -a classe=ADI -a processos=[4916,4917] -O output.json
+```
+
+Esta forma permite aplicar outros parâmetros do scrapy, como LOG_LEVEL, HTTPCACHE_ENABLED, AUTOTHROTTLE_ENABLED, etc.
+
 ## Resultado
 
-Os dados em json ficam alinhandos, enquanto em sql eles são normalizados nas seguintes tabelas:
+Os dados em json ficam aninhados, enquanto em sql eles são normalizados nas seguintes tabelas:
 
--   `processos`: Informações gerais do processo (número único, classe, relator, etc.)
+-   `processo`: Informações gerais do processo (número único, classe, relator, etc.)
 -   `partes`: Partes envolvidas no processo (autores, réus, etc.)
 -   `andamentos`: Movimentações processuais
 -   `decisoes`: Decisões judiciais com links para os documentos
@@ -66,13 +96,17 @@ Os dados em json ficam alinhandos, enquanto em sql eles são normalizados nas se
 -   `recursos`: Recursos interpostos
 -   `pautas`: Pautas de julgamento
 
+Os dados tem o seguinte formato:
+
 ```python
 
 class Processo:
+    # ids
     numero_unico: str
     incidente: int
     processo_id: int
 
+    # detalhes
     classe: str
     tipo_processo: str
     liminar: bool
@@ -83,75 +117,19 @@ class Processo:
     autor1: str
     assuntos: str
 
+    # listas
+    partes: list
+    andamento: list
+    decisao: list 
+    deslocamento: list 
+    peticao: list 
+    recursos: list 
+
+    # metadados
     html: str
     error_message: str
     created_at: datetime
     updated_at: datetime
-
-class Partes:
-    id: int
-    numero_unico: str
-    index: int
-    tipo: str
-    nome: str
-
-class Andamento:
-    id: int
-    numero_unico: str
-    index_num: int
-    data: str
-    nome: str
-    complemento: str
-    julgador: str
-
-class Decisao:
-    id: int
-    numero_unico: str
-    index_num: int
-    data: str
-    nome: str
-    julgador: str
-    complemento: str
-    link: str
-
-class Deslocamento:
-    id: int
-    numero_unico: str
-    index_num: int
-    data_enviado: str
-    data_recebido: str
-    enviado_por: str
-    recebido_por: str
-    guia: str
-
-class Peticao:
-    id: int
-    numero_unico: str
-    index_num: int
-    data: str
-    tipo: str
-    autor: str
-    recebido_data: str
-    recebido_por: str
-
-class Recurso:
-    id: int
-    numero_unico: str
-    index_num: int
-    data: str
-    nome: str
-    julgador: str
-    complemento: str
-    autor: str
-
-class Pauta:
-    id: int
-    numero_unico: str
-    index_num: int
-    data: str
-    nome: str
-    complemento: str
-    relator: str
 ```
 
 ## Solução de Problemas
@@ -166,16 +144,16 @@ which chromedriver
 sudo apt-get install chromium-chromedriver
 ```
 
-### Espaço na lista de processos
+### Erro no uso via scrapy
 
 **scrapy: error: running 'scrapy crawl' with more than one spider is not supported**
 
 ```bash
 # NO
-scrapy crawl stf -a classe=ADPF -a processos=[165, 568]
+scrapy crawl stf -a classe=ADPF -a processo=[165, 568]
 
 # YES
-scrapy crawl stf -a classe=ADPF -a processos=[165,568]
+scrapy crawl stf -a classe=ADPF -a processo=[165,568]
 ```
 
 ## Considerações Legais e Éticas
@@ -188,6 +166,10 @@ Este projeto faz scraping de dados publicamente disponíveis do portal do STF. P
 -   **Scraping respeitoso** - Implementa delays e segue práticas éticas para evitar sobrecarga do servidor
 
 ## Changelog
+
+### v1.1.0
+
+-   CLI usando Typer
 
 ### v1.0.0
 

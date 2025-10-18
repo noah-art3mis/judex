@@ -25,7 +25,7 @@ def run_scraper(classe: str, incidente: int, output_path: str) -> Dict[str, Any]
         classe,
         "-p",
         str(incidente),
-        "-o",
+        "-s",
         "json",
         "--output-path",
         output_path,

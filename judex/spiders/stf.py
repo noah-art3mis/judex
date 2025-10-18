@@ -193,164 +193,62 @@ class StfSpider(scrapy.Spider):
             self.logger.error(f"Could not extract incidente number from {response.url}")
             return
 
+        # Track overall extraction timing
+        extraction_start_time = time.time()
+        self.crawler.stats.inc_value("extraction/started")
+
         # Create a dictionary for Pydantic validation
         case_data = {}
 
         # ids
         case_data["processo_id"] = response.meta["numero"]
         case_data["incidente"] = int(incidente)
-        # Try optimized extractors first
-        try:
-            case_data["numero_unico"] = extract_numero_unico(soup)
-        except Exception as e:
-            self.logger.warning(
-                f"Could not extract numero_unico with extract function: {e}"
-            )
-            case_data["numero_unico"] = None
+        # All extractions now handle their own errors and timing via decorators
+        case_data["numero_unico"] = extract_numero_unico(soup)
+        case_data["classe"] = extract_classe(soup) or self.classe
+        case_data["liminar"] = extract_liminar(self, driver, soup)
+        case_data["relator"] = extract_relator(soup)
+        case_data["tipo_processo"] = extract_tipo_processo(soup)
+        case_data["origem"] = extract_origem(self, driver, soup)
+        case_data["data_protocolo"] = extract_data_protocolo(self, driver, soup)
+        case_data["origem_orgao"] = extract_origem_orgao(self, driver, soup)
+        case_data["autor1"] = extract_autor1(self, driver, soup)
+        case_data["assuntos"] = extract_assuntos(self, driver, soup)
 
+        # Wait for AJAX content to load dynamically
         try:
-            case_data["classe"] = extract_classe(soup) or self.classe
-        except Exception as e:
-            self.logger.warning(f"Could not extract classe with extract function: {e}")
-            case_data["classe"] = self.classe
-
-        try:
-            case_data["liminar"] = extract_liminar(self, driver, soup)
-        except Exception as e:
-            self.logger.warning(f"Could not extract liminar: {e}")
-            case_data["liminar"] = []
-
-        try:
-            case_data["relator"] = extract_relator(soup)
-        except Exception as e:
-            self.logger.warning(f"Could not extract relator with extract function: {e}")
-            case_data["relator"] = None
-
-        try:
-            case_data["tipo_processo"] = extract_tipo_processo(soup)
-        except Exception as e:
-            self.logger.warning(
-                f"Could not extract tipo_processo with extract function: {e}"
-            )
-            # Fallback to page source detection
-            if "Processo Físico" in page_html:
-                case_data["tipo_processo"] = "Físico"
-            elif "Processo Eletrônico" in page_html:
-                case_data["tipo_processo"] = "Eletrônico"
-            else:
-                case_data["tipo_processo"] = None
-
-        try:
-            case_data["origem"] = extract_origem(self, driver, soup)
-        except Exception as e:
-            self.logger.warning(f"Could not extract origem with extract function: {e}")
-            # Fallback to Selenium
-            try:
-                origem_element = driver.find_element(By.ID, "descricao-procedencia")
-                case_data["origem"] = self.clean_text(origem_element.text)
-            except Exception as e2:
-                self.logger.warning(
-                    f"Could not extract origem with Selenium fallback: {e2}"
-                )
-                case_data["origem"] = None
-
-        try:
-            case_data["data_protocolo"] = extract_data_protocolo(self, driver, soup)
-        except Exception as e:
-            self.logger.warning(
-                f"Could not extract data_protocolo with extract function: {e}"
-            )
-            case_data["data_protocolo"] = None
-
-        try:
-            case_data["origem_orgao"] = extract_origem_orgao(self, driver, soup)
-        except Exception as e:
-            self.logger.warning(
-                f"Could not extract origem_orgao with extract function: {e}"
-            )
-            case_data["origem_orgao"] = None
-
-        try:
-            case_data["autor1"] = extract_autor1(self, driver, soup)
-        except Exception as e:
-            self.logger.warning(f"Could not extract autor1: {e}")
-            case_data["autor1"] = None
-
-        try:
-            case_data["assuntos"] = extract_assuntos(self, driver, soup)
-        except Exception as e:
-            self.logger.warning(
-                f"Could not extract assuntos with extract function: {e}"
-            )
-            case_data["assuntos"] = []
-
-        # Try to extract AJAX content using extract functions
-        try:
-            # Wait for partes data to load dynamically
             Wait = WebDriverWait(driver, 10)
-            try:
-                # Wait for either the partes section to have content or a timeout
-                Wait.until(
-                    lambda d: d.find_element(By.ID, "resumo-partes")
-                    .get_attribute("innerHTML")
-                    .strip()
-                    != ""
-                    or d.find_element(By.ID, "resumo-partes")
-                    .get_attribute("innerHTML")
-                    .count("processo-partes")
-                    > 0
-                )
-            except Exception:
-                # If the wait fails, continue anyway - the extract function will handle empty data
-                pass
+            Wait.until(
+                lambda d: d.find_element(By.ID, "resumo-partes")
+                .get_attribute("innerHTML")
+                .strip()
+                != ""
+                or d.find_element(By.ID, "resumo-partes")
+                .get_attribute("innerHTML")
+                .count("processo-partes")
+                > 0
+            )
+        except Exception:
+            # If the wait fails, continue anyway - the extract function will handle empty data
+            pass
 
-            case_data["partes"] = extract_partes(self, driver, soup)
-        except Exception as e:
-            self.logger.warning(f"Could not extract partes: {e}")
-            case_data["partes"] = []
+        # All AJAX extractions now handle their own errors and timing via decorators
+        case_data["partes"] = extract_partes(self, driver, soup)
+        case_data["andamentos"] = extract_andamentos(self, driver, soup)
+        case_data["decisoes"] = extract_decisoes(self, driver, soup)
+        case_data["deslocamentos"] = extract_deslocamentos(self, driver, soup)
+        case_data["peticoes"] = extract_peticoes(self, driver, soup)
+        case_data["recursos"] = extract_recursos(self, driver, soup)
+        case_data["pautas"] = extract_pautas(self, driver, soup)
+        case_data["sessao"] = extract_sessao(self, driver, soup)
 
-        try:
-            case_data["andamentos"] = extract_andamentos(self, driver, soup)
-        except Exception as e:
-            self.logger.warning(f"Could not extract andamentos: {e}")
-            case_data["andamentos"] = []
+        # Track total extraction time
+        total_extraction_time = time.time() - extraction_start_time
+        self.crawler.stats.inc_value("extraction/completed")
+        self.crawler.stats.set_value("extraction/total_duration", total_extraction_time)
 
-        try:
-            case_data["decisoes"] = extract_decisoes(self, driver, soup)
-        except Exception as e:
-            self.logger.warning(f"Could not extract decisoes: {e}")
-            case_data["decisoes"] = []
-
-        try:
-            case_data["deslocamentos"] = extract_deslocamentos(self, driver, soup)
-        except Exception as e:
-            self.logger.warning(f"Could not extract deslocamentos: {e}")
-            case_data["deslocamentos"] = []
-
-        # Try to extract remaining AJAX content using extract functions
-        try:
-            case_data["peticoes"] = extract_peticoes(self, driver, soup)
-        except Exception as e:
-            self.logger.warning(f"Could not extract peticoes: {e}")
-            case_data["peticoes"] = []
-
-        try:
-            case_data["recursos"] = extract_recursos(self, driver, soup)
-        except Exception as e:
-            self.logger.warning(f"Could not extract recursos: {e}")
-            case_data["recursos"] = []
-
-        try:
-            case_data["pautas"] = extract_pautas(self, driver, soup)
-        except Exception as e:
-            self.logger.warning(f"Could not extract pautas: {e}")
-            case_data["pautas"] = []
-
-        try:
-            case_data["sessao"] = extract_sessao(self, driver, soup)
-        except Exception as e:
-            self.logger.warning(f"Could not extract sessao: {e}")
-            case_data["sessao"] = {}
+        # Log total timing
+        self.logger.info(f"Total extraction time: {total_extraction_time:.3f}s")
 
         # metadados
         case_data["status"] = response.status

@@ -1,3 +1,7 @@
+import functools
+import time
+from typing import Any, Callable
+
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
@@ -5,6 +9,130 @@ from selenium.webdriver.remote.webdriver import WebDriver
 # Optimized extractors for STF HTML structure
 
 
+def track_extraction_timing(func: Callable) -> Callable:
+    """Decorator to track extraction function timing using Scrapy stats"""
+
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        # Find spider instance from args
+        spider = None
+        for arg in args:
+            if hasattr(arg, "crawler") and hasattr(arg, "logger"):
+                spider = arg
+                break
+
+        if not spider:
+            # If no spider found, just run the function without timing/stats
+            return func(*args, **kwargs)
+
+        # Get function name for stats
+        func_name = func.__name__.replace("extract_", "")
+
+        # Track timing
+        start_time = time.time()
+        try:
+            result = func(*args, **kwargs)
+            duration = time.time() - start_time
+
+            # Update stats
+            if spider and hasattr(spider, "crawler") and spider.crawler:
+                spider.crawler.stats.inc_value(f"extraction/{func_name}/success")
+                spider.crawler.stats.set_value(
+                    f"extraction/{func_name}/duration", duration
+                )
+
+            # Log timing
+            if spider and hasattr(spider, "logger") and spider.logger:
+                spider.logger.info(f"{func_name} extraction: {duration:.3f}s")
+
+            return result
+
+        except Exception as e:
+            duration = time.time() - start_time
+
+            # Update stats
+            if spider and hasattr(spider, "crawler") and spider.crawler:
+                spider.crawler.stats.inc_value(f"extraction/{func_name}/failed")
+                spider.crawler.stats.set_value(
+                    f"extraction/{func_name}/duration", duration
+                )
+
+            # Log timing and error
+            if spider and hasattr(spider, "logger") and spider.logger:
+                spider.logger.warning(
+                    f"{func_name} extraction failed after {duration:.3f}s: {e}"
+                )
+
+            # Re-raise the exception
+            raise
+
+    return wrapper
+
+
+def handle_extraction_errors(
+    default_value: Any = None, log_errors: bool = True
+) -> Callable:
+    """
+    Decorator to handle extraction errors with consistent error handling and stats tracking
+
+    Args:
+        default_value: Value to return when extraction fails
+        log_errors: Whether to log errors (useful for debugging)
+    """
+
+    def decorator(func: Callable) -> Callable:
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            # Find spider instance from args
+            spider = None
+            for arg in args:
+                if hasattr(arg, "crawler") and hasattr(arg, "logger"):
+                    spider = arg
+                    break
+
+            if not spider:
+                # If no spider found, just run the function without error handling
+                return func(*args, **kwargs)
+
+            # Get function name for stats
+            func_name = func.__name__.replace("extract_", "")
+
+            try:
+                result = func(*args, **kwargs)
+
+                # Track success
+                if spider and hasattr(spider, "crawler") and spider.crawler:
+                    spider.crawler.stats.inc_value(f"extraction/{func_name}/success")
+
+                return result
+
+            except Exception as e:
+                # Track failure
+                if spider and hasattr(spider, "crawler") and spider.crawler:
+                    spider.crawler.stats.inc_value(f"extraction/{func_name}/failed")
+                    spider.crawler.stats.inc_value(
+                        f"extraction/{func_name}/error_count"
+                    )
+
+                # Log error if enabled
+                if (
+                    log_errors
+                    and spider
+                    and hasattr(spider, "logger")
+                    and spider.logger
+                ):
+                    spider.logger.warning(f"Could not extract {func_name}: {e}")
+
+                # Return default value instead of raising
+                return default_value
+
+        return wrapper
+
+    return decorator
+
+
+@track_extraction_timing
+@handle_extraction_errors(default_value=None, log_errors=True)
 def extract_numero_unico(soup) -> str | None:
     """Extract numero_unico from .processo-rotulo element"""
     el = soup.select_one(".processo-rotulo")
@@ -17,6 +145,8 @@ def extract_numero_unico(soup) -> str | None:
     return None
 
 
+@track_extraction_timing
+@handle_extraction_errors(default_value=None, log_errors=True)
 def extract_relator(soup) -> str | None:
     """Extract relator from .processo-dados elements"""
     for div in soup.select(".processo-dados"):
@@ -30,6 +160,8 @@ def extract_relator(soup) -> str | None:
     return None
 
 
+@track_extraction_timing
+@handle_extraction_errors(default_value=None, log_errors=True)
 def extract_tipo_processo(soup) -> str | None:
     """Extract tipo_processo from badge elements"""
     badges = [b.get_text(strip=True) for b in soup.select(".badge")]
@@ -41,6 +173,8 @@ def extract_tipo_processo(soup) -> str | None:
     return None
 
 
+@track_extraction_timing
+@handle_extraction_errors(default_value=None, log_errors=True)
 def extract_classe(soup) -> str | None:
     """Extract classe from .processo-dados elements"""
     for div in soup.select(".processo-dados"):
@@ -50,6 +184,8 @@ def extract_classe(soup) -> str | None:
     return None
 
 
+@track_extraction_timing
+@handle_extraction_errors(default_value=None, log_errors=True)
 def extract_incidente(soup) -> str | None:
     """Extract incidente from .processo-dados elements"""
     for div in soup.select(".processo-dados"):
@@ -59,6 +195,8 @@ def extract_incidente(soup) -> str | None:
     return None
 
 
+@track_extraction_timing
+@handle_extraction_errors(default_value=None, log_errors=True)
 def extract_origem(spider, driver: WebDriver, soup) -> str | None:
     """Extract origem from descricao-procedencia span"""
     try:
@@ -69,6 +207,8 @@ def extract_origem(spider, driver: WebDriver, soup) -> str | None:
         return None
 
 
+@track_extraction_timing
+@handle_extraction_errors(default_value=False, log_errors=True)
 def extract_liminar(spider, driver: WebDriver, soup: BeautifulSoup) -> bool:
     """Extract liminar from bg-danger elements and return True if any found"""
     try:
@@ -81,6 +221,8 @@ def extract_liminar(spider, driver: WebDriver, soup: BeautifulSoup) -> bool:
         return False
 
 
+@track_extraction_timing
+@handle_extraction_errors(default_value=None, log_errors=True)
 def extract_autor1(spider, driver: WebDriver, soup) -> str | None:
     """Extract autor1 using class selectors from backup"""
     try:
@@ -94,6 +236,8 @@ def extract_autor1(spider, driver: WebDriver, soup) -> str | None:
         return None
 
 
+@track_extraction_timing
+@handle_extraction_errors(default_value=[], log_errors=True)
 def extract_partes(spider, driver: WebDriver, soup) -> list:
     """Extract partes using updated CSS selectors for current STF website"""
     try:
@@ -148,6 +292,8 @@ def extract_partes(spider, driver: WebDriver, soup) -> list:
         return []
 
 
+@track_extraction_timing
+@handle_extraction_errors(default_value=None, log_errors=True)
 def extract_data_protocolo(spider, driver: WebDriver, soup) -> str | None:
     """Extract data_protocolo using XPath from backup and format as ISO date"""
     try:
@@ -178,6 +324,8 @@ def extract_data_protocolo(spider, driver: WebDriver, soup) -> str | None:
         return None
 
 
+@track_extraction_timing
+@handle_extraction_errors(default_value=None, log_errors=True)
 def extract_origem_orgao(spider, driver: WebDriver, soup) -> str | None:
     """Extract origem_orgao using XPath from backup"""
     try:
@@ -189,6 +337,8 @@ def extract_origem_orgao(spider, driver: WebDriver, soup) -> str | None:
         return None
 
 
+@track_extraction_timing
+@handle_extraction_errors(default_value=[], log_errors=True)
 def extract_assuntos(spider, driver: WebDriver, soup) -> list:
     """Extract assuntos using XPath from backup"""
     try:
@@ -206,6 +356,8 @@ def extract_assuntos(spider, driver: WebDriver, soup) -> list:
         return []
 
 
+@track_extraction_timing
+@handle_extraction_errors(default_value=[], log_errors=True)
 def extract_andamentos(spider, driver: WebDriver, soup) -> list:
     """Extract andamentos using class selectors from backup"""
     try:
@@ -249,6 +401,8 @@ def extract_andamentos(spider, driver: WebDriver, soup) -> list:
         return []
 
 
+@track_extraction_timing
+@handle_extraction_errors(default_value=[], log_errors=True)
 def extract_decisoes(spider, driver: WebDriver, soup) -> list:
     """Extract decisoes from andamento-julgador badge elements"""
     try:
@@ -323,6 +477,8 @@ def extract_decisoes(spider, driver: WebDriver, soup) -> list:
         return []
 
 
+@track_extraction_timing
+@handle_extraction_errors(default_value=[], log_errors=True)
 def extract_deslocamentos(spider, driver: WebDriver, soup) -> list:
     """Extract deslocamentos using XPath and class selectors from backup"""
     try:
@@ -440,6 +596,8 @@ def extract_deslocamentos(spider, driver: WebDriver, soup) -> list:
         return []
 
 
+@track_extraction_timing
+@handle_extraction_errors(default_value=[], log_errors=True)
 def extract_peticoes(spider, driver: WebDriver, soup) -> list:
     """Extract peticoes from AJAX-loaded content"""
     try:
@@ -515,6 +673,8 @@ def extract_peticoes(spider, driver: WebDriver, soup) -> list:
         return []
 
 
+@track_extraction_timing
+@handle_extraction_errors(default_value=[], log_errors=True)
 def extract_recursos(spider, driver: WebDriver, soup) -> list:
     """Extract recursos from andamentos that have julgador badges"""
     try:
@@ -599,6 +759,8 @@ def extract_recursos(spider, driver: WebDriver, soup) -> list:
         return []
 
 
+@track_extraction_timing
+@handle_extraction_errors(default_value=[], log_errors=True)
 def extract_pautas(spider, driver: WebDriver, soup) -> list:
     """Extract pautas from andamentos that have 'pauta' in their name"""
     try:
@@ -663,6 +825,8 @@ def extract_pautas(spider, driver: WebDriver, soup) -> list:
         return []
 
 
+@track_extraction_timing
+@handle_extraction_errors(default_value={}, log_errors=True)
 def extract_sessao(spider, driver: WebDriver, soup) -> dict:
     """Extract sessao from AJAX-loaded content"""
     try:

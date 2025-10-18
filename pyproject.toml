@@ -1,27 +1,24 @@
 [project]
 name = "judex"
-version = "0.1.0"
+version = "1.1.0"
 description = "Judex Legal Case Scraper - Scrape legal cases from STF"
-authors = [{name = "Your Name", email = "your.email@example.com"}]
+authors = [{name = "Gustavo Costa", email = "gustavo@arcos.org.br"}]
 readme = "README.md"
 requires-python = ">=3.8"
 dependencies = [
     "scrapy",
     "scrapy-selenium",
     "pydantic",
-    "lxml",
     "selenium",
     "requests",
     "beautifulsoup4",
     "pandas",
     "sqlalchemy",
     "typer[all]>=0.9.0",
-    "uv-build>=0.9.3",
-    "pytest>=8.3.5",
 ]
 
 [project.scripts]
-judex = "main:main"
+judex = "main:app"
 
 [build-system]
 requires = ["hatchling"]
@@ -29,3 +26,12 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["judex"]
+
+[dependency-groups]
+dev = [
+    "black>=24.8.0",
+    "mypy>=1.14.1",
+    "pytest>=8.3.5",
+    "ruff>=0.14.1",
+    "uv-build>=0.9.3",
+]
