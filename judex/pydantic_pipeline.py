@@ -22,7 +22,7 @@ class PydanticValidationPipeline:
         item_dict = dict(adapter)
 
         # Filter out metadata fields before validation
-        metadata_fields = {'_spider_name', '_scraped_at', '_item_count'}
+        metadata_fields = {"_spider_name", "_scraped_at", "_item_count"}
         filtered_dict = {k: v for k, v in item_dict.items() if k not in metadata_fields}
 
         try:
@@ -35,7 +35,7 @@ class PydanticValidationPipeline:
             # Clear the item and update with validated data only
             for key in list(item.keys()):
                 del item[key]
-            
+
             for key, value in validated_dict.items():
                 item[key] = value
 

@@ -14,7 +14,7 @@ dependencies = [
     "beautifulsoup4",
     "pandas",
     "sqlalchemy",
-    "typer[all]>=0.9.0",
+    "typer",
 ]
 
 [project.scripts]
