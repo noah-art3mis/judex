@@ -253,7 +253,9 @@ class STFCaseModel(BaseModel):
                 if isinstance(item, dict) and "_index" in item:
                     item = item.copy()
                     item["index"] = item.pop("_index")
-                processed_items.append(Parte(**item) if isinstance(item, dict) else item)
+                processed_items.append(
+                    Parte(**item) if isinstance(item, dict) else item
+                )
             return processed_items
         return v
 
@@ -266,7 +268,9 @@ class STFCaseModel(BaseModel):
                 if isinstance(item, dict) and "index" in item:
                     item = item.copy()
                     item["index_num"] = item.pop("index")
-                processed_items.append(Andamento(**item) if isinstance(item, dict) else item)
+                processed_items.append(
+                    Andamento(**item) if isinstance(item, dict) else item
+                )
             return processed_items
         return v
 
@@ -279,7 +283,9 @@ class STFCaseModel(BaseModel):
                 if isinstance(item, dict) and "index" in item:
                     item = item.copy()
                     item["index_num"] = item.pop("index")
-                processed_items.append(Decisao(**item) if isinstance(item, dict) else item)
+                processed_items.append(
+                    Decisao(**item) if isinstance(item, dict) else item
+                )
             return processed_items
         return v
 
@@ -292,7 +298,9 @@ class STFCaseModel(BaseModel):
                 if isinstance(item, dict) and "index" in item:
                     item = item.copy()
                     item["index_num"] = item.pop("index")
-                processed_items.append(Deslocamento(**item) if isinstance(item, dict) else item)
+                processed_items.append(
+                    Deslocamento(**item) if isinstance(item, dict) else item
+                )
             return processed_items
         return v
 
@@ -305,7 +313,9 @@ class STFCaseModel(BaseModel):
                 if isinstance(item, dict) and "index" in item:
                     item = item.copy()
                     item["index_num"] = item.pop("index")
-                processed_items.append(Peticao(**item) if isinstance(item, dict) else item)
+                processed_items.append(
+                    Peticao(**item) if isinstance(item, dict) else item
+                )
             return processed_items
         return v
 
@@ -318,7 +328,9 @@ class STFCaseModel(BaseModel):
                 if isinstance(item, dict) and "index" in item:
                     item = item.copy()
                     item["index_num"] = item.pop("index")
-                processed_items.append(Recurso(**item) if isinstance(item, dict) else item)
+                processed_items.append(
+                    Recurso(**item) if isinstance(item, dict) else item
+                )
             return processed_items
         return v
 
@@ -331,7 +343,9 @@ class STFCaseModel(BaseModel):
                 if isinstance(item, dict) and "index" in item:
                     item = item.copy()
                     item["index_num"] = item.pop("index")
-                processed_items.append(Pauta(**item) if isinstance(item, dict) else item)
+                processed_items.append(
+                    Pauta(**item) if isinstance(item, dict) else item
+                )
             return processed_items
         return v
 

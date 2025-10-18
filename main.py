@@ -59,7 +59,9 @@ Examples:
         help="Persistence types to use (default: json sql csv)",
     )
 
-    parser.add_argument("--db-path", help="Path to the database file (default: auto-generated)")
+    parser.add_argument(
+        "--db-path", help="Path to the database file (default: auto-generated)"
+    )
 
     parser.add_argument(
         "--skip-existing",
@@ -82,7 +84,9 @@ Examples:
         help="Maximum age of processes to scrape in hours (default: 24)",
     )
 
-    parser.add_argument("-v", "--verbose", action="store_true", help="Enable verbose logging")
+    parser.add_argument(
+        "-v", "--verbose", action="store_true", help="Enable verbose logging"
+    )
 
     args = parser.parse_args()
 
@@ -109,7 +113,9 @@ Examples:
             db_path=args.db_path,
         )
 
-        print(f"🚀 Starting scraper for class '{args.classe}' with processes {args.processos}")
+        print(
+            f"🚀 Starting scraper for class '{args.classe}' with processes {args.processos}"
+        )
         print(f"📁 Output directory: {args.output_path}")
         print(f"💾 Persistence types: {', '.join(args.persistence)}")
 

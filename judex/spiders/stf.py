@@ -82,7 +82,9 @@ class StfSpider(scrapy.Spider):
         try:
             self.numeros = json.loads(processos)
         except Exception as e:
-            raise ValueError("processos must be a JSON list, e.g., '[4916, 4917]'") from e
+            raise ValueError(
+                "processos must be a JSON list, e.g., '[4916, 4917]'"
+            ) from e
 
     async def start(self) -> AsyncGenerator[scrapy.Request, None]:
         base = "https://portal.stf.jus.br"
@@ -100,11 +102,17 @@ class StfSpider(scrapy.Spider):
                     existing_ids = get_existing_processo_ids(
                         db_path, self.classe, self.max_age_hours
                     )
-                    self.logger.info(f"Found {len(existing_ids)} existing processo IDs to skip")
+                    self.logger.info(
+                        f"Found {len(existing_ids)} existing processo IDs to skip"
+                    )
 
                 if self.retry_failed:
-                    failed_ids = get_failed_processo_ids(db_path, self.classe, self.max_age_hours)
-                    self.logger.info(f"Found {len(failed_ids)} failed processo IDs to retry")
+                    failed_ids = get_failed_processo_ids(
+                        db_path, self.classe, self.max_age_hours
+                    )
+                    self.logger.info(
+                        f"Found {len(failed_ids)} failed processo IDs to retry"
+                    )
 
             except Exception as e:
                 self.logger.warning(f"Could not check database for existing data: {e}")
@@ -131,9 +139,7 @@ class StfSpider(scrapy.Spider):
 
         # Generate requests only for numeros that need scraping
         for numero in numeros_to_scrape:
-            url = (
-                f"{base}/processos/listarProcessos.asp?classe={self.classe}&numeroProcesso={numero}"
-            )
+            url = f"{base}/processos/listarProcessos.asp?classe={self.classe}&numeroProcesso={numero}"
 
             yield SeleniumRequest(
                 url=url,
@@ -196,7 +202,9 @@ class StfSpider(scrapy.Spider):
         try:
             case_data["numero_unico"] = extract_numero_unico(soup)
         except Exception as e:
-            self.logger.warning(f"Could not extract numero_unico with extract function: {e}")
+            self.logger.warning(
+                f"Could not extract numero_unico with extract function: {e}"
+            )
             case_data["numero_unico"] = None
 
         try:
@@ -220,7 +228,9 @@ class StfSpider(scrapy.Spider):
         try:
             case_data["tipo_processo"] = extract_tipo_processo(soup)
         except Exception as e:
-            self.logger.warning(f"Could not extract tipo_processo with extract function: {e}")
+            self.logger.warning(
+                f"Could not extract tipo_processo with extract function: {e}"
+            )
             # Fallback to page source detection
             if "Processo Físico" in page_html:
                 case_data["tipo_processo"] = "Físico"
@@ -238,19 +248,25 @@ class StfSpider(scrapy.Spider):
                 origem_element = driver.find_element(By.ID, "descricao-procedencia")
                 case_data["origem"] = self.clean_text(origem_element.text)
             except Exception as e2:
-                self.logger.warning(f"Could not extract origem with Selenium fallback: {e2}")
+                self.logger.warning(
+                    f"Could not extract origem with Selenium fallback: {e2}"
+                )
                 case_data["origem"] = None
 
         try:
             case_data["data_protocolo"] = extract_data_protocolo(self, driver, soup)
         except Exception as e:
-            self.logger.warning(f"Could not extract data_protocolo with extract function: {e}")
+            self.logger.warning(
+                f"Could not extract data_protocolo with extract function: {e}"
+            )
             case_data["data_protocolo"] = None
 
         try:
             case_data["origem_orgao"] = extract_origem_orgao(self, driver, soup)
         except Exception as e:
-            self.logger.warning(f"Could not extract origem_orgao with extract function: {e}")
+            self.logger.warning(
+                f"Could not extract origem_orgao with extract function: {e}"
+            )
             case_data["origem_orgao"] = None
 
         try:
@@ -262,7 +278,9 @@ class StfSpider(scrapy.Spider):
         try:
             case_data["assuntos"] = extract_assuntos(self, driver, soup)
         except Exception as e:
-            self.logger.warning(f"Could not extract assuntos with extract function: {e}")
+            self.logger.warning(
+                f"Could not extract assuntos with extract function: {e}"
+            )
             case_data["assuntos"] = []
 
         # Try to extract AJAX content using extract functions

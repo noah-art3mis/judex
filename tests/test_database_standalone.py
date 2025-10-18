@@ -16,7 +16,9 @@ sys.path.insert(0, str(project_root))
 
 # Import database module directly
 
-spec = importlib.util.spec_from_file_location("database", project_root / "judex" / "database.py")
+spec = importlib.util.spec_from_file_location(
+    "database", project_root / "judex" / "database.py"
+)
 database = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(database)
 
@@ -66,7 +68,11 @@ def sample_processo_data():
             "DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Controle de Constitucionalidade"
         ],
         "partes_total": [
-            {"_index": 1, "tipo": "REQTE.(S)", "nome": "GOVERNADOR DO ESTADO DO RIO DE JANEIRO"},
+            {
+                "_index": 1,
+                "tipo": "REQTE.(S)",
+                "nome": "GOVERNADOR DO ESTADO DO RIO DE JANEIRO",
+            },
             {"_index": 2, "tipo": "REQDO.(S)", "nome": "PRESIDENTE DA REPÚBLICA"},
             {"_index": 3, "tipo": "REQDO.(S)", "nome": "CONGRESSO NACIONAL"},
         ],
@@ -186,7 +192,9 @@ class TestDatabaseStructure:
         processo_write(temp_db, sample_processo_data)
 
         # Retrieve complete data
-        complete_data = get_complete_processo(temp_db, sample_processo_data["numero_unico"])
+        complete_data = get_complete_processo(
+            temp_db, sample_processo_data["numero_unico"]
+        )
 
         # Verify main data
         assert complete_data["numero_unico"] == sample_processo_data["numero_unico"]
@@ -222,7 +230,9 @@ class TestNormalizedTables:
         """Test andamentos table functionality."""
         processo_write(temp_db, sample_processo_data)
 
-        andamentos = get_processo_andamentos(temp_db, sample_processo_data["numero_unico"])
+        andamentos = get_processo_andamentos(
+            temp_db, sample_processo_data["numero_unico"]
+        )
 
         assert len(andamentos) == 3
         assert andamentos[0]["data"] == "27/06/2025"
@@ -243,7 +253,9 @@ class TestNormalizedTables:
         """Test deslocamentos table functionality."""
         processo_write(temp_db, sample_processo_data)
 
-        deslocamentos = get_processo_deslocamentos(temp_db, sample_processo_data["numero_unico"])
+        deslocamentos = get_processo_deslocamentos(
+            temp_db, sample_processo_data["numero_unico"]
+        )
 
         assert len(deslocamentos) == 2
         assert deslocamentos[0]["enviado_por"] == "GERÊNCIA DE PROCESSOS"
@@ -402,7 +414,9 @@ class TestEdgeCases:
         assert result is True
 
         # Verify update
-        updated_complete = get_complete_processo(temp_db, sample_processo_data["numero_unico"])
+        updated_complete = get_complete_processo(
+            temp_db, sample_processo_data["numero_unico"]
+        )
         assert updated_complete["relator"] == "MIN. ALEXANDRE DE MORAES"
         assert len(updated_complete["andamentos"]) == 4  # Original 3 + 1 new
 
@@ -414,7 +428,9 @@ class TestForeignKeys:
         """Test that all normalized data has correct foreign key relationships."""
         processo_write(temp_db, sample_processo_data)
 
-        complete_data = get_complete_processo(temp_db, sample_processo_data["numero_unico"])
+        complete_data = get_complete_processo(
+            temp_db, sample_processo_data["numero_unico"]
+        )
 
         # Verify all normalized data has correct numero_unico
         for parte in complete_data["partes"]:

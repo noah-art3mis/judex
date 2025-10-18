@@ -115,7 +115,9 @@ class TestAndamento:
         }
         andamento = Andamento(**data)
         # The field mapping happens in the STFCaseModel validator, not in Andamento directly
-        assert andamento.index_num is None  # index_num is None because we passed 'index'
+        assert (
+            andamento.index_num is None
+        )  # index_num is None because we passed 'index'
         assert hasattr(andamento, "index")  # The original 'index' field should be there
 
 

@@ -17,9 +17,13 @@ class MetadataPipeline:
         adapter = ItemAdapter(item)
         adapter["_spider_name"] = spider.name
         adapter["_scraped_at"] = (
-            spider.crawler.stats.get_value("start_time") if spider.crawler.stats else None
+            spider.crawler.stats.get_value("start_time")
+            if spider.crawler.stats
+            else None
         )
         adapter["_item_count"] = (
-            spider.crawler.stats.get_value("item_scraped_count", 0) if spider.crawler.stats else 0
+            spider.crawler.stats.get_value("item_scraped_count", 0)
+            if spider.crawler.stats
+            else 0
         )
         return item

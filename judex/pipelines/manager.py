@@ -40,14 +40,20 @@ class PipelineManager:
         if db_path:
             settings.set("DATABASE_PATH", db_path)
         elif classe:
-            settings.set("DATABASE_PATH", os.path.join(output_path, f"{classe}_cases.db"))
+            settings.set(
+                "DATABASE_PATH", os.path.join(output_path, f"{classe}_cases.db")
+            )
         else:
             settings.set("DATABASE_PATH", os.path.join(output_path, "data.db"))
 
         # Set JSON and CSV output files
         if classe:
-            settings.set("JSON_OUTPUT_FILE", os.path.join(output_path, f"{classe}_cases.json"))
-            settings.set("CSV_OUTPUT_FILE", os.path.join(output_path, f"{classe}_processos.csv"))
+            settings.set(
+                "JSON_OUTPUT_FILE", os.path.join(output_path, f"{classe}_cases.json")
+            )
+            settings.set(
+                "CSV_OUTPUT_FILE", os.path.join(output_path, f"{classe}_processos.csv")
+            )
         else:
             settings.set("JSON_OUTPUT_FILE", os.path.join(output_path, "data.json"))
             settings.set("CSV_OUTPUT_FILE", os.path.join(output_path, "data.csv"))

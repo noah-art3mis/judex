@@ -32,7 +32,9 @@ class PydanticValidationPipeline:
             for key, value in validated_dict.items():
                 item[key] = value
 
-            logger.info(f"Validated case: {validated_dict.get('numero_unico', 'unknown')}")
+            logger.info(
+                f"Validated case: {validated_dict.get('numero_unico', 'unknown')}"
+            )
 
             return item
 
@@ -42,7 +44,9 @@ class PydanticValidationPipeline:
             )
             # Log the specific validation errors for debugging
             for error in e.errors():
-                logger.error(f"Validation error in field '{error['loc']}': {error['msg']}")
+                logger.error(
+                    f"Validation error in field '{error['loc']}': {error['msg']}"
+                )
 
             # You can choose to yield the item anyway or skip it
             # For now, we'll return the item to continue processing

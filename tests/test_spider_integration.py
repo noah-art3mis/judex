@@ -232,13 +232,25 @@ class TestStfSpiderIntegration:
         mock_origem_orgao.return_value = "STF"
         mock_autor1.return_value = "João Silva"
         mock_assuntos.return_value = ["Direito Constitucional"]
-        mock_partes.return_value = [{"_index": 1, "tipo": "Autor", "nome": "João Silva"}]
-        mock_andamentos.return_value = [{"index": 1, "data": "2023-01-01", "nome": "Distribuição"}]
-        mock_decisoes.return_value = [{"index": 1, "data": "2023-01-01", "nome": "Decisão 1"}]
+        mock_partes.return_value = [
+            {"_index": 1, "tipo": "Autor", "nome": "João Silva"}
+        ]
+        mock_andamentos.return_value = [
+            {"index": 1, "data": "2023-01-01", "nome": "Distribuição"}
+        ]
+        mock_decisoes.return_value = [
+            {"index": 1, "data": "2023-01-01", "nome": "Decisão 1"}
+        ]
         mock_deslocamentos.return_value = [{"index": 1, "data_enviado": "2023-01-01"}]
-        mock_peticoes.return_value = [{"index": 1, "data": "2023-01-01", "tipo": "Petição"}]
-        mock_recursos.return_value = [{"index": 1, "data": "2023-01-01", "nome": "Recurso"}]
-        mock_pautas.return_value = [{"index": 1, "data": "2023-01-01", "nome": "Julgamento"}]
+        mock_peticoes.return_value = [
+            {"index": 1, "data": "2023-01-01", "tipo": "Petição"}
+        ]
+        mock_recursos.return_value = [
+            {"index": 1, "data": "2023-01-01", "nome": "Recurso"}
+        ]
+        mock_pautas.return_value = [
+            {"index": 1, "data": "2023-01-01", "nome": "Julgamento"}
+        ]
         mock_sessao.return_value = {"data": "2023-01-01", "tipo": "Plenário"}
 
         # Create mock response

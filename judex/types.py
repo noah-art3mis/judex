@@ -69,14 +69,18 @@ class CaseTypeValidator(BaseModel):
             return CaseType(v)
         except ValueError:
             valid_types = [case_type.value for case_type in CaseType]
-            raise ValueError(f"Invalid case type '{v}'. Valid types are: {', '.join(valid_types)}")
+            raise ValueError(
+                f"Invalid case type '{v}'. Valid types are: {', '.join(valid_types)}"
+            )
 
 
 def validate_case_type(classe: str) -> str:
     """Validate that the case type is a valid STF case type"""
     if classe not in STF_CASE_TYPES:
         valid_types = sorted(STF_CASE_TYPES)
-        raise ValueError(f"Invalid case type '{classe}'. Valid types are: {', '.join(valid_types)}")
+        raise ValueError(
+            f"Invalid case type '{classe}'. Valid types are: {', '.join(valid_types)}"
+        )
     return classe
 
 

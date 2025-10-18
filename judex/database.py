@@ -165,7 +165,9 @@ def init_database(db_path: str):
         cursor.execute(
             "CREATE INDEX IF NOT EXISTS idx_processos_processo_id ON processos (processo_id)"
         )
-        cursor.execute("CREATE INDEX IF NOT EXISTS idx_processos_classe ON processos (classe)")
+        cursor.execute(
+            "CREATE INDEX IF NOT EXISTS idx_processos_classe ON processos (classe)"
+        )
         cursor.execute(
             "CREATE INDEX IF NOT EXISTS idx_processos_created_at ON processos (created_at)"
         )
@@ -391,7 +393,9 @@ def processo_read(db_path: str, numero_unico: int) -> dict[str, Any]:
         with sqlite3.connect(db_path) as conn:
             cursor = conn.cursor()
 
-            cursor.execute("SELECT * FROM processos WHERE numero_unico = ?", (numero_unico,))
+            cursor.execute(
+                "SELECT * FROM processos WHERE numero_unico = ?", (numero_unico,)
+            )
             return cursor.fetchone() or {}
 
     except Exception as e:
@@ -410,7 +414,9 @@ def processo_read_all(db_path: str) -> list[dict[str, Any]]:
         return []
 
 
-def has_recent_data(db_path: str, processo_id: int, classe: str, max_age_hours: int = 24) -> bool:
+def has_recent_data(
+    db_path: str, processo_id: int, classe: str, max_age_hours: int = 24
+) -> bool:
     """Check if we have recent data for a processo_id and classe combination"""
     try:
         with sqlite3.connect(db_path) as conn:
@@ -435,7 +441,9 @@ def has_recent_data(db_path: str, processo_id: int, classe: str, max_age_hours: 
         return False
 
 
-def get_existing_processo_ids(db_path: str, classe: str, max_age_hours: int = 24) -> set[int]:
+def get_existing_processo_ids(
+    db_path: str, classe: str, max_age_hours: int = 24
+) -> set[int]:
     """Get all processo_ids that already have recent data for a given classe"""
     try:
         with sqlite3.connect(db_path) as conn:
@@ -459,7 +467,9 @@ def get_existing_processo_ids(db_path: str, classe: str, max_age_hours: int = 24
         return set()
 
 
-def get_failed_processo_ids(db_path: str, classe: str, max_age_hours: int = 24) -> set[int]:
+def get_failed_processo_ids(
+    db_path: str, classe: str, max_age_hours: int = 24
+) -> set[int]:
     """Get all processo_ids that failed recently and should be retried"""
     try:
         with sqlite3.connect(db_path) as conn:
@@ -508,7 +518,8 @@ def get_processo_partes(db_path: str, numero_unico: str) -> list[dict[str, Any]]
         with sqlite3.connect(db_path) as conn:
             cursor = conn.cursor()
             cursor.execute(
-                "SELECT * FROM partes WHERE numero_unico = ? ORDER BY _index", (numero_unico,)
+                "SELECT * FROM partes WHERE numero_unico = ? ORDER BY _index",
+                (numero_unico,),
             )
             columns = [description[0] for description in cursor.description]
             return [dict(zip(columns, row, strict=True)) for row in cursor.fetchall()]
@@ -604,7 +615,9 @@ def get_complete_processo(db_path: str, numero_unico: str) -> dict[str, Any]:
             cursor = conn.cursor()
 
             # Get main processo data
-            cursor.execute("SELECT * FROM processos WHERE numero_unico = ?", (numero_unico,))
+            cursor.execute(
+                "SELECT * FROM processos WHERE numero_unico = ?", (numero_unico,)
+            )
             processo_row = cursor.fetchone()
             if not processo_row:
                 return {}
@@ -617,7 +630,9 @@ def get_complete_processo(db_path: str, numero_unico: str) -> dict[str, Any]:
             processo_data["andamentos"] = get_processo_andamentos(db_path, numero_unico)
             processo_data["partes"] = get_processo_partes(db_path, numero_unico)
             processo_data["decisoes"] = get_processo_decisoes(db_path, numero_unico)
-            processo_data["deslocamentos"] = get_processo_deslocamentos(db_path, numero_unico)
+            processo_data["deslocamentos"] = get_processo_deslocamentos(
+                db_path, numero_unico
+            )
             processo_data["peticoes"] = get_processo_peticoes(db_path, numero_unico)
             processo_data["recursos"] = get_processo_recursos(db_path, numero_unico)
             processo_data["pautas"] = get_processo_pautas(db_path, numero_unico)

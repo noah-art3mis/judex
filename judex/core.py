@@ -58,7 +58,9 @@ class JudexScraper:
         )
 
         # Configure persistence pipelines
-        PipelineManager.select_persistence(persistence_types, output_path, classe, db_path)
+        PipelineManager.select_persistence(
+            persistence_types, output_path, classe, db_path
+        )
 
     def select_spider(
         self,

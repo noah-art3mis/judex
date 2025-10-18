@@ -29,7 +29,9 @@ class DatabasePipeline:
         success = processo_write(self.db_path, item_dict)
 
         if success:
-            logger.info(f"Saved item to database: {item_dict.get('numero_unico', 'unknown')}")
+            logger.info(
+                f"Saved item to database: {item_dict.get('numero_unico', 'unknown')}"
+            )
         else:
             logger.error(
                 f"Failed to save item to database: {item_dict.get('numero_unico', 'unknown')}"
