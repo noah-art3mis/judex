@@ -4,7 +4,7 @@ Pydantic models for STF case data validation and serialization
 
 from enum import Enum
 
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 class CaseType(str, Enum):
@@ -71,8 +71,7 @@ class Parte(BaseModel):
     tipo: str | None = None
     nome: str | None = None
 
-    class Config:
-        extra = "allow"  # Allow extra fields for flexibility
+    model_config = ConfigDict(extra="allow")  # Allow extra fields for flexibility
 
 
 class Andamento(BaseModel):
@@ -84,8 +83,7 @@ class Andamento(BaseModel):
     complemento: str | None = None
     julgador: str | None = None
 
-    class Config:
-        extra = "allow"  # Allow extra fields for flexibility
+    model_config = ConfigDict(extra="allow")  # Allow extra fields for flexibility
 
 
 class Decisao(BaseModel):
@@ -98,8 +96,7 @@ class Decisao(BaseModel):
     julgador: str | None = None
     link: str | None = None  # Additional database field
 
-    class Config:
-        extra = "allow"  # Allow extra fields for flexibility
+    model_config = ConfigDict(extra="allow")  # Allow extra fields for flexibility
 
 
 class Deslocamento(BaseModel):
@@ -112,8 +109,7 @@ class Deslocamento(BaseModel):
     recebido_por: str | None = None  # Database field name
     guia: str | None = None  # Database field name
 
-    class Config:
-        extra = "allow"  # Allow extra fields for flexibility
+    model_config = ConfigDict(extra="allow")  # Allow extra fields for flexibility
 
 
 class Peticao(BaseModel):
@@ -126,8 +122,7 @@ class Peticao(BaseModel):
     recebido_data: str | None = None  # Database field name
     recebido_por: str | None = None  # Database field name
 
-    class Config:
-        extra = "allow"  # Allow extra fields for flexibility
+    model_config = ConfigDict(extra="allow")  # Allow extra fields for flexibility
 
 
 class Recurso(BaseModel):
@@ -140,8 +135,7 @@ class Recurso(BaseModel):
     complemento: str | None = None
     autor: str | None = None  # Database field name
 
-    class Config:
-        extra = "allow"  # Allow extra fields for flexibility
+    model_config = ConfigDict(extra="allow")  # Allow extra fields for flexibility
 
 
 class Pauta(BaseModel):
@@ -153,8 +147,7 @@ class Pauta(BaseModel):
     complemento: str | None = None
     relator: str | None = None  # Database field name
 
-    class Config:
-        extra = "allow"  # Allow extra fields for flexibility
+    model_config = ConfigDict(extra="allow")  # Allow extra fields for flexibility
 
 
 class Sessao(BaseModel):
@@ -165,8 +158,7 @@ class Sessao(BaseModel):
     numero: str | None = None
     relator: str | None = None
 
-    class Config:
-        extra = "allow"  # Allow extra fields for flexibility
+    model_config = ConfigDict(extra="allow")  # Allow extra fields for flexibility
 
 
 class STFCaseModel(BaseModel):
@@ -205,12 +197,13 @@ class STFCaseModel(BaseModel):
     html: str | None = None
     extraido: str | None = None
 
-    class Config:
-        use_enum_values = True
-        validate_assignment = True
-        extra = "allow"  # Allow extra fields for backward compatibility
+    model_config = ConfigDict(
+        use_enum_values=True,
+        validate_assignment=True,
+        extra="allow",  # Allow extra fields for backward compatibility
+    )
 
-    @validator("classe", pre=True)
+    @field_validator("classe", mode="before")
     def validate_classe(cls, v):
         if isinstance(v, str):
             try:
@@ -221,7 +214,7 @@ class STFCaseModel(BaseModel):
                 return v
         return v
 
-    @validator("tipo_processo", pre=True)
+    @field_validator("tipo_processo", mode="before")
     def validate_tipo_processo(cls, v):
         if isinstance(v, str):
             try:
@@ -231,7 +224,7 @@ class STFCaseModel(BaseModel):
                 return v
         return v
 
-    @validator("liminar", pre=True)
+    @field_validator("liminar", mode="before")
     def validate_liminar(cls, v):
         # Convert list to int (0 or 1) for database compatibility
         if isinstance(v, list):
@@ -242,7 +235,7 @@ class STFCaseModel(BaseModel):
             return v
         return v
 
-    @validator("assuntos", pre=True)
+    @field_validator("assuntos", mode="before")
     def validate_assuntos(cls, v):
         # Convert list to JSON string for database compatibility
         if isinstance(v, list):
@@ -251,7 +244,7 @@ class STFCaseModel(BaseModel):
             return json.dumps(v, ensure_ascii=False)
         return v
 
-    @validator("partes", pre=True)
+    @field_validator("partes", mode="before")
     def validate_partes(cls, v):
         if isinstance(v, list):
             # Handle field name mapping from '_index' to 'index'
@@ -264,7 +257,7 @@ class STFCaseModel(BaseModel):
             return processed_items
         return v
 
-    @validator("andamentos", pre=True)
+    @field_validator("andamentos", mode="before")
     def validate_andamentos(cls, v):
         if isinstance(v, list):
             # Handle field name mapping from 'index' to 'index_num'
@@ -277,7 +270,7 @@ class STFCaseModel(BaseModel):
             return processed_items
         return v
 
-    @validator("decisoes", pre=True)
+    @field_validator("decisoes", mode="before")
     def validate_decisoes(cls, v):
         if isinstance(v, list):
             # Handle field name mapping from 'index' to 'index_num'
@@ -290,7 +283,7 @@ class STFCaseModel(BaseModel):
             return processed_items
         return v
 
-    @validator("deslocamentos", pre=True)
+    @field_validator("deslocamentos", mode="before")
     def validate_deslocamentos(cls, v):
         if isinstance(v, list):
             # Handle field name mapping from 'index' to 'index_num'
@@ -303,7 +296,7 @@ class STFCaseModel(BaseModel):
             return processed_items
         return v
 
-    @validator("peticoes", pre=True)
+    @field_validator("peticoes", mode="before")
     def validate_peticoes(cls, v):
         if isinstance(v, list):
             # Handle field name mapping from 'index' to 'index_num'
@@ -316,7 +309,7 @@ class STFCaseModel(BaseModel):
             return processed_items
         return v
 
-    @validator("recursos", pre=True)
+    @field_validator("recursos", mode="before")
     def validate_recursos(cls, v):
         if isinstance(v, list):
             # Handle field name mapping from 'index' to 'index_num'
@@ -329,7 +322,7 @@ class STFCaseModel(BaseModel):
             return processed_items
         return v
 
-    @validator("pautas", pre=True)
+    @field_validator("pautas", mode="before")
     def validate_pautas(cls, v):
         if isinstance(v, list):
             # Handle field name mapping from 'index' to 'index_num'
@@ -342,7 +335,7 @@ class STFCaseModel(BaseModel):
             return processed_items
         return v
 
-    @validator("sessao", pre=True)
+    @field_validator("sessao", mode="before")
     def validate_sessao(cls, v):
         if isinstance(v, dict):
             return Sessao(**v)

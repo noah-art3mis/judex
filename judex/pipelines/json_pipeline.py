@@ -19,7 +19,7 @@ class JSONPipeline:
     def __init__(self, output_file: str = "output.json"):
         self.output_file = output_file
         os.makedirs(os.path.dirname(output_file), exist_ok=True)
-        self.items = []
+        self.items: list[dict] = []
 
     @classmethod
     def from_crawler(cls, crawler):

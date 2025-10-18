@@ -23,7 +23,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 sudo apt install chromium-chromedriver
 
 # clonar repositório
-git clone https://github.com/noah-art3mis/judex 
+git clone https://github.com/noah-art3mis/judex
 
 # baixar dependências
 cd judex && uv sync
@@ -43,28 +43,13 @@ Para outros parâmetros, ver `settings.py` ou a documentação do scrapy.
 pip install judex
 ```
 
-The main entry point is the `JudexScraper` class and the `scrape_cases` method, which takes a class and a list of cases.
+The main entry point is the `JudexScraper` class, which takes a class, a list of cases, and a persistence method ('sql', 'json' and/or 'csv').
 
 ```python
 from judex import judexScraper
 
-scraper = JudexScraper(
-    output_dir="output",
-    db_path="judex.db",
-    filename="processos.csv")
-scraper.scrape_cases("ADI", "[4916, 4917]")
-```
-
-For finer control, you can use the StfSpider directly.
-
-```python
-# main.py
-from judex import StfSpider, init_database
-
-init_database("casos.db") # opcional
-
-spider = StfSpider(classe="ADI", casos=[123, 456])
-spider.scrape("ADI", "[4916, 4917]")
+scraper = JudexScraper(classe="ADI", processos="[1,2]", )
+scraper.scrape()
 ```
 
 Com mais parâmetros:

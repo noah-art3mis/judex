@@ -1,7 +1,8 @@
 import csv
+from typing import Any
 
 
-def export_to_csv(data: list[dict[str, any]], filename: str) -> bool:
+def export_to_csv(data: list[dict[str, Any]], filename: str) -> bool:
     """Export data to a CSV file"""
     try:
         with open(filename, "w", encoding="utf-8", newline="") as f:

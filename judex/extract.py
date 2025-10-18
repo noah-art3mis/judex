@@ -88,6 +88,7 @@ def extract_autor1(spider, driver: WebDriver, soup) -> str | None:
         if partes_nome:
             primeiro_autor = partes_nome[0].get_attribute("innerHTML")
             return spider.clean_text(primeiro_autor)
+        return None
     except Exception as e:
         spider.logger.warning(f"Could not extract autor1: {e}")
         return None
@@ -104,7 +105,7 @@ def extract_partes(spider, driver: WebDriver, soup) -> list:
             By.CSS_SELECTOR, "div[class*='processo-partes']"
         )
 
-        partes_list = []
+        partes_list: list[dict] = []
         for i, div in enumerate(processo_partes):
             # Extract text content
             text_content = div.text.strip()
@@ -221,7 +222,7 @@ def extract_andamentos(spider, driver: WebDriver, soup) -> list:
                 # Check for julgador
                 try:
                     julgador = andamento.find_element(By.CLASS_NAME, "andamento-julgador").text
-                except:
+                except Exception:
                     julgador = None
 
                 andamento_data = {
@@ -515,7 +516,7 @@ def extract_recursos(spider, driver: WebDriver, soup) -> list:
                             )
                             if autor_match:
                                 autor = spider.clean_text(autor_match.group(1))
-                    except:
+                    except Exception:
                         pass
 
                     # Clean the extracted data
@@ -591,7 +592,7 @@ def extract_pautas(spider, driver: WebDriver, soup) -> list:
                             )
                             if relator_match:
                                 relator = spider.clean_text(relator_match.group(1))
-                    except:
+                    except Exception:
                         pass
 
                     pauta_data = {
@@ -619,19 +620,19 @@ def extract_sessao(spider, driver: WebDriver, soup) -> dict:
         sessao_info = driver.find_element(By.XPATH, '//*[@id="sessao-virtual"]')
 
         # Extract session information
-        sessao_data = {"data": None, "tipo": None, "status": None, "participantes": []}
+        sessao_data: dict = {"data": None, "tipo": None, "status": None, "participantes": []}
 
         # Try to extract basic session info
         try:
             data_element = sessao_info.find_element(By.CLASS_NAME, "processo-detalhes")
             sessao_data["data"] = spider.clean_text(data_element.text)
-        except:
+        except Exception:
             pass
 
         try:
             tipo_element = sessao_info.find_element(By.CLASS_NAME, "processo-detalhes-bold")
             sessao_data["tipo"] = spider.clean_text(tipo_element.text)
-        except:
+        except Exception:
             pass
 
         return sessao_data

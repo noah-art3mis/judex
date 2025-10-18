@@ -7,6 +7,7 @@ from pydantic import ValidationError
 
 from judex.models import CaseType
 from judex.types import (
+    STF_CASE_TYPES,
     CaseTypeValidator,
     get_all_case_types,
     is_valid_case_type,
@@ -130,8 +131,6 @@ class TestIntegrationWithModels:
 
     def test_case_type_enum_consistency(self):
         """Test that CaseType enum is consistent with STF_CASE_TYPES"""
-        from judex.types import STF_CASE_TYPES
-
         # Get all case types from enum
         enum_types = [case_type.value for case_type in CaseType]
 

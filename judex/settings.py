@@ -38,9 +38,9 @@ ITEM_PIPELINES = {
     # "judex.pipelines.CSVPipeline": 600,     # CSV export
 }
 
-JSON_OUTPUT_FILE = "output.json"
-CSV_OUTPUT_FILE = "output.csv"
-DATABASE_PATH = "judex.db"
+JSON_OUTPUT_FILE = "data.json"
+CSV_OUTPUT_FILE = "data.csv"
+DATABASE_PATH = "data.db"
 
 AUTOTHROTTLE_ENABLED = True
 AUTOTHROTTLE_START_DELAY = 1.0
@@ -51,12 +51,12 @@ AUTOTHROTTLE_DEBUG = False
 HTTPCACHE_ENABLED = True
 HTTPCACHE_EXPIRATION_SECS = 360
 HTTPCACHE_DIR = "httpcache"
-HTTPCACHE_IGNORE_HTTP_CODES = []
+HTTPCACHE_IGNORE_HTTP_CODES: list[int] = []
 HTTPCACHE_STORAGE = "scrapy.extensions.httpcache.FilesystemCacheStorage"
 
 # JSON output settings for indented output
 FEEDS = {
-    "out.json": {
+    f"judex/{JSON_OUTPUT_FILE}": {
         "format": "json",
         "indent": 2,
         "encoding": "utf8",
@@ -66,7 +66,7 @@ FEEDS = {
             "export_empty_fields": True,
         },
     },
-    "out.csv": {
+    f"judex/{CSV_OUTPUT_FILE}": {
         "format": "csv",
         "encoding": "utf8",
         "store_empty": False,

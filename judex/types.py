@@ -2,7 +2,7 @@
 STF (Supremo Tribunal Federal) types and validation
 """
 
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, field_validator
 
 from .models import CaseType
 
@@ -63,7 +63,7 @@ class CaseTypeValidator(BaseModel):
 
     classe: str
 
-    @validator("classe")
+    @field_validator("classe")
     def validate_classe(cls, v):
         try:
             return CaseType(v)

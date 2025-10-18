@@ -10,7 +10,12 @@ PersistenceTypes = list[Literal["json", "csv", "sql"]] | None
 
 class PipelineManager:
     @staticmethod
-    def select_persistence(persistence_types: PersistenceTypes, output_path: str) -> None:
+    def select_persistence(
+        persistence_types: PersistenceTypes,
+        output_path: str,
+        classe: str | None = None,
+        db_path: str | None = None,
+    ) -> None:
         """Configure persistence pipelines and output files"""
         if not persistence_types:
             return
@@ -30,9 +35,22 @@ class PipelineManager:
 
         # Set output files with proper paths
         os.makedirs(output_path, exist_ok=True)
-        settings.set("JSON_OUTPUT_FILE", os.path.join(output_path, "data.json"))
-        settings.set("CSV_OUTPUT_FILE", os.path.join(output_path, "data.csv"))
-        settings.set("DATABASE_PATH", os.path.join(output_path, "data.db"))
+
+        # Use custom db_path if provided, otherwise use classe-specific naming
+        if db_path:
+            settings.set("DATABASE_PATH", db_path)
+        elif classe:
+            settings.set("DATABASE_PATH", os.path.join(output_path, f"{classe}_cases.db"))
+        else:
+            settings.set("DATABASE_PATH", os.path.join(output_path, "data.db"))
+
+        # Set JSON and CSV output files
+        if classe:
+            settings.set("JSON_OUTPUT_FILE", os.path.join(output_path, f"{classe}_cases.json"))
+            settings.set("CSV_OUTPUT_FILE", os.path.join(output_path, f"{classe}_processos.csv"))
+        else:
+            settings.set("JSON_OUTPUT_FILE", os.path.join(output_path, "data.json"))
+            settings.set("CSV_OUTPUT_FILE", os.path.join(output_path, "data.csv"))
 
         if "sql" in persistence_types:
             init_database(settings.get("DATABASE_PATH"))

@@ -2,6 +2,7 @@
 Standalone unit tests for the normalized database structure.
 """
 
+import importlib.util
 import os
 import sys
 import tempfile
@@ -14,7 +15,6 @@ project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
 # Import database module directly
-import importlib.util
 
 spec = importlib.util.spec_from_file_location("database", project_root / "judex" / "database.py")
 database = importlib.util.module_from_spec(spec)

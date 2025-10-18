@@ -1,7 +1,7 @@
 import datetime
 import json
 import time
-from collections.abc import Iterator
+from collections.abc import AsyncGenerator, Iterator
 
 import scrapy
 from bs4 import BeautifulSoup
@@ -84,7 +84,7 @@ class StfSpider(scrapy.Spider):
         except Exception as e:
             raise ValueError("processos must be a JSON list, e.g., '[4916, 4917]'") from e
 
-    def start_requests(self) -> Iterator[scrapy.Request]:
+    async def start(self) -> AsyncGenerator[scrapy.Request, None]:
         base = "https://portal.stf.jus.br"
 
         # Get database path from settings
@@ -161,9 +161,9 @@ class StfSpider(scrapy.Spider):
             return None
 
         soup = BeautifulSoup(html_text, "html.parser")
-        text = soup.get_text(strip=True)
+        text = soup.get_text()
         text = " ".join(text.split())
-        return text
+        return text if text else None
 
     def parse_main_page_selenium(self, response: Response) -> Iterator[STFCaseItem]:
         driver = response.request.meta["driver"]  # type: ignore

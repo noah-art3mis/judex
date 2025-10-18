@@ -6,7 +6,6 @@ from scrapy.crawler import CrawlerProcess
 from scrapy.spiders import Spider
 from scrapy.utils.project import get_project_settings
 
-from .exporters import export_to_csv
 from .pipelines.manager import PersistenceTypes, PipelineManager
 from .spiders.stf import StfSpider
 
@@ -14,7 +13,18 @@ logger = logging.getLogger(__name__)
 
 
 class JudexScraper:
-    """Main scraper class"""
+    """Main scraper class
+
+    Args:
+        classe: The class of the process to scrape
+        processos: The processes to scrape
+        scraper_kind: The kind of scraper to use
+        output_path: The path to the output directory
+        persistence_types: The persistence types to use
+        skip_existing: Whether to skip existing processes
+        retry_failed: Whether to retry failed processes
+        max_age_hours: The maximum age of the processes to scrape
+    """
 
     def __init__(
         self,
@@ -26,6 +36,7 @@ class JudexScraper:
         skip_existing: bool = True,
         retry_failed: bool = True,
         max_age_hours: int = 24,
+        db_path: str | None = None,
     ):
         if not isinstance(processos, str):
             raise Exception("processos must be a string")
@@ -39,10 +50,15 @@ class JudexScraper:
             )
 
         os.makedirs(output_path, exist_ok=True)
-        PipelineManager.select_persistence(persistence_types, output_path)
+        self.persistence_types = persistence_types
+        self.output_path = output_path
+        self.db_path = db_path
         self.spider = self.select_spider(
             scraper_kind, classe, processos, skip_existing, retry_failed, max_age_hours
         )
+
+        # Configure persistence pipelines
+        PipelineManager.select_persistence(persistence_types, output_path, classe, db_path)
 
     def select_spider(
         self,
@@ -65,14 +81,60 @@ class JudexScraper:
             raise ValueError(f"Invalid spider kind: {spider_kind}")
 
     def scrape(self) -> None:
+        """Scrape the processes"""
         settings = get_project_settings()
+
+        # Set dynamic feed names based on classe
+        classe = getattr(self.spider, "classe", "")
+        json_path = f"output/{classe}_cases.json"
+        csv_path = f"output/{classe}_processos.csv"
+
+        settings.set(
+            "FEEDS",
+            {
+                json_path: {
+                    "format": "json",
+                    "indent": 2,
+                    "encoding": "utf8",
+                    "store_empty": False,
+                    "fields": None,
+                    "item_export_kwargs": {
+                        "export_empty_fields": True,
+                    },
+                },
+                csv_path: {
+                    "format": "csv",
+                    "encoding": "utf8",
+                    "store_empty": False,
+                },
+            },
+        )
+
+        # Log the output paths
+        import os
+
+        abs_json_path = os.path.abspath(json_path)
+        abs_csv_path = os.path.abspath(csv_path)
+
+        # Use custom db_path if provided, otherwise use default naming
+        if self.db_path:
+            db_path = self.db_path
+        else:
+            db_path = f"{self.output_path}/{classe}_cases.db"
+        abs_db_path = os.path.abspath(db_path)
+
+        logger.info("📁 Output files will be saved to:")
+        logger.info(f"   JSON: {abs_json_path}")
+        logger.info(f"   CSV:  {abs_csv_path}")
+        logger.info(f"   DB:   {abs_db_path}")
+
         process = CrawlerProcess(settings)
         process.crawl(
             self.spider.__class__,
-            classe=self.spider.classe,
-            processos=json.dumps(self.spider.numeros),
-            skip_existing=self.spider.skip_existing,
-            retry_failed=self.spider.retry_failed,
-            max_age_hours=self.spider.max_age_hours,
+            classe=getattr(self.spider, "classe", ""),
+            processos=json.dumps(getattr(self.spider, "numeros", [])),
+            skip_existing=getattr(self.spider, "skip_existing", True),
+            retry_failed=getattr(self.spider, "retry_failed", True),
+            max_age_hours=getattr(self.spider, "max_age_hours", 24),
         )
         process.start()

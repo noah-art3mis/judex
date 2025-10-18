@@ -2,6 +2,7 @@
 Unit tests for spider integration with Pydantic
 """
 
+import asyncio
 import os
 import tempfile
 from unittest.mock import Mock, patch
@@ -29,6 +30,17 @@ class TestStfSpiderIntegration:
         self.temp_db = tempfile.NamedTemporaryFile(suffix=".db", delete=False)
         self.temp_db.close()
 
+    def _run_async_start(self):
+        """Helper method to run the async start method"""
+
+        async def collect_requests():
+            requests = []
+            async for request in self.spider.start():
+                requests.append(request)
+            return requests
+
+        return asyncio.run(collect_requests())
+
     def teardown_method(self):
         """Clean up test fixtures"""
         if os.path.exists(self.temp_db.name):
@@ -47,12 +59,12 @@ class TestStfSpiderIntegration:
 
     def test_spider_initialization_missing_classe(self):
         """Test spider initialization without classe"""
-        with pytest.raises(ValueError):
+        with pytest.raises(TypeError):
             StfSpider(processos="[123]")
 
     def test_spider_initialization_missing_processos(self):
         """Test spider initialization without processos"""
-        with pytest.raises(ValueError):
+        with pytest.raises(TypeError):
             StfSpider(classe="ADI")
 
     def test_spider_initialization_invalid_processos_json(self):
@@ -67,13 +79,27 @@ class TestStfSpiderIntegration:
         mock_existing.return_value = {123}
         mock_failed.return_value = {456}
 
-        # Mock settings
-        self.spider.settings = {"DATABASE_PATH": self.temp_db.name}
+        # Create spider with database checks enabled
+        spider = StfSpider(
+            classe="ADI",
+            processos="[123, 456]",
+            skip_existing=True,
+            retry_failed=True,
+        )
+        spider.settings = {"DATABASE_PATH": self.temp_db.name}
 
-        requests = list(self.spider.start_requests())
+        # Run the async start method
+        async def collect_requests():
+            requests = []
+            async for request in spider.start():
+                requests.append(request)
+            return requests
 
-        # Should create requests for all processes
-        assert len(requests) == 2
+        requests = asyncio.run(collect_requests())
+
+        # Should create requests for failed processes (456) but skip existing ones (123)
+        assert len(requests) == 1
+        assert requests[0].meta["numero"] == 456
 
         # Check that database functions were called
         mock_existing.assert_called_once()
@@ -86,11 +112,23 @@ class TestStfSpiderIntegration:
         mock_existing.return_value = {123}
         mock_failed.return_value = set()
 
-        # Mock settings
-        self.spider.settings = {"DATABASE_PATH": self.temp_db.name}
-        self.spider.skip_existing = True
+        # Create spider with skip_existing enabled
+        spider = StfSpider(
+            classe="ADI",
+            processos="[123, 456]",
+            skip_existing=True,
+            retry_failed=False,
+        )
+        spider.settings = {"DATABASE_PATH": self.temp_db.name}
 
-        requests = list(self.spider.start_requests())
+        # Run the async start method
+        async def collect_requests():
+            requests = []
+            async for request in spider.start():
+                requests.append(request)
+            return requests
+
+        requests = asyncio.run(collect_requests())
 
         # Should skip existing process 123
         assert len(requests) == 1
@@ -103,11 +141,23 @@ class TestStfSpiderIntegration:
         mock_existing.return_value = set()
         mock_failed.return_value = {123}
 
-        # Mock settings
-        self.spider.settings = {"DATABASE_PATH": self.temp_db.name}
-        self.spider.retry_failed = True
+        # Create spider with retry_failed enabled
+        spider = StfSpider(
+            classe="ADI",
+            processos="[123, 456]",
+            skip_existing=False,
+            retry_failed=True,
+        )
+        spider.settings = {"DATABASE_PATH": self.temp_db.name}
 
-        requests = list(self.spider.start_requests())
+        # Run the async start method
+        async def collect_requests():
+            requests = []
+            async for request in spider.start():
+                requests.append(request)
+            return requests
+
+        requests = asyncio.run(collect_requests())
 
         # Should retry failed process 123
         assert len(requests) == 2
