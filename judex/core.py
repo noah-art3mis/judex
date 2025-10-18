@@ -95,7 +95,7 @@ class JudexScraper:
                 value=[type(item).__name__ for item in salvar_como],
             )
 
-        valid_formats = {"json", "csv", "sql"}
+        valid_formats = {"json", "csv", "sql", "jsonlines"}
         invalid_formats = [item for item in salvar_como if item not in valid_formats]
         if invalid_formats:
             raise ValidationError(

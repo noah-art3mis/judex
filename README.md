@@ -2,7 +2,7 @@
 
 Ferramenta para extração automatizada de dados do portal do STF.
 
-Utiliza scrapy-selenium. Tem performance de ~4 processos por minuto. Possui suporte a JSON, CSV e SQLite.
+Utiliza scrapy-selenium. Tem performance de ~4 processos por minuto. Possui suporte a JSON, JSONLines, CSV e SQLite.
 
 ## Uso simples via scrapy (Linux)
 
@@ -25,7 +25,7 @@ uv run scrapy crawl stf -a classe=ADI -a processos=[4916,4917] -O output.json
 
 -   _classe_: classe dos processos de interesse (e.g., ADI, AR, etc.)
 -   _processo_: número dos processos. Na CLI, devem ter o formato `[165,568]`, sem espaço.
--   _salvar_como_: permite alterar como os dados são armazenados. Pode ser `json`, `csv` e/ou `sql`.
+-   _salvar_como_: permite alterar como os dados são armazenados. Pode ser `json`, `jsonlines`, `csv` e/ou `sql`.
 
 Para outros parâmetros, ver `settings.py` ou a documentação do scrapy. Configurações relevantes do scrapy incluem:
 
@@ -41,7 +41,7 @@ AUTOTHROTTLE_ENABLED = True
 pip install judex
 ```
 
-The main entry point is the `JudexScraper` class, which takes a class, a list of cases, and a persistence method ('sql', 'json' and/or 'csv').
+The main entry point is the `JudexScraper` class, which takes a class, a list of cases, and a persistence method ('sql', 'json', 'jsonlines' and/or 'csv').
 
 ```python
 from judex import judexScraper
@@ -49,7 +49,7 @@ from judex import judexScraper
 scraper = JudexScraper(
     classe="ADI",
     processos="[1,2]",
-    salvar_como=['json']
+    salvar_como=['csv']
     )
 scraper.scrape()
 ```

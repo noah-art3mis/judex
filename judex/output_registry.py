@@ -118,6 +118,19 @@ OutputFormatRegistry.register_format(
 )
 
 OutputFormatRegistry.register_format(
+    "jsonlines",
+    {
+        "format": "jsonlines",
+        "extension": "jsonl",
+        "use_feeds": True,
+        "overwrite": False,  # Use append mode for JSONLines
+        "encoding": "utf8",
+        "store_empty": False,
+        "extra_config": {},
+    },
+)
+
+OutputFormatRegistry.register_format(
     "sql",
     {
         "format": "sql",

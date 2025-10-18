@@ -1,13 +1,9 @@
 """
 Tests for file overwriting CLI option
 """
-import json
-import tempfile
-import os
 from unittest.mock import patch, MagicMock
 from io import StringIO
 
-import pytest
 
 from main import main
 from judex.core import JudexScraper
@@ -19,7 +15,6 @@ class TestOverwriteCLIOption:
     def test_overwrite_cli_argument_exists(self):
         """Test that --overwrite argument exists in CLI"""
         import argparse
-        from main import main
         
         # This test will fail initially - we need to add the argument
         parser = argparse.ArgumentParser()

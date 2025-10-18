@@ -1,6 +1,5 @@
 import argparse
 import json
-import logging
 import sys
 
 from judex.core import JudexScraper
@@ -15,7 +14,8 @@ def main():
 Examples:
   judex -c ADI -p 987 -o json
   judex -c ADI -p 987 988 989 -o json csv
-  judex -c ADI -p 987 -o json --output-path ./data --verbose
+  judex -c ADI -p 987 -o jsonlines --output-path ./data --verbose
+  judex -c ADI -p 987 -o json jsonlines csv
         """,
     )
 
@@ -40,9 +40,9 @@ Examples:
         "-o",
         "--output",
         nargs="+",
-        choices=["json", "csv", "sql"],
+        choices=["json", "csv", "sql", "jsonlines"],
         required=True,
-        help="Persistence types to use (required)",
+        help="Persistence types to use: json, csv, sql, jsonlines (required)",
     )
 
     # Optional arguments
@@ -107,17 +107,16 @@ Examples:
 
     args = parser.parse_args()
 
-    # Validate JSON output requires overwrite flag
+    # Validate JSON output requires overwrite flag (JSONLines uses append mode)
     if "json" in args.output and not args.overwrite:
         print(
             "❌ Error: JSON output format requires the --overwrite flag.",
             file=sys.stderr,
         )
         print(
-            "   Reason: Appending to JSON files creates invalid JSON arrays.",
+            "   If you want to append data instead of overwriting, use the 'jsonlines' format instead. )",
             file=sys.stderr,
         )
-        print("   Solution: Add --overwrite flag to your command.", file=sys.stderr)
         sys.exit(1)
 
     try:

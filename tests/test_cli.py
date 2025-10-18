@@ -20,7 +20,7 @@ class TestCLIArgumentParsing:
 
     def test_required_arguments_only(self):
         """Test CLI with only required arguments"""
-        test_args = ["-c", "ADI", "-p", "123", "456", "-o", "json"]
+        test_args = ["-c", "ADI", "-p", "123", "456", "-o", "json", "--overwrite"]
 
         with patch.object(sys, "argv", ["main.py"] + test_args):
             with patch("main.JudexScraper") as mock_scraper_class:
@@ -68,6 +68,7 @@ class TestCLIArgumentParsing:
             "--max-age",
             "48",
             "-v",
+            "--overwrite",
         ]
 
         with patch.object(sys, "argv", ["main.py"] + test_args):
@@ -106,6 +107,7 @@ class TestCLIArgumentParsing:
                     "json",
                     "--skip-existing",
                     value,
+                    "--overwrite",
                 ]
 
                 with patch.object(sys, "argv", ["main.py"] + test_args):
@@ -120,7 +122,7 @@ class TestCLIArgumentParsing:
 
     def test_single_process_number(self):
         """Test CLI with single process number"""
-        test_args = ["-c", "ADI", "-p", "123", "-o", "json"]
+        test_args = ["-c", "ADI", "-p", "123", "-o", "json", "--overwrite"]
 
         with patch.object(sys, "argv", ["main.py"] + test_args):
             with patch("main.JudexScraper") as mock_scraper_class:
@@ -134,7 +136,18 @@ class TestCLIArgumentParsing:
 
     def test_multiple_process_numbers(self):
         """Test CLI with multiple process numbers"""
-        test_args = ["-c", "ADI", "-p", "123", "456", "789", "101112", "-o", "json"]
+        test_args = [
+            "-c",
+            "ADI",
+            "-p",
+            "123",
+            "456",
+            "789",
+            "101112",
+            "-o",
+            "json",
+            "--overwrite",
+        ]
 
         with patch.object(sys, "argv", ["main.py"] + test_args):
             with patch("main.JudexScraper") as mock_scraper_class:
@@ -149,15 +162,23 @@ class TestCLIArgumentParsing:
     def test_persistence_choices(self):
         """Test different persistence type combinations"""
         test_cases = [
-            (["json"], ["json"]),
-            (["csv"], ["csv"]),
-            (["sql"], ["sql"]),
-            (["json", "csv"], ["json", "csv"]),
-            (["json", "sql", "csv"], ["json", "sql", "csv"]),
+            (["json"], ["json"], ["--overwrite"]),
+            (["csv"], ["csv"], []),
+            (["sql"], ["sql"], []),
+            (["jsonlines"], ["jsonlines"], []),
+            (["json", "csv"], ["json", "csv"], ["--overwrite"]),
+            (["json", "sql", "csv"], ["json", "sql", "csv"], ["--overwrite"]),
+            (["json", "jsonlines"], ["json", "jsonlines"], ["--overwrite"]),
+            (
+                ["json", "jsonlines", "csv"],
+                ["json", "jsonlines", "csv"],
+                ["--overwrite"],
+            ),
+            (["jsonlines", "csv"], ["jsonlines", "csv"], []),
         ]
 
-        for input_types, expected in test_cases:
-            test_args = ["-c", "ADI", "-p", "123", "-o"] + input_types
+        for input_types, expected, extra_args in test_cases:
+            test_args = ["-c", "ADI", "-p", "123", "-o"] + input_types + extra_args
 
             with patch.object(sys, "argv", ["main.py"] + test_args):
                 with patch("main.JudexScraper") as mock_scraper_class:
@@ -175,7 +196,7 @@ class TestCLIExecution:
 
     def test_successful_execution(self):
         """Test successful CLI execution"""
-        test_args = ["-c", "ADI", "-p", "123", "456", "-o", "json"]
+        test_args = ["-c", "ADI", "-p", "123", "456", "-o", "json", "--overwrite"]
 
         with patch.object(sys, "argv", ["main.py"] + test_args):
             with patch("main.JudexScraper") as mock_scraper_class:
@@ -219,6 +240,7 @@ class TestCLIExecution:
             "false",
             "--max-age",
             "72",
+            "--overwrite",
         ]
 
         with patch.object(sys, "argv", ["main.py"] + test_args):
@@ -241,6 +263,7 @@ class TestCLIExecution:
                     db_path="/test/db.sqlite",
                     custom_name=None,
                     verbose=False,
+                    overwrite=True,
                 )
 
 
@@ -269,7 +292,7 @@ class TestCLIErrorHandling:
 
     def test_scraper_exception_handling(self):
         """Test that scraper exceptions are properly handled"""
-        test_args = ["-c", "ADI", "-p", "123", "-o", "json"]
+        test_args = ["-c", "ADI", "-p", "123", "-o", "json", "--overwrite"]
 
         with patch.object(sys, "argv", ["main.py"] + test_args):
             with patch("main.JudexScraper") as mock_scraper_class:
@@ -289,7 +312,7 @@ class TestCLIErrorHandling:
 
     def test_scraper_scrape_exception_handling(self):
         """Test that exceptions during scraping are properly handled"""
-        test_args = ["-c", "ADI", "-p", "123", "-o", "json"]
+        test_args = ["-c", "ADI", "-p", "123", "-o", "json", "--overwrite"]
 
         with patch.object(sys, "argv", ["main.py"] + test_args):
             with patch("main.JudexScraper") as mock_scraper_class:
@@ -322,7 +345,9 @@ class TestCLIIntegration:
 
         for process_numbers, expected_json in test_cases:
             test_args = (
-                ["-c", "ADI", "-p"] + [str(p) for p in process_numbers] + ["-o", "json"]
+                ["-c", "ADI", "-p"]
+                + [str(p) for p in process_numbers]
+                + ["-o", "json", "--overwrite"]
             )
 
             with patch.object(sys, "argv", ["main.py"] + test_args):
@@ -348,6 +373,7 @@ class TestCLIIntegration:
                 "json",
                 "--output-path",
                 output_path,
+                "--overwrite",
             ]
 
             with patch.object(sys, "argv", ["main.py"] + test_args):
@@ -372,6 +398,7 @@ class TestCLIIntegration:
             "json",
             "--db-path",
             "/custom/path/db.sqlite",
+            "--overwrite",
         ]
 
         with patch.object(sys, "argv", ["main.py"] + test_args):
@@ -386,7 +413,7 @@ class TestCLIIntegration:
 
     def test_default_database_path(self):
         """Test that None is passed for database path when not specified"""
-        test_args = ["-c", "ADI", "-p", "123", "-o", "json"]
+        test_args = ["-c", "ADI", "-p", "123", "-o", "json", "--overwrite"]
 
         with patch.object(sys, "argv", ["main.py"] + test_args):
             with patch("main.JudexScraper") as mock_scraper_class:
@@ -423,7 +450,7 @@ class TestCLIEdgeCases:
 
     def test_zero_process_numbers(self):
         """Test CLI with zero process numbers"""
-        test_args = ["-c", "ADI", "-p", "0", "-o", "json"]
+        test_args = ["-c", "ADI", "-p", "0", "-o", "json", "--overwrite"]
 
         with patch.object(sys, "argv", ["main.py"] + test_args):
             with patch("main.JudexScraper") as mock_scraper_class:
@@ -437,7 +464,7 @@ class TestCLIEdgeCases:
 
     def test_negative_process_numbers(self):
         """Test CLI with negative process numbers"""
-        test_args = ["-c", "ADI", "-p", "-123", "-456", "-o", "json"]
+        test_args = ["-c", "ADI", "-p", "-123", "-456", "-o", "json", "--overwrite"]
 
         with patch.object(sys, "argv", ["main.py"] + test_args):
             with patch("main.JudexScraper") as mock_scraper_class:
@@ -453,7 +480,9 @@ class TestCLIEdgeCases:
         """Test CLI with large process numbers"""
         large_numbers = [999999999, 1000000000, 1234567890]
         test_args = (
-            ["-c", "ADI", "-p"] + [str(n) for n in large_numbers] + ["-o", "json"]
+            ["-c", "ADI", "-p"]
+            + [str(n) for n in large_numbers]
+            + ["-o", "json", "--overwrite"]
         )
 
         with patch.object(sys, "argv", ["main.py"] + test_args):
@@ -480,6 +509,7 @@ class TestCLIEdgeCases:
                 "json",
                 "--max-age",
                 str(max_age),
+                "--overwrite",
             ]
 
             with patch.object(sys, "argv", ["main.py"] + test_args):
@@ -497,7 +527,7 @@ class TestCLIEdgeCases:
         # This test might not be possible with the current argument parser
         # since nargs="+" requires at least one argument
         # But we can test the default behavior
-        test_args = ["-c", "ADI", "-p", "123", "-o", "json"]
+        test_args = ["-c", "ADI", "-p", "123", "-o", "json", "--overwrite"]
 
         with patch.object(sys, "argv", ["main.py"] + test_args):
             with patch("main.JudexScraper") as mock_scraper_class:

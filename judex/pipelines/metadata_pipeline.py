@@ -5,7 +5,6 @@ Metadata pipeline for judex - adds metadata to items
 from typing import Any
 
 import scrapy
-from itemadapter import ItemAdapter
 
 
 class MetadataPipeline:

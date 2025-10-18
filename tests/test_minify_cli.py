@@ -1,12 +1,8 @@
 """
 Tests for HTML minification CLI option
 """
-import json
-import tempfile
-import os
 from unittest.mock import patch, MagicMock
 
-import pytest
 
 from main import main
 from judex.core import JudexScraper
@@ -18,7 +14,6 @@ class TestMinifyCLIOption:
     def test_minify_html_cli_argument_exists(self):
         """Test that --minify-html argument exists in CLI"""
         import argparse
-        from main import main
         
         # This test will fail initially - we need to add the argument
         parser = argparse.ArgumentParser()

@@ -30,7 +30,7 @@ class TestE2ECLI:
 
     def test_cli_basic_usage(self):
         """Test basic CLI usage with minimal arguments"""
-        cmd = ["uv", "run", "main.py", "-c", "ADI", "-p", "1", "-o", "json"]
+        cmd = ["uv", "run", "main.py", "-c", "ADI", "-p", "1", "-o", "json", "--overwrite"]
 
         # Run the command and capture output
         result = subprocess.run(
@@ -74,6 +74,7 @@ class TestE2ECLI:
             "1",
             "-o",
             "json",
+            "--overwrite",
             "--output-path",
             self.output_dir,
         ]
@@ -114,6 +115,7 @@ class TestE2ECLI:
             "1",
             "-o",
             "json",
+            "--overwrite",
             "--output-path",
             self.output_dir,
         ]
@@ -147,6 +149,7 @@ class TestE2ECLI:
             "12",
             "-o",
             "json",
+            "--overwrite",
             "--output-path",
             self.output_dir,
         ]
@@ -183,6 +186,7 @@ class TestE2ECLI:
             "1",
             "-o",
             "json",
+            "--overwrite",
             "--verbose",
             "--output-path",
             self.output_dir,
@@ -206,7 +210,7 @@ class TestE2ECLI:
 
     def test_cli_error_handling_invalid_class(self):
         """Test CLI error handling with invalid case class"""
-        cmd = ["uv", "run", "main.py", "-c", "INVALID_CLASS", "-p", "1", "-o", "json"]
+        cmd = ["uv", "run", "main.py", "-c", "INVALID_CLASS", "-p", "1", "-o", "json", "--overwrite"]
 
         result = subprocess.run(
             cmd,
@@ -271,7 +275,7 @@ class TestE2ECLI:
             cmd = (
                 ["uv", "run", "main.py", "-c", case_type, "-p"]
                 + [str(p) for p in processes]
-                + ["-o", "json", "--output-path", self.output_dir]
+                + ["-o", "json", "--overwrite", "--output-path", self.output_dir]
             )
 
             result = subprocess.run(
@@ -318,6 +322,7 @@ class TestE2ECLIWithRealData:
             "1",
             "-o",
             "json",
+            "--overwrite",
             "--output-path",
             self.output_dir,
         ]
