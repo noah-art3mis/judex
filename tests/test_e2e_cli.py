@@ -263,8 +263,8 @@ class TestE2ECLI:
 
         assert result.returncode == 0
         assert "Judex Legal Case Scraper" in result.stdout
-        assert "-c, --classe" in result.stdout
-        assert "-p, --processos" in result.stdout
+        assert "-c CLASSE, --classe CLASSE" in result.stdout
+        assert "-p PROCESSOS [PROCESSOS ...], --processos PROCESSOS [PROCESSOS ...]" in result.stdout
         assert "Examples:" in result.stdout
 
     def test_cli_with_different_case_types(self):
