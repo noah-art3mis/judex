@@ -13,9 +13,9 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  judex -c ADI -p 987
-  judex -c ADI -p 987 988 989
-  judex -c ADI -p 987 --output ./data --verbose
+  judex -c ADI -p 987 -o json
+  judex -c ADI -p 987 988 989 -o json csv
+  judex -c ADI -p 987 -o json --output-path ./data --verbose
         """,
     )
 
@@ -36,6 +36,15 @@ Examples:
         help="The process numbers to scrape (can specify multiple)",
     )
 
+    parser.add_argument(
+        "-o",
+        "--output",
+        nargs="+",
+        choices=["json", "csv", "sql"],
+        required=True,
+        help="Persistence types to use (required)",
+    )
+
     # Optional arguments
     parser.add_argument(
         "--scraper-kind",
@@ -45,22 +54,24 @@ Examples:
     )
 
     parser.add_argument(
-        "-o",
         "--output-path",
         default="judex_output",
         help="The path to the output directory (default: judex_output)",
     )
 
     parser.add_argument(
-        "--persistence",
-        nargs="+",
-        choices=["json", "csv", "sql"],
-        default=["json", "sql", "csv"],
-        help="Persistence types to use (default: json sql csv)",
+        "--save-to-db",
+        default=False,
+        help="Whether to save to sqlite database (default: false)",
     )
 
     parser.add_argument(
         "--db-path", help="Path to the database file (default: auto-generated)"
+    )
+
+    parser.add_argument(
+        "--custom-name",
+        help="Custom name for output files (default: classe + processo)",
     )
 
     parser.add_argument(
@@ -88,13 +99,26 @@ Examples:
         "-v", "--verbose", action="store_true", help="Enable verbose logging"
     )
 
+    parser.add_argument(
+        "--overwrite",
+        action="store_true",
+        help="Overwrite existing output files instead of appending (default: false)",
+    )
+
     args = parser.parse_args()
 
-    # Set up logging
-    if args.verbose:
-        logging.basicConfig(level=logging.INFO)
-    else:
-        logging.basicConfig(level=logging.WARNING)
+    # Validate JSON output requires overwrite flag
+    if "json" in args.output and not args.overwrite:
+        print(
+            "❌ Error: JSON output format requires the --overwrite flag.",
+            file=sys.stderr,
+        )
+        print(
+            "   Reason: Appending to JSON files creates invalid JSON arrays.",
+            file=sys.stderr,
+        )
+        print("   Solution: Add --overwrite flag to your command.", file=sys.stderr)
+        sys.exit(1)
 
     try:
         # Convert process numbers to JSON string format expected by JudexScraper
@@ -106,18 +130,22 @@ Examples:
             processos=processos_json,
             scraper_kind=args.scraper_kind,
             output_path=args.output_path,
-            salvar_como=args.persistence,
+            salvar_como=args.output,
             skip_existing=args.skip_existing,
             retry_failed=args.retry_failed,
             max_age_hours=args.max_age,
             db_path=args.db_path,
+            custom_name=args.custom_name,
+            verbose=args.verbose,
+            overwrite=args.overwrite,
         )
 
         print(
             f"🚀 Starting scraper for class '{args.classe}' with processes {args.processos}"
         )
         print(f"📁 Output directory: {args.output_path}")
-        print(f"💾 Persistence types: {', '.join(args.persistence)}")
+        print(f"💾 Output types: {', '.join(args.output)}")
+        print(f"💾 Save to SQL database: {args.save_to_db}")
 
         scraper.scrape()
 

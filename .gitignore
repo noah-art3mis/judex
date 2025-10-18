@@ -10,13 +10,16 @@ wheels/
 .venv
 
 #
-notes/*
-.scrapy/*
 
-# Docker
+.cursor/
 .docker/
-docker-compose.override.yml
-
-#
+.mypy_cache
+.pytest_cache
+.ruff_cache
+.scrapy
+notes/
+.scrapy/
+test_output/
+judex_output/
 .env
-
+docker-compose.override.yml

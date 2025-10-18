@@ -35,8 +35,3 @@ class STFCaseItem(scrapy.Item):
     status = scrapy.Field()
     html = scrapy.Field()
     extraido = scrapy.Field()
-
-    # pipeline metadata
-    _spider_name = scrapy.Field()
-    _scraped_at = scrapy.Field()
-    _item_count = scrapy.Field()

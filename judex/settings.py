@@ -29,18 +29,15 @@ DOWNLOADER_MIDDLEWARES = {
 #    'scrapy.extensions.telnet.TelnetConsole': None,
 # }
 
-# Simple pipeline configuration - just enable/disable what you need
 ITEM_PIPELINES = {
     "judex.pydantic_pipeline.PydanticValidationPipeline": 200,
-    # "judex.pipelines.DatabasePipeline": 300,  # SQLite database
-    "judex.pipelines.MetadataPipeline": 400,  # Add metadata
-    # "judex.pipelines.JSONPipeline": 500,     # JSON export
-    # "judex.pipelines.CSVPipeline": 600,     # CSV export
+    # "judex.pipelines.DatabasePipeline": 300,  # SQLite database (enabled dynamically)
+    # JSON and CSV handled by FEEDS configuration
 }
 
 JSON_OUTPUT_FILE = "data.json"
 CSV_OUTPUT_FILE = "data.csv"
-DATABASE_PATH = "data.db"
+DATABASE_PATH = "judex.db"
 
 AUTOTHROTTLE_ENABLED = True
 AUTOTHROTTLE_START_DELAY = 1.0
@@ -53,25 +50,6 @@ HTTPCACHE_EXPIRATION_SECS = 360
 HTTPCACHE_DIR = "httpcache"
 HTTPCACHE_IGNORE_HTTP_CODES: list[int] = []
 HTTPCACHE_STORAGE = "scrapy.extensions.httpcache.FilesystemCacheStorage"
-
-# JSON output settings for indented output
-FEEDS = {
-    f"judex/{JSON_OUTPUT_FILE}": {
-        "format": "json",
-        "indent": 2,
-        "encoding": "utf8",
-        "store_empty": False,
-        "fields": None,
-        "item_export_kwargs": {
-            "export_empty_fields": True,
-        },
-    },
-    f"judex/{CSV_OUTPUT_FILE}": {
-        "format": "csv",
-        "encoding": "utf8",
-        "store_empty": False,
-    },
-}
 
 ###
 

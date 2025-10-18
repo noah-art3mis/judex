@@ -1,5 +1,6 @@
 import datetime
 import json
+import re
 import time
 from collections.abc import AsyncGenerator, Iterator
 
@@ -353,7 +354,7 @@ class StfSpider(scrapy.Spider):
 
         # metadados
         case_data["status"] = response.status
-        case_data["html"] = page_html
+        case_data["html"] = re.sub(r"\s+", " ", page_html.strip())
         case_data["extraido"] = datetime.datetime.now().isoformat() + "Z"
 
         # Create a Scrapy Item from the validated data for compatibility

@@ -14,6 +14,7 @@ from judex.models import CaseType
 from judex.spiders.stf import StfSpider
 
 
+@pytest.mark.integration
 class TestStfSpiderIntegration:
     """Test StfSpider integration with Pydantic"""
 

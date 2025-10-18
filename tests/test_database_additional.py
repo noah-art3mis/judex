@@ -6,7 +6,6 @@ import importlib.util
 import os
 import sys
 import tempfile
-from datetime import datetime, timedelta
 from pathlib import Path
 
 import pytest

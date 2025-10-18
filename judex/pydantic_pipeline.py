@@ -21,14 +21,21 @@ class PydanticValidationPipeline:
         adapter = ItemAdapter(item)
         item_dict = dict(adapter)
 
+        # Filter out metadata fields before validation
+        metadata_fields = {'_spider_name', '_scraped_at', '_item_count'}
+        filtered_dict = {k: v for k, v in item_dict.items() if k not in metadata_fields}
+
         try:
             # Validate with Pydantic model
-            validated_item = STFCaseModel(**item_dict)
+            validated_item = STFCaseModel(**filtered_dict)
 
             # Convert back to dict and update the item with validated data
             validated_dict = validated_item.model_dump()
 
-            # Update the item with validated data
+            # Clear the item and update with validated data only
+            for key in list(item.keys()):
+                del item[key]
+            
             for key, value in validated_dict.items():
                 item[key] = value
 

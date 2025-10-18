@@ -3,12 +3,11 @@ Tests for the CLI functionality in main.py
 """
 
 import json
-import logging
 import os
 import sys
 import tempfile
 from io import StringIO
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import Mock, patch
 
 import pytest
 
@@ -21,7 +20,7 @@ class TestCLIArgumentParsing:
 
     def test_required_arguments_only(self):
         """Test CLI with only required arguments"""
-        test_args = ["-c", "ADI", "-p", "123", "456"]
+        test_args = ["-c", "ADI", "-p", "123", "456", "-o", "json"]
 
         with patch.object(sys, "argv", ["main.py"] + test_args):
             with patch("main.JudexScraper") as mock_scraper_class:
@@ -39,7 +38,7 @@ class TestCLIArgumentParsing:
                 assert call_args[1]["processos"] == json.dumps([123, 456])
                 assert call_args[1]["scraper_kind"] == "stf"
                 assert call_args[1]["output_path"] == "judex_output"
-                assert call_args[1]["salvar_como"] == ["json", "sql", "csv"]
+                assert call_args[1]["salvar_como"] == ["json"]
                 assert call_args[1]["skip_existing"] is True
                 assert call_args[1]["retry_failed"] is True
                 assert call_args[1]["max_age_hours"] == 24
@@ -55,9 +54,9 @@ class TestCLIArgumentParsing:
             "101112",
             "--scraper-kind",
             "stf",
-            "-o",
+            "--output-path",
             "/custom/output",
-            "--persistence",
+            "-o",
             "json",
             "csv",
             "--db-path",
@@ -98,7 +97,16 @@ class TestCLIArgumentParsing:
 
         for values, expected in test_cases:
             for value in values:
-                test_args = ["-c", "ADI", "-p", "123", "--skip-existing", value]
+                test_args = [
+                    "-c",
+                    "ADI",
+                    "-p",
+                    "123",
+                    "-o",
+                    "json",
+                    "--skip-existing",
+                    value,
+                ]
 
                 with patch.object(sys, "argv", ["main.py"] + test_args):
                     with patch("main.JudexScraper") as mock_scraper_class:
@@ -112,7 +120,7 @@ class TestCLIArgumentParsing:
 
     def test_single_process_number(self):
         """Test CLI with single process number"""
-        test_args = ["-c", "ADI", "-p", "123"]
+        test_args = ["-c", "ADI", "-p", "123", "-o", "json"]
 
         with patch.object(sys, "argv", ["main.py"] + test_args):
             with patch("main.JudexScraper") as mock_scraper_class:
@@ -126,7 +134,7 @@ class TestCLIArgumentParsing:
 
     def test_multiple_process_numbers(self):
         """Test CLI with multiple process numbers"""
-        test_args = ["-c", "ADI", "-p", "123", "456", "789", "101112"]
+        test_args = ["-c", "ADI", "-p", "123", "456", "789", "101112", "-o", "json"]
 
         with patch.object(sys, "argv", ["main.py"] + test_args):
             with patch("main.JudexScraper") as mock_scraper_class:
@@ -149,7 +157,7 @@ class TestCLIArgumentParsing:
         ]
 
         for input_types, expected in test_cases:
-            test_args = ["-c", "ADI", "-p", "123", "--persistence"] + input_types
+            test_args = ["-c", "ADI", "-p", "123", "-o"] + input_types
 
             with patch.object(sys, "argv", ["main.py"] + test_args):
                 with patch("main.JudexScraper") as mock_scraper_class:
@@ -167,7 +175,7 @@ class TestCLIExecution:
 
     def test_successful_execution(self):
         """Test successful CLI execution"""
-        test_args = ["-c", "ADI", "-p", "123", "456"]
+        test_args = ["-c", "ADI", "-p", "123", "456", "-o", "json"]
 
         with patch.object(sys, "argv", ["main.py"] + test_args):
             with patch("main.JudexScraper") as mock_scraper_class:
@@ -184,41 +192,11 @@ class TestCLIExecution:
                         in output
                     )
                     assert "📁 Output directory: judex_output" in output
-                    assert "💾 Persistence types: json, sql, csv" in output
+                    assert "💾 Output types: json" in output
                     assert "✅ Scraping completed successfully!" in output
 
                     # Verify scraper.scrape() was called
                     mock_scraper.scrape.assert_called_once()
-
-    def test_verbose_logging(self):
-        """Test verbose logging is enabled when -v flag is used"""
-        test_args = ["-c", "ADI", "-p", "123", "-v"]
-
-        with patch.object(sys, "argv", ["main.py"] + test_args):
-            with patch("main.JudexScraper") as mock_scraper_class:
-                mock_scraper = Mock()
-                mock_scraper_class.return_value = mock_scraper
-
-                with patch("logging.basicConfig") as mock_logging:
-                    main()
-
-                    # Verify logging was configured with INFO level
-                    mock_logging.assert_called_once_with(level=logging.INFO)
-
-    def test_non_verbose_logging(self):
-        """Test non-verbose logging uses WARNING level"""
-        test_args = ["-c", "ADI", "-p", "123"]
-
-        with patch.object(sys, "argv", ["main.py"] + test_args):
-            with patch("main.JudexScraper") as mock_scraper_class:
-                mock_scraper = Mock()
-                mock_scraper_class.return_value = mock_scraper
-
-                with patch("logging.basicConfig") as mock_logging:
-                    main()
-
-                    # Verify logging was configured with WARNING level
-                    mock_logging.assert_called_once_with(level=logging.WARNING)
 
     def test_scraper_initialization_parameters(self):
         """Test that JudexScraper is initialized with correct parameters"""
@@ -230,7 +208,7 @@ class TestCLIExecution:
             "101112",
             "--output-path",
             "/test/output",
-            "--persistence",
+            "-o",
             "json",
             "csv",
             "--db-path",
@@ -261,6 +239,8 @@ class TestCLIExecution:
                     retry_failed=False,
                     max_age_hours=72,
                     db_path="/test/db.sqlite",
+                    custom_name=None,
+                    verbose=False,
                 )
 
 
@@ -289,7 +269,7 @@ class TestCLIErrorHandling:
 
     def test_scraper_exception_handling(self):
         """Test that scraper exceptions are properly handled"""
-        test_args = ["-c", "ADI", "-p", "123"]
+        test_args = ["-c", "ADI", "-p", "123", "-o", "json"]
 
         with patch.object(sys, "argv", ["main.py"] + test_args):
             with patch("main.JudexScraper") as mock_scraper_class:
@@ -309,7 +289,7 @@ class TestCLIErrorHandling:
 
     def test_scraper_scrape_exception_handling(self):
         """Test that exceptions during scraping are properly handled"""
-        test_args = ["-c", "ADI", "-p", "123"]
+        test_args = ["-c", "ADI", "-p", "123", "-o", "json"]
 
         with patch.object(sys, "argv", ["main.py"] + test_args):
             with patch("main.JudexScraper") as mock_scraper_class:
@@ -341,7 +321,9 @@ class TestCLIIntegration:
         ]
 
         for process_numbers, expected_json in test_cases:
-            test_args = ["-c", "ADI", "-p"] + [str(p) for p in process_numbers]
+            test_args = (
+                ["-c", "ADI", "-p"] + [str(p) for p in process_numbers] + ["-o", "json"]
+            )
 
             with patch.object(sys, "argv", ["main.py"] + test_args):
                 with patch("main.JudexScraper") as mock_scraper_class:
@@ -357,7 +339,16 @@ class TestCLIIntegration:
         """Test that output directory path is passed correctly to JudexScraper"""
         with tempfile.TemporaryDirectory() as temp_dir:
             output_path = os.path.join(temp_dir, "new_output_dir")
-            test_args = ["-c", "ADI", "-p", "123", "-o", output_path]
+            test_args = [
+                "-c",
+                "ADI",
+                "-p",
+                "123",
+                "-o",
+                "json",
+                "--output-path",
+                output_path,
+            ]
 
             with patch.object(sys, "argv", ["main.py"] + test_args):
                 with patch("main.JudexScraper") as mock_scraper_class:
@@ -372,7 +363,16 @@ class TestCLIIntegration:
 
     def test_custom_database_path(self):
         """Test that custom database path is passed correctly"""
-        test_args = ["-c", "ADI", "-p", "123", "--db-path", "/custom/path/db.sqlite"]
+        test_args = [
+            "-c",
+            "ADI",
+            "-p",
+            "123",
+            "-o",
+            "json",
+            "--db-path",
+            "/custom/path/db.sqlite",
+        ]
 
         with patch.object(sys, "argv", ["main.py"] + test_args):
             with patch("main.JudexScraper") as mock_scraper_class:
@@ -386,7 +386,7 @@ class TestCLIIntegration:
 
     def test_default_database_path(self):
         """Test that None is passed for database path when not specified"""
-        test_args = ["-c", "ADI", "-p", "123"]
+        test_args = ["-c", "ADI", "-p", "123", "-o", "json"]
 
         with patch.object(sys, "argv", ["main.py"] + test_args):
             with patch("main.JudexScraper") as mock_scraper_class:
@@ -412,7 +412,6 @@ class TestCLIHelpAndExamples:
         """Test that examples are included in help message"""
         # This test would require capturing the help output
         # For now, we'll just verify that the argument parser is configured correctly
-        from main import main
 
         # The examples are defined in the epilog of the ArgumentParser
         # This is more of a documentation test than a functional test
@@ -424,7 +423,7 @@ class TestCLIEdgeCases:
 
     def test_zero_process_numbers(self):
         """Test CLI with zero process numbers"""
-        test_args = ["-c", "ADI", "-p", "0"]
+        test_args = ["-c", "ADI", "-p", "0", "-o", "json"]
 
         with patch.object(sys, "argv", ["main.py"] + test_args):
             with patch("main.JudexScraper") as mock_scraper_class:
@@ -438,7 +437,7 @@ class TestCLIEdgeCases:
 
     def test_negative_process_numbers(self):
         """Test CLI with negative process numbers"""
-        test_args = ["-c", "ADI", "-p", "-123", "-456"]
+        test_args = ["-c", "ADI", "-p", "-123", "-456", "-o", "json"]
 
         with patch.object(sys, "argv", ["main.py"] + test_args):
             with patch("main.JudexScraper") as mock_scraper_class:
@@ -453,7 +452,9 @@ class TestCLIEdgeCases:
     def test_large_process_numbers(self):
         """Test CLI with large process numbers"""
         large_numbers = [999999999, 1000000000, 1234567890]
-        test_args = ["-c", "ADI", "-p"] + [str(n) for n in large_numbers]
+        test_args = (
+            ["-c", "ADI", "-p"] + [str(n) for n in large_numbers] + ["-o", "json"]
+        )
 
         with patch.object(sys, "argv", ["main.py"] + test_args):
             with patch("main.JudexScraper") as mock_scraper_class:
@@ -470,7 +471,16 @@ class TestCLIEdgeCases:
         test_cases = [0, 1, 24, 48, 168, 8760]  # 0h, 1h, 1d, 2d, 1w, 1y
 
         for max_age in test_cases:
-            test_args = ["-c", "ADI", "-p", "123", "--max-age", str(max_age)]
+            test_args = [
+                "-c",
+                "ADI",
+                "-p",
+                "123",
+                "-o",
+                "json",
+                "--max-age",
+                str(max_age),
+            ]
 
             with patch.object(sys, "argv", ["main.py"] + test_args):
                 with patch("main.JudexScraper") as mock_scraper_class:
@@ -487,7 +497,7 @@ class TestCLIEdgeCases:
         # This test might not be possible with the current argument parser
         # since nargs="+" requires at least one argument
         # But we can test the default behavior
-        test_args = ["-c", "ADI", "-p", "123"]
+        test_args = ["-c", "ADI", "-p", "123", "-o", "json"]
 
         with patch.object(sys, "argv", ["main.py"] + test_args):
             with patch("main.JudexScraper") as mock_scraper_class:
@@ -497,19 +507,5 @@ class TestCLIEdgeCases:
                 main()
 
                 call_args = mock_scraper_class.call_args
-                # Should use default persistence types
-                assert call_args[1]["salvar_como"] == ["json", "sql", "csv"]
-
-
-# Integration test that could be run separately
-class TestCLIIntegrationWithRealScraper:
-    """Integration tests with real JudexScraper (requires actual scraper setup)"""
-
-    def test_full_integration(self):
-        """Test full integration with real JudexScraper"""
-        # This test would require:
-        # 1. A test database
-        # 2. Mock web requests or test data
-        # 3. Proper cleanup
-        # For now, we'll skip this in unit tests
-        pytest.skip("Integration test - requires full scraper setup")
+                # Should use specified output types
+                assert call_args[1]["salvar_como"] == ["json"]

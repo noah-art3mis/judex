@@ -1,5 +1,5 @@
 _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_protocolo,decisoes,deslocamentos,extraido,html,incidente,informacoes,liminar,numero_unico,origem,origem_orgao,partes,pautas,peticoes,processo_id,recursos,relator,sessao,status,tipo_processo
-0,2025-10-18 00:25:00.181355+00:00,stf,"[{'index_num': 14, 'data': '29/09/1994', 'nome': 'BAIXA AO ARQUIVO DO STF', 'complemento': 'GUIA 02327', 'julgador': None}, {'index_num': 13, 'data': '16/09/1994', 'nome': 'TRANSITADO EM JULGADO', 'complemento': '', 'julgador': None}, {'index_num': 12, 'data': '09/09/1994', 'nome': 'PUBLICADO ACORDAO, DJ:', 'complemento': '', 'julgador': None}, {'index_num': 11, 'data': '06/06/1994', 'nome': 'DECISAO PUBLICADA, DJ:', 'complemento': '', 'julgador': None}, {'index_num': 10, 'data': '26/05/1994', 'nome': 'JULGAMENTO DO PLENO - NAO CONHECIDO', 'complemento': 'POR VOTAÇÃO UNÂNIME, O TRIBUNAL NÃO CONHECEU DA AÇÃO, POR ILEGITIMIDADE ATIVA, FICANDO, EM CONSEQÜÊNCIA, PREJUDICADO O PEDIDO DE MEDIDA LIMINAR. VOTOU O PRESIDENTE. PLENÁRIO, 26.5.94.', 'julgador': 'TRIBUNAL PLENO'}, {'index_num': 9, 'data': '01/03/1994', 'nome': 'CONCLUSOS AO RELATOR', 'complemento': '', 'julgador': None}, {'index_num': 8, 'data': '28/02/1994', 'nome': 'INFORMACOES RECEBIDAS, OFICIO NRO.:', 'complemento': 'MSG 146/94 (PG 004679) DO PRESIDENTE DA REPUBLICA', 'julgador': None}, {'index_num': 7, 'data': '01/02/1994', 'nome': 'PUBLICADO DESPACHO NO DJ', 'complemento': 'DESPACHO DE 19.01.94', 'julgador': None}, {'index_num': 6, 'data': '01/02/1994', 'nome': 'DISTRIBUIDO', 'complemento': 'MIN. ILMAR GALVAO', 'julgador': None}, {'index_num': 5, 'data': '27/01/1994', 'nome': 'APENSADO, PROCESSO NRO.:', 'complemento': 'ADI 991-5.', 'julgador': None}, {'index_num': 4, 'data': '26/01/1994', 'nome': 'EXPEDIDO OFICIO/TELEX N.', 'complemento': 'MENS.003 AO PRESIDENTE DA REPUBLICA, SOLIC.INFORM.', 'julgador': None}, {'index_num': 3, 'data': '19/01/1994', 'nome': 'LIMINAR JULG. POR DESPACHO - INDEFERIDA', 'complemento': '""AD REFERENDUM"" DO PLENARIO. SOLICITEM-SE INFORM.', 'julgador': None}, {'index_num': 2, 'data': '07/01/1994', 'nome': 'CONCLUSOS.', 'complemento': 'MINISTRO SEPULVEDA PERTENCE', 'julgador': None}, {'index_num': 1, 'data': '07/01/1994', 'nome': 'REGISTRADO', 'complemento': 'MINISTRO PRESIDENTE', 'julgador': None}]","[""DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Servidor Público Civil | Sistema Remuneratório e Benefícios | Teto Salarial""]",FEDERACAO NACIONAL DAS ASSOCIACOES ECONOMIARIAS - FENAE,ADI,1994-01-07T00:00:00Z,"[{'index_num': 5, 'data': '26/05/1994', 'nome': 'JULGAMENTO DO PLENO - NAO CONHECIDO', 'complemento': 'POR VOTAÇÃO UNÂNIME, O TRIBUNAL NÃO CONHECEU DA AÇÃO, POR ILEGITIMIDADE ATIVA, FICANDO, EM CONSEQÜÊNCIA, PREJUDICADO O PEDIDO DE MEDIDA LIMINAR. VOTOU O PRESIDENTE. PLENÁRIO, 26.5.94.', 'julgador': 'TRIBUNAL PLENO', 'link': None}]","[{'index_num': 12, 'data_enviado': '19/11/2020', 'data_recebido': '19/11/2020', 'enviado_por': 'COORDENADORIA DE SERVIÇOS E LOGÍSTICA', 'recebido_por': 'COORDENADORIA DE GESTÃO DA INFORMAÇÃO, MEMÓRIA INSTITUCIONAL E MUSEU', 'guia': 'Guia 164/2020'}, {'index_num': 11, 'data_enviado': '14/06/2019', 'data_recebido': '12/11/2020', 'enviado_por': 'COORDENADORIA DE MEMÓRIA E GESTÃO DOCUMENTAL', 'recebido_por': 'COORDENADORIA DE SERVIÇOS E LOGÍSTICA', 'guia': 'Guia 218/2019'}, {'index_num': 10, 'data_enviado': '13/06/2019', 'data_recebido': '14/06/2019', 'enviado_por': 'SEÇÃO DE ARQUIVO', 'recebido_por': 'COORDENADORIA DE MEMÓRIA E GESTÃO DOCUMENTAL', 'guia': 'Guia 390/2019'}, {'index_num': 9, 'data_enviado': '11/11/2014', 'data_recebido': '11/11/2014', 'enviado_por': 'SEÇÃO DE ARQUIVO', 'recebido_por': 'SEÇÃO DE ARQUIVO', 'guia': 'Guia 309/2014'}, {'index_num': 8, 'data_enviado': '06/06/2012', 'data_recebido': '06/06/2012', 'enviado_por': 'SEÇÃO DE ARQUIVO', 'recebido_por': 'SEÇÃO DE ARQUIVO', 'guia': 'Guia 35/2012'}, {'index_num': 7, 'data_enviado': '02/05/2012', 'data_recebido': '02/05/2012', 'enviado_por': 'SEÇÃO DE ARQUIVO', 'recebido_por': 'SEÇÃO DE ARQUIVO', 'guia': 'Guia 158/2012'}, {'index_num': 6, 'data_enviado': '13/09/2010', 'data_recebido': '13/09/2010', 'enviado_por': 'SEÇÃO DE ARQUIVO', 'recebido_por': 'SEÇÃO DE ARQUIVO', 'guia': 'Guia 17121/2010'}, {'index_num': 5, 'data_enviado': '25/07/2004', 'data_recebido': '25/07/2004', 'enviado_por': 'SEÇÃO DE ARQUIVO JUDICIARIO', 'recebido_por': 'SEÇÃO DE ARQUIVO', 'guia': 'Guia 299/2004'}, {'index_num': 4, 'data_enviado': '05/02/2003', 'data_recebido': '05/02/2003', 'enviado_por': 'SEÇÃO DE ARQUIVO', 'recebido_por': 'SEÇÃO DE ARQUIVO JUDICIARIO', 'guia': 'Guia 15/2003'}, {'index_num': 3, 'data_enviado': '29/09/1994', 'data_recebido': '29/09/1994', 'enviado_por': 'SEÇÃO DE BAIXA', 'recebido_por': 'SEÇÃO DE ARQUIVO', 'guia': 'Guia 2327/1994'}, {'index_num': 2, 'data_enviado': '15/08/1994', 'data_recebido': '08/09/1994', 'enviado_por': 'DIVISAO DE ACORDAOS', 'recebido_por': 'SEÇÃO DE CONFERENCIA E PUBLICACAO DE ACORDAOS', 'guia': 'Guia 763/1994'}, {'index_num': 1, 'data_enviado': '08/09/1994', 'data_recebido': '08/09/1994', 'enviado_por': 'DIVISAO DE ACORDAOS', 'recebido_por': 'SEÇÃO DE BAIXA', 'guia': 'Guia 845/1994'}]",2025-10-18T01:25:10.966962Z,"<html lang=""pt-BR""><head>
+0,2025-10-18 15:00:05.562591+00:00,stf,"[{'index_num': 21, 'data': '13/12/2023', 'nome': 'Petição', 'complemento': 'Amicus curiae - Petição: 139250 Data: 13/12/2023, às 18:07:32', 'julgador': None}, {'index_num': 20, 'data': '11/09/2013', 'nome': 'Petição', 'complemento': 'Juntada de documentos - Petição: 45190 Data: 11/09/2013 19:59:29.657 GMT-03:00', 'julgador': None}, {'index_num': 19, 'data': '11/09/2013', 'nome': 'Petição', 'complemento': 'Juntada de documentos - Petição: 45174 Data: 11/09/2013 18:45:42.65 GMT-03:00', 'julgador': None}, {'index_num': 18, 'data': '10/03/1992', 'nome': 'BAIXA AO ARQUIVO DO STF', 'complemento': '', 'julgador': None}, {'index_num': 17, 'data': '10/03/1992', 'nome': 'DECORRIDO O PRAZO', 'complemento': 'INTERPOSICAO DE RECURSO - REMESSA A S.BAIXA', 'julgador': None}, {'index_num': 16, 'data': '27/02/1992', 'nome': 'PUBLICADO DESPACHO NO DJ', 'complemento': '', 'julgador': None}, {'index_num': 15, 'data': '24/02/1992', 'nome': 'JULG. POR DESPACHO - NEGADO SEGUIMENTO', 'complemento': '', 'julgador': None}, {'index_num': 14, 'data': '03/02/1992', 'nome': 'CONCLUSOS AO RELATOR', 'complemento': '', 'julgador': None}, {'index_num': 13, 'data': '24/01/1992', 'nome': 'RECEBIMENTO DOS AUTOS', 'complemento': 'DO AGU, C/ PARECER PELA IMPROCEDENCIA', 'julgador': None}, {'index_num': 12, 'data': '06/06/1991', 'nome': 'VISTA AO ADVOGADO-GERAL DA UNIAO', 'complemento': '', 'julgador': None}, {'index_num': 11, 'data': '29/05/1991', 'nome': 'CONCLUSOS AO RELATOR', 'complemento': '', 'julgador': None}, {'index_num': 10, 'data': '29/05/1991', 'nome': 'AUTOS DEVOLVIDOS', 'complemento': 'DA PGR COM PARECER DO PROCURADOR-GERAL', 'julgador': None}, {'index_num': 9, 'data': '05/01/1989', 'nome': 'VISTA AO PROCURADOR-GERAL DA REPUBLICA', 'complemento': '', 'julgador': None}, {'index_num': 8, 'data': '28/11/1988', 'nome': 'CONCLUSAO', 'complemento': '', 'julgador': None}, {'index_num': 7, 'data': '28/11/1988', 'nome': 'INFORMACOES RECEBIDAS, OFICIO NRO.:', 'complemento': 'OF.N.557 DA ASS.LEG/RO PRESTANDO INFORMACAO', 'julgador': None}, {'index_num': 6, 'data': '04/11/1988', 'nome': 'INFORMACOES RECEBIDAS, OFICIO NRO.:', 'complemento': 'DO GOVERNADOR/RO', 'julgador': None}, {'index_num': 5, 'data': '20/10/1988', 'nome': 'PEDIDO DE INFORMACOES', 'complemento': 'A ASS.LEG.DO EST/RO', 'julgador': None}, {'index_num': 4, 'data': '19/10/1988', 'nome': 'PEDIDO DE INFORMACOES', 'complemento': 'AO GOVERNADOR/RO', 'julgador': None}, {'index_num': 3, 'data': '11/10/1988', 'nome': 'DESPACHO ORDINATORIO', 'complemento': 'SOLICITANDO INFORMACOES. DPI.', 'julgador': None}, {'index_num': 2, 'data': '06/10/1988', 'nome': 'CONCLUSAO', 'complemento': '', 'julgador': None}, {'index_num': 1, 'data': '06/10/1988', 'nome': 'DISTRIBUIDO', 'complemento': 'MIN. CELIO BORJA', 'julgador': None}]","[""ASSUNTO PARA PROCESSO ANTIGO |   | PROCESSO ANTIGO""]",GOVERNADOR DO ESTADO DE RONDÔNIA,ADI,1988-10-06T00:00:00Z,,"[{'index_num': 13, 'data_enviado': '30/01/2021', 'data_recebido': '30/01/2021', 'enviado_por': 'COORDENADORIA DE MEMÓRIA E GESTÃO DOCUMENTAL', 'recebido_por': 'COORDENADORIA DE GESTÃO DA INFORMAÇÃO, MEMÓRIA INSTITUCIONAL E MUSEU', 'guia': 'Guia 6/2021'}, {'index_num': 12, 'data_enviado': '13/06/2019', 'data_recebido': '13/06/2019', 'enviado_por': 'SEÇÃO DE ARQUIVO', 'recebido_por': 'COORDENADORIA DE MEMÓRIA E GESTÃO DOCUMENTAL', 'guia': 'Guia 385/2019'}, {'index_num': 11, 'data_enviado': '11/11/2014', 'data_recebido': '11/11/2014', 'enviado_por': 'SEÇÃO DE ARQUIVO', 'recebido_por': 'SEÇÃO DE ARQUIVO', 'guia': 'Guia 309/2014'}, {'index_num': 10, 'data_enviado': '06/06/2012', 'data_recebido': '06/06/2012', 'enviado_por': 'SEÇÃO DE ARQUIVO', 'recebido_por': 'SEÇÃO DE ARQUIVO', 'guia': 'Guia 35/2012'}, {'index_num': 9, 'data_enviado': '02/05/2012', 'data_recebido': '02/05/2012', 'enviado_por': 'SEÇÃO DE ARQUIVO', 'recebido_por': 'SEÇÃO DE ARQUIVO', 'guia': 'Guia 158/2012'}, {'index_num': 8, 'data_enviado': '13/09/2010', 'data_recebido': '13/09/2010', 'enviado_por': 'SEÇÃO DE ARQUIVO', 'recebido_por': 'SEÇÃO DE ARQUIVO', 'guia': 'Guia 17897/2010'}, {'index_num': 7, 'data_enviado': '25/07/2004', 'data_recebido': '25/07/2004', 'enviado_por': 'SEÇÃO DE ARQUIVO JUDICIARIO', 'recebido_por': 'SEÇÃO DE ARQUIVO', 'guia': 'Guia 281/2004'}, {'index_num': 6, 'data_enviado': '10/11/2003', 'data_recebido': '10/11/2003', 'enviado_por': 'MUSEU DO TRIBUNAL', 'recebido_por': 'SEÇÃO DE ARQUIVO JUDICIARIO', 'guia': 'Guia 1/2003'}, {'index_num': 5, 'data_enviado': '30/09/2003', 'data_recebido': '10/11/2003', 'enviado_por': 'SEÇÃO DE ARQUIVO JUDICIARIO', 'recebido_por': 'MUSEU DO TRIBUNAL', 'guia': 'Guia 326/2003'}, {'index_num': 4, 'data_enviado': '05/02/2003', 'data_recebido': '05/02/2003', 'enviado_por': 'SEÇÃO DE ARQUIVO', 'recebido_por': 'SEÇÃO DE ARQUIVO JUDICIARIO', 'guia': 'Guia 15/2003'}, {'index_num': 3, 'data_enviado': '10/03/1992', 'data_recebido': '10/03/1992', 'enviado_por': 'SEÇÃO DE BAIXA', 'recebido_por': 'SEÇÃO DE ARQUIVO', 'guia': 'Guia 350/9992'}, {'index_num': 2, 'data_enviado': '10/03/1992', 'data_recebido': '10/03/1992', 'enviado_por': 'DIVISAO DE PROCESSOS ORIGINARIOS', 'recebido_por': 'SEÇÃO DE BAIXA', 'guia': 'Guia 853/9992'}, {'index_num': 1, 'data_enviado': '26/02/1992', 'data_recebido': '26/02/1992', 'enviado_por': 'DIVISAO DE PUBLICACOES E INTIMACOES', 'recebido_por': 'DIVISAO DE PROCESSOS ORIGINARIOS', 'guia': 'Guia 4295/9992'}]",2025-10-18T16:00:19.921822Z,"<html lang=""pt-BR""><head>
     <meta charset=""UTF-8"">
     <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
     <meta http-equiv=""X-UA-Compatible"" content=""ie=edge"">
@@ -1720,18 +1720,20 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
                     
                         <div class=""col-md-4"">
                             <div class=""processo-titulo m-b-8"">
-                                ADI&nbsp;987
+                                ADI&nbsp;1
                                 <div>
                                     <span class=""badge bg-secondary"">Processo Físico</span>
                                     <span class=""badge bg-success"">Público</span>
                                     
+                                                <span class=""badge bg-danger"">Medida Liminar</span>    
+                                            
                                 </div>
-                                <input type=""hidden"" id=""incidente"" value=""1579244"">
-                                <input type=""hidden"" id=""classe-numero-processo"" value=""ADI 987"">
+                                <input type=""hidden"" id=""incidente"" value=""1480010"">
+                                <input type=""hidden"" id=""classe-numero-processo"" value=""ADI 1"">
                                 <input type=""hidden"" id=""peca"" value=""S"">
                                 <input type=""hidden"" id=""meio"" value=""F"">
                             </div>
-                            <div class=""processo-rotulo"">Número Único: 0000038-90.1994.0.01.0000</div>
+                            <div class=""processo-rotulo"">Número Único: 0003935-39.1988.0.01.0000</div>
                         </div>
                         <div class=""col-md-8 btn-group__wrapper"">
                             <div class=""btn-group"">
@@ -1748,7 +1750,7 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
                                 <button type=""button"" class=""btn btn-default btn-primary-spacing"" aria-label=""push"" id=""btn-push"">
                                     <span aria-hidden=""true""> Push</span>
                                 </button>
-                                <a href=""verImpressao.asp?imprimir=true&amp;incidente=1579244"" target=""_blank"" type=""button"" class=""btn btn-default btn-primary-spacing"" aria-label=""Imprimir"" id=""btn-imprimir"">
+                                <a href=""verImpressao.asp?imprimir=true&amp;incidente=1480010"" target=""_blank"" type=""button"" class=""btn btn-default btn-primary-spacing"" aria-label=""Imprimir"" id=""btn-imprimir"">
                                     <span class=""fas fa-print"" style=""font-size: 1rem;"" aria-hidden=""true""></span>
                                 </a>
                                 
@@ -1761,35 +1763,31 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
                                 <div class=""processo-classe p-t-8 p-l-16"">AÇÃO DIRETA DE INCONSTITUCIONALIDADE</div>
                                 
                                 <div class=""processo-dados p-l-16""><a href=""#"" data-toggle=""tooltip"" title=""Corresponde ao Estado da federação de onde provém o processo."">Origem:</a>&nbsp;<span id=""descricao-procedencia""><span id=""descricao-procedencia"">
-    DF - DISTRITO FEDERAL
+    RO - RONDÔNIA
 </span></span></div>
-                                <div class=""processo-dados p-l-16"">Relator(a): MIN. ILMAR GALVÃO</div>
-                                <div class=""processo-dados p-l-16"">Relator(a) do último incidente: MIN. ILMAR GALVÃO (ADI-MC)  </div>
-                                    <div class=""processo-dados processo-rotulo p-l-16"">
-                                        Processo(s) Apensado(s):
-                                        
-                                            <a href=""/processos/detalhe.asp?incidente=1579756"">
-                                                ADI&nbsp;991
-                                            </a>
-                                        
-                                    </div>
+                                <div class=""processo-dados p-l-16"">Relator(a): MIN. CÉLIO BORJA</div>
                                 
                                 <hr style=""margin-left: 16px;"">
                                 <div id=""resumo-partes"" class=""resumo-partes""><div id=""partes-resumidas"">
     
         <div style=""display: flex; flex-direction:row"">
             <div class=""processo-partes m-t-4 col-md-2"">REQTE.(S)</div>
-            <div class=""processo-partes m-t-4 col-md-8"">FEDERACAO NACIONAL DAS ASSOCIACOES ECONOMIARIAS - FENAE&nbsp;</div>
+            <div class=""processo-partes m-t-4 col-md-8"">GOVERNADOR DO ESTADO DE RONDÔNIA&nbsp;</div>
         </div>
     
         <div style=""display: flex; flex-direction:row"">
             <div class=""processo-partes m-t-4 col-md-2"">ADV.(A/S)</div>
-            <div class=""processo-partes m-t-4 col-md-8"">RICARDO QUINTAS CARNEIRO&nbsp;E OUTROS</div>
+            <div class=""processo-partes m-t-4 col-md-8"">ERASTO VILLA VERDE DE CARVALHO&nbsp;</div>
         </div>
     
         <div style=""display: flex; flex-direction:row"">
             <div class=""processo-partes m-t-4 col-md-2"">INTDO.(A/S)</div>
-            <div class=""processo-partes m-t-4 col-md-8"">PRESIDENTE DA REPÚBLICA&nbsp;</div>
+            <div class=""processo-partes m-t-4 col-md-8"">ASSEMBLEIA LEGISLATIVA DO ESTADO DE RONDÔNIA&nbsp;</div>
+        </div>
+    
+        <div style=""display: flex; flex-direction:row"">
+            <div class=""processo-partes m-t-4 col-md-2"">INTDO.(A/S)</div>
+            <div class=""processo-partes m-t-4 col-md-8"">GOVERNADOR DO ESTADO DE RONDÔNIA&nbsp;</div>
         </div>
     
 </div>
@@ -1927,7 +1925,7 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
                 
                     <ul>
                         
-                            <li>DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Servidor Público Civil | Sistema Remuneratório e Benefícios | Teto Salarial</li>
+                            <li>ASSUNTO PARA PROCESSO ANTIGO |   | PROCESSO ANTIGO</li>
                         
                     </ul>
                 
@@ -1944,25 +1942,25 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
                     Data de Protocolo:
                 </div>
                 <div class=""col-md-5 processo-detalhes-bold m-l-0"">
-                    07/01/1994
+                    06/10/1988
                 </div>
                 <div class=""col-md-7 processo-detalhes-bold p-l-0"">
                     Órgão de Origem:
                 </div>
                 <div class=""col-md-5 processo-detalhes"">
-                    SUPREMO TRIBUNAL FEDERAL
+                    FÓRUM DA COMARCA DE RANCHARIA
                 </div>
                 <div class=""col-md-7 processo-detalhes-bold p-l-0"">
                     Origem:
                 </div>
                 <div class=""col-md-5 processo-detalhes"">
-                    DISTRITO FEDERAL
+                    RONDÔNIA
                 </div>
                 <div class=""col-md-7 processo-detalhes-bold p-l-0"">
                     Número de Origem:
                 </div>
                 <div class=""col-md-5 processo-detalhes"">
-                    268
+                    12, 
                 </div>
             </div>
         </div>
@@ -1972,7 +1970,7 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
                 <div class=""rotulo"">Volumes</div>
             </div>
             <div class=""col-md-3 processo-quadro"">
-                <div class=""numero"">48</div>
+                <div class=""numero"">0</div>
                 <div class=""rotulo"">Folhas</div>
             </div>
             
@@ -1989,21 +1987,28 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
         <div class=""processo-partes lista-dados m-l-16 p-t-0"">
     
     <div class=""detalhe-parte"">REQTE.(S)</div>
-    <div class=""nome-parte"">FEDERACAO NACIONAL DAS ASSOCIACOES ECONOMIARIAS - FENAE</div>
+    <div class=""nome-parte"">GOVERNADOR DO ESTADO DE RONDÔNIA</div>
     
     </div>  
    
         <div class=""processo-partes lista-dados m-l-16 p-t-0"">
     
     <div class=""detalhe-parte"">ADV.(A/S)</div>
-    <div class=""nome-parte"">RICARDO QUINTAS CARNEIRO</div>
+    <div class=""nome-parte"">ERASTO VILLA VERDE DE CARVALHO</div>
     
     </div>  
    
         <div class=""processo-partes lista-dados m-l-16 p-t-0"">
     
     <div class=""detalhe-parte"">INTDO.(A/S)</div>
-    <div class=""nome-parte"">PRESIDENTE DA REPÚBLICA</div>
+    <div class=""nome-parte"">ASSEMBLEIA LEGISLATIVA DO ESTADO DE RONDÔNIA</div>
+    
+    </div>  
+   
+        <div class=""processo-partes lista-dados m-l-16 p-t-0"">
+    
+    <div class=""detalhe-parte"">INTDO.(A/S)</div>
+    <div class=""nome-parte"">GOVERNADOR DO ESTADO DE RONDÔNIA</div>
     
     </div>  
   
@@ -2018,7 +2023,85 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
             <div class=""message-head clearfix"">
               <div class=""andamento-detalhe"">
                 <div class=""col-md-3 p-l-0"">
-                  <div class=""andamento-data "">29/09/1994</div>
+                  <div class=""andamento-data andamento-invalido"">13/12/2023</div>
+                </div>
+                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
+                  <h5 class=""andamento-nome andamento-invalido"">Petição</h5>
+                  
+                </div>
+                <div class=""col-md-4 andamento-docs"">
+                  
+                </div>
+
+                
+                  <div class=""col-md-3 p-0""></div>
+                  <div class=""col-md-9 p-0andamento-invalido"">Amicus curiae - Petição: 139250 Data: 13/12/2023, às 18:07:32</div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      
+      <li>
+        <div class=""andamento-item"">
+          <div class=""andamento-inner"">
+            <div class=""message-head clearfix"">
+              <div class=""andamento-detalhe"">
+                <div class=""col-md-3 p-l-0"">
+                  <div class=""andamento-data "">11/09/2013</div>
+                </div>
+                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
+                  <h5 class=""andamento-nome "">Petição</h5>
+                  
+                </div>
+                <div class=""col-md-4 andamento-docs"">
+                  
+                </div>
+
+                
+                  <div class=""col-md-3 p-0""></div>
+                  <div class=""col-md-9 p-0"">Juntada de documentos - Petição: 45190 Data: 11/09/2013 19:59:29.657 GMT-03:00</div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      
+      <li>
+        <div class=""andamento-item"">
+          <div class=""andamento-inner"">
+            <div class=""message-head clearfix"">
+              <div class=""andamento-detalhe"">
+                <div class=""col-md-3 p-l-0"">
+                  <div class=""andamento-data "">11/09/2013</div>
+                </div>
+                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
+                  <h5 class=""andamento-nome "">Petição</h5>
+                  
+                </div>
+                <div class=""col-md-4 andamento-docs"">
+                  
+                </div>
+
+                
+                  <div class=""col-md-3 p-0""></div>
+                  <div class=""col-md-9 p-0"">Juntada de documentos - Petição: 45174 Data: 11/09/2013 18:45:42.65 GMT-03:00</div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      
+      <li>
+        <div class=""andamento-item"">
+          <div class=""andamento-inner"">
+            <div class=""message-head clearfix"">
+              <div class=""andamento-detalhe"">
+                <div class=""col-md-3 p-l-0"">
+                  <div class=""andamento-data "">10/03/1992</div>
                 </div>
                 <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
                   <h5 class=""andamento-nome "">BAIXA AO ARQUIVO DO STF</h5>
@@ -2030,7 +2113,7 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
 
                 
                   <div class=""col-md-3 p-0""></div>
-                  <div class=""col-md-9 p-0"">GUIA 02327</div>
+                  <div class=""col-md-9 p-0""></div>
                 
               </div>
             </div>
@@ -2044,10 +2127,36 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
             <div class=""message-head clearfix"">
               <div class=""andamento-detalhe"">
                 <div class=""col-md-3 p-l-0"">
-                  <div class=""andamento-data "">16/09/1994</div>
+                  <div class=""andamento-data "">10/03/1992</div>
                 </div>
                 <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
-                  <h5 class=""andamento-nome "">TRANSITADO EM JULGADO</h5>
+                  <h5 class=""andamento-nome "">DECORRIDO O PRAZO</h5>
+                  
+                </div>
+                <div class=""col-md-4 andamento-docs"">
+                  
+                </div>
+
+                
+                  <div class=""col-md-3 p-0""></div>
+                  <div class=""col-md-9 p-0"">INTERPOSICAO DE RECURSO - REMESSA A S.BAIXA</div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      
+      <li>
+        <div class=""andamento-item"">
+          <div class=""andamento-inner"">
+            <div class=""message-head clearfix"">
+              <div class=""andamento-detalhe"">
+                <div class=""col-md-3 p-l-0"">
+                  <div class=""andamento-data "">27/02/1992</div>
+                </div>
+                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
+                  <h5 class=""andamento-nome "">PUBLICADO DESPACHO NO DJ</h5>
                   
                 </div>
                 <div class=""col-md-4 andamento-docs"">
@@ -2070,10 +2179,10 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
             <div class=""message-head clearfix"">
               <div class=""andamento-detalhe"">
                 <div class=""col-md-3 p-l-0"">
-                  <div class=""andamento-data "">09/09/1994</div>
+                  <div class=""andamento-data "">24/02/1992</div>
                 </div>
                 <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
-                  <h5 class=""andamento-nome "">PUBLICADO ACORDAO, DJ:</h5>
+                  <h5 class=""andamento-nome "">JULG. POR DESPACHO - NEGADO SEGUIMENTO</h5>
                   
                 </div>
                 <div class=""col-md-4 andamento-docs"">
@@ -2096,61 +2205,7 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
             <div class=""message-head clearfix"">
               <div class=""andamento-detalhe"">
                 <div class=""col-md-3 p-l-0"">
-                  <div class=""andamento-data "">06/06/1994</div>
-                </div>
-                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
-                  <h5 class=""andamento-nome "">DECISAO PUBLICADA, DJ:</h5>
-                  
-                </div>
-                <div class=""col-md-4 andamento-docs"">
-                  
-                </div>
-
-                
-                  <div class=""col-md-3 p-0""></div>
-                  <div class=""col-md-9 p-0""></div>
-                
-              </div>
-            </div>
-          </div>
-        </div>
-      </li>
-      
-      <li>
-        <div class=""andamento-item"">
-          <div class=""andamento-inner"">
-            <div class=""message-head clearfix"">
-              <div class=""andamento-detalhe"">
-                <div class=""col-md-3 p-l-0"">
-                  <div class=""andamento-data "">26/05/1994</div>
-                </div>
-                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
-                  <h5 class=""andamento-nome "">JULGAMENTO DO PLENO - NAO CONHECIDO</h5>
-                  
-                </div>
-                <div class=""col-md-4 andamento-docs"">
-                  
-                </div>
-
-                
-                  <div class=""col-md-3 p-0"">
-                    <span class=""andamento-julgador badge bg-info "">TRIBUNAL PLENO</span>
-                  </div>
-                  <div class=""col-md-9 p-0 "">POR VOTAÇÃO UNÂNIME, O TRIBUNAL NÃO CONHECEU DA AÇÃO, POR ILEGITIMIDADE ATIVA, FICANDO, EM CONSEQÜÊNCIA, PREJUDICADO O PEDIDO DE MEDIDA LIMINAR. VOTOU O PRESIDENTE. PLENÁRIO, 26.5.94.</div>
-                
-              </div>
-            </div>
-          </div>
-        </div>
-      </li>
-      
-      <li>
-        <div class=""andamento-item"">
-          <div class=""andamento-inner"">
-            <div class=""message-head clearfix"">
-              <div class=""andamento-detalhe"">
-                <div class=""col-md-3 p-l-0"">
-                  <div class=""andamento-data "">01/03/1994</div>
+                  <div class=""andamento-data "">03/02/1992</div>
                 </div>
                 <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
                   <h5 class=""andamento-nome "">CONCLUSOS AO RELATOR</h5>
@@ -2176,7 +2231,163 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
             <div class=""message-head clearfix"">
               <div class=""andamento-detalhe"">
                 <div class=""col-md-3 p-l-0"">
-                  <div class=""andamento-data "">28/02/1994</div>
+                  <div class=""andamento-data "">24/01/1992</div>
+                </div>
+                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
+                  <h5 class=""andamento-nome "">RECEBIMENTO DOS AUTOS</h5>
+                  
+                </div>
+                <div class=""col-md-4 andamento-docs"">
+                  
+                </div>
+
+                
+                  <div class=""col-md-3 p-0""></div>
+                  <div class=""col-md-9 p-0"">DO AGU, C/ PARECER PELA IMPROCEDENCIA</div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      
+      <li>
+        <div class=""andamento-item"">
+          <div class=""andamento-inner"">
+            <div class=""message-head clearfix"">
+              <div class=""andamento-detalhe"">
+                <div class=""col-md-3 p-l-0"">
+                  <div class=""andamento-data "">06/06/1991</div>
+                </div>
+                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
+                  <h5 class=""andamento-nome "">VISTA AO ADVOGADO-GERAL DA UNIAO</h5>
+                  
+                </div>
+                <div class=""col-md-4 andamento-docs"">
+                  
+                </div>
+
+                
+                  <div class=""col-md-3 p-0""></div>
+                  <div class=""col-md-9 p-0""></div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      
+      <li>
+        <div class=""andamento-item"">
+          <div class=""andamento-inner"">
+            <div class=""message-head clearfix"">
+              <div class=""andamento-detalhe"">
+                <div class=""col-md-3 p-l-0"">
+                  <div class=""andamento-data "">29/05/1991</div>
+                </div>
+                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
+                  <h5 class=""andamento-nome "">CONCLUSOS AO RELATOR</h5>
+                  
+                </div>
+                <div class=""col-md-4 andamento-docs"">
+                  
+                </div>
+
+                
+                  <div class=""col-md-3 p-0""></div>
+                  <div class=""col-md-9 p-0""></div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      
+      <li>
+        <div class=""andamento-item"">
+          <div class=""andamento-inner"">
+            <div class=""message-head clearfix"">
+              <div class=""andamento-detalhe"">
+                <div class=""col-md-3 p-l-0"">
+                  <div class=""andamento-data "">29/05/1991</div>
+                </div>
+                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
+                  <h5 class=""andamento-nome "">AUTOS DEVOLVIDOS</h5>
+                  
+                </div>
+                <div class=""col-md-4 andamento-docs"">
+                  
+                </div>
+
+                
+                  <div class=""col-md-3 p-0""></div>
+                  <div class=""col-md-9 p-0"">DA PGR COM PARECER DO PROCURADOR-GERAL</div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      
+      <li>
+        <div class=""andamento-item"">
+          <div class=""andamento-inner"">
+            <div class=""message-head clearfix"">
+              <div class=""andamento-detalhe"">
+                <div class=""col-md-3 p-l-0"">
+                  <div class=""andamento-data "">05/01/1989</div>
+                </div>
+                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
+                  <h5 class=""andamento-nome "">VISTA AO PROCURADOR-GERAL DA REPUBLICA</h5>
+                  
+                </div>
+                <div class=""col-md-4 andamento-docs"">
+                  
+                </div>
+
+                
+                  <div class=""col-md-3 p-0""></div>
+                  <div class=""col-md-9 p-0""></div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      
+      <li>
+        <div class=""andamento-item"">
+          <div class=""andamento-inner"">
+            <div class=""message-head clearfix"">
+              <div class=""andamento-detalhe"">
+                <div class=""col-md-3 p-l-0"">
+                  <div class=""andamento-data "">28/11/1988</div>
+                </div>
+                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
+                  <h5 class=""andamento-nome "">CONCLUSAO</h5>
+                  
+                </div>
+                <div class=""col-md-4 andamento-docs"">
+                  
+                </div>
+
+                
+                  <div class=""col-md-3 p-0""></div>
+                  <div class=""col-md-9 p-0""></div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      
+      <li>
+        <div class=""andamento-item"">
+          <div class=""andamento-inner"">
+            <div class=""message-head clearfix"">
+              <div class=""andamento-detalhe"">
+                <div class=""col-md-3 p-l-0"">
+                  <div class=""andamento-data "">28/11/1988</div>
                 </div>
                 <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
                   <h5 class=""andamento-nome "">INFORMACOES RECEBIDAS, OFICIO NRO.:</h5>
@@ -2188,7 +2399,7 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
 
                 
                   <div class=""col-md-3 p-0""></div>
-                  <div class=""col-md-9 p-0"">MSG 146/94 (PG 004679) DO PRESIDENTE DA REPUBLICA</div>
+                  <div class=""col-md-9 p-0"">OF.N.557 DA ASS.LEG/RO PRESTANDO  INFORMACAO</div>
                 
               </div>
             </div>
@@ -2202,10 +2413,10 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
             <div class=""message-head clearfix"">
               <div class=""andamento-detalhe"">
                 <div class=""col-md-3 p-l-0"">
-                  <div class=""andamento-data "">01/02/1994</div>
+                  <div class=""andamento-data "">04/11/1988</div>
                 </div>
                 <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
-                  <h5 class=""andamento-nome "">PUBLICADO DESPACHO NO DJ</h5>
+                  <h5 class=""andamento-nome "">INFORMACOES RECEBIDAS, OFICIO NRO.:</h5>
                   
                 </div>
                 <div class=""col-md-4 andamento-docs"">
@@ -2214,7 +2425,7 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
 
                 
                   <div class=""col-md-3 p-0""></div>
-                  <div class=""col-md-9 p-0"">DESPACHO DE 19.01.94</div>
+                  <div class=""col-md-9 p-0"">DO GOVERNADOR/RO</div>
                 
               </div>
             </div>
@@ -2228,7 +2439,111 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
             <div class=""message-head clearfix"">
               <div class=""andamento-detalhe"">
                 <div class=""col-md-3 p-l-0"">
-                  <div class=""andamento-data "">01/02/1994</div>
+                  <div class=""andamento-data "">20/10/1988</div>
+                </div>
+                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
+                  <h5 class=""andamento-nome "">PEDIDO DE INFORMACOES</h5>
+                  
+                </div>
+                <div class=""col-md-4 andamento-docs"">
+                  
+                </div>
+
+                
+                  <div class=""col-md-3 p-0""></div>
+                  <div class=""col-md-9 p-0"">A ASS.LEG.DO EST/RO</div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      
+      <li>
+        <div class=""andamento-item"">
+          <div class=""andamento-inner"">
+            <div class=""message-head clearfix"">
+              <div class=""andamento-detalhe"">
+                <div class=""col-md-3 p-l-0"">
+                  <div class=""andamento-data "">19/10/1988</div>
+                </div>
+                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
+                  <h5 class=""andamento-nome "">PEDIDO DE INFORMACOES</h5>
+                  
+                </div>
+                <div class=""col-md-4 andamento-docs"">
+                  
+                </div>
+
+                
+                  <div class=""col-md-3 p-0""></div>
+                  <div class=""col-md-9 p-0"">AO GOVERNADOR/RO</div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      
+      <li>
+        <div class=""andamento-item"">
+          <div class=""andamento-inner"">
+            <div class=""message-head clearfix"">
+              <div class=""andamento-detalhe"">
+                <div class=""col-md-3 p-l-0"">
+                  <div class=""andamento-data "">11/10/1988</div>
+                </div>
+                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
+                  <h5 class=""andamento-nome "">DESPACHO ORDINATORIO</h5>
+                  
+                </div>
+                <div class=""col-md-4 andamento-docs"">
+                  
+                </div>
+
+                
+                  <div class=""col-md-3 p-0""></div>
+                  <div class=""col-md-9 p-0"">SOLICITANDO INFORMACOES. DPI.</div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      
+      <li>
+        <div class=""andamento-item"">
+          <div class=""andamento-inner"">
+            <div class=""message-head clearfix"">
+              <div class=""andamento-detalhe"">
+                <div class=""col-md-3 p-l-0"">
+                  <div class=""andamento-data "">06/10/1988</div>
+                </div>
+                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
+                  <h5 class=""andamento-nome "">CONCLUSAO</h5>
+                  
+                </div>
+                <div class=""col-md-4 andamento-docs"">
+                  
+                </div>
+
+                
+                  <div class=""col-md-3 p-0""></div>
+                  <div class=""col-md-9 p-0""></div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      
+      <li>
+        <div class=""andamento-item"">
+          <div class=""andamento-inner"">
+            <div class=""message-head clearfix"">
+              <div class=""andamento-detalhe"">
+                <div class=""col-md-3 p-l-0"">
+                  <div class=""andamento-data "">06/10/1988</div>
                 </div>
                 <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
                   <h5 class=""andamento-nome "">DISTRIBUIDO</h5>
@@ -2240,137 +2555,7 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
 
                 
                   <div class=""col-md-3 p-0""></div>
-                  <div class=""col-md-9 p-0"">MIN. ILMAR GALVAO</div>
-                
-              </div>
-            </div>
-          </div>
-        </div>
-      </li>
-      
-      <li>
-        <div class=""andamento-item"">
-          <div class=""andamento-inner"">
-            <div class=""message-head clearfix"">
-              <div class=""andamento-detalhe"">
-                <div class=""col-md-3 p-l-0"">
-                  <div class=""andamento-data "">27/01/1994</div>
-                </div>
-                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
-                  <h5 class=""andamento-nome "">APENSADO, PROCESSO NRO.:</h5>
-                  
-                </div>
-                <div class=""col-md-4 andamento-docs"">
-                  
-                </div>
-
-                
-                  <div class=""col-md-3 p-0""></div>
-                  <div class=""col-md-9 p-0"">ADI 991-5.</div>
-                
-              </div>
-            </div>
-          </div>
-        </div>
-      </li>
-      
-      <li>
-        <div class=""andamento-item"">
-          <div class=""andamento-inner"">
-            <div class=""message-head clearfix"">
-              <div class=""andamento-detalhe"">
-                <div class=""col-md-3 p-l-0"">
-                  <div class=""andamento-data "">26/01/1994</div>
-                </div>
-                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
-                  <h5 class=""andamento-nome "">EXPEDIDO OFICIO/TELEX N.</h5>
-                  
-                </div>
-                <div class=""col-md-4 andamento-docs"">
-                  
-                </div>
-
-                
-                  <div class=""col-md-3 p-0""></div>
-                  <div class=""col-md-9 p-0"">MENS.003 AO PRESIDENTE DA REPUBLICA, SOLIC.INFORM.</div>
-                
-              </div>
-            </div>
-          </div>
-        </div>
-      </li>
-      
-      <li>
-        <div class=""andamento-item"">
-          <div class=""andamento-inner"">
-            <div class=""message-head clearfix"">
-              <div class=""andamento-detalhe"">
-                <div class=""col-md-3 p-l-0"">
-                  <div class=""andamento-data "">19/01/1994</div>
-                </div>
-                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
-                  <h5 class=""andamento-nome "">LIMINAR JULG. POR DESPACHO - INDEFERIDA</h5>
-                  
-                </div>
-                <div class=""col-md-4 andamento-docs"">
-                  
-                </div>
-
-                
-                  <div class=""col-md-3 p-0""></div>
-                  <div class=""col-md-9 p-0"">""AD REFERENDUM"" DO PLENARIO. SOLICITEM-SE INFORM.</div>
-                
-              </div>
-            </div>
-          </div>
-        </div>
-      </li>
-      
-      <li>
-        <div class=""andamento-item"">
-          <div class=""andamento-inner"">
-            <div class=""message-head clearfix"">
-              <div class=""andamento-detalhe"">
-                <div class=""col-md-3 p-l-0"">
-                  <div class=""andamento-data "">07/01/1994</div>
-                </div>
-                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
-                  <h5 class=""andamento-nome "">CONCLUSOS.</h5>
-                  
-                </div>
-                <div class=""col-md-4 andamento-docs"">
-                  
-                </div>
-
-                
-                  <div class=""col-md-3 p-0""></div>
-                  <div class=""col-md-9 p-0"">MINISTRO SEPULVEDA PERTENCE</div>
-                
-              </div>
-            </div>
-          </div>
-        </div>
-      </li>
-      
-      <li>
-        <div class=""andamento-item"">
-          <div class=""andamento-inner"">
-            <div class=""message-head clearfix"">
-              <div class=""andamento-detalhe"">
-                <div class=""col-md-3 p-l-0"">
-                  <div class=""andamento-data "">07/01/1994</div>
-                </div>
-                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
-                  <h5 class=""andamento-nome "">REGISTRADO</h5>
-                  
-                </div>
-                <div class=""col-md-4 andamento-docs"">
-                  
-                </div>
-
-                
-                  <div class=""col-md-3 p-0""></div>
-                  <div class=""col-md-9 p-0"">MINISTRO PRESIDENTE</div>
+                  <div class=""col-md-9 p-0"">MIN. CELIO BORJA</div>
                 
               </div>
             </div>
@@ -2384,30 +2569,7 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
 </div></div>
                                 <div id=""decisoes"" class=""tab-pane"">
 <div class=""processo-andamentos m-t-8"">
-    	
-            <div class=""andamento-item"" id=""3322"">
-                <div class=""andamento-inner"">
-                    <div class=""message-head"">
-                        <div class=""andamento-detalhe"">
-                            <div class=""col-md-3 p-l-0"">
-                                <div class=""andamento-data"">26/05/1994</div>
-                            </div>
-                            <div class=""col-md-5 p-l-0"">
-                                <h5 class=""andamento-nome"">JULGAMENTO DO PLENO - NAO CONHECIDO</h5>
-                            </div>
-                            <div class=""col-md-4 andamento-docs""> 
-                                
-                            </div>
-                            <div class=""clearfix""></div>
-                            <div class=""col-md-3 p-0"">
-                                <span class=""andamento-julgador badge bg-info"">TRIBUNAL PLENO</span>
-                            </div>
-                            <div class=""col-md-9 p-0"">POR VOTAÇÃO UNÂNIME, O TRIBUNAL NÃO CONHECEU DA AÇÃO, POR ILEGITIMIDADE ATIVA, FICANDO, EM CONSEQÜÊNCIA, PREJUDICADO O PEDIDO DE MEDIDA LIMINAR. VOTOU O PRESIDENTE. PLENÁRIO, 26.5.94.</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        
+    
 </div>
 </div>
                                 <div id=""sessao-virtual"" class=""tab-pane"">
@@ -2510,7 +2672,7 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
             $.ajax({
                 type    : ""GET"",
                 dataType: 'json',                
-                url     : ""https://sistemas.stf.jus.br/repgeral/votacao?oi=1579244"",
+                url     : ""https://sistemas.stf.jus.br/repgeral/votacao?oi=1480010"",
                 cache   :  true,
                 crossDomain: true,
                 success : function(data){                  
@@ -2558,43 +2720,16 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
                 </div>
             </div>
             <div class=""lista-dados__col--detalhes"">
-                <span class=""processo-detalhes"">Enviado por COORDENADORIA DE SERVIÇOS E LOGÍSTICA em 19/11/2020</span>
+                <span class=""processo-detalhes"">Enviado por COORDENADORIA DE MEMÓRIA E GESTÃO DOCUMENTAL em 30/01/2021</span>
             </div>
         </div>
         <div class=""lista-dados__col col-md-3"">
             <div class=""col-md-12 text-right"">
-                <span class=""processo-detalhes"">Guia 164/2020</span>
+                <span class=""processo-detalhes"">Guia 6/2021</span>
             </div>
             <div class=""col-md-12 text-right"">
                 
-                    <span class=""processo-detalhes bg-font-success"">Recebido em 19/11/2020</span>
-                
-            </div>
-        </div>
-    </div>
-    
-
-    <div class=""col-md-12 lista-dados p-r-0 p-l-0"">
-        <div class=""lista-dados__col col-md-9"">
-            <div class=""d-flex lh-1"">
-                <div class=""icone-mapa col-md-1"">
-                    <i class=""processo-detalhes-bold fas fa-map-marker-alt bg-font-success""></i>
-                </div>
-                <div class=""col-md-11"">
-                    <span class=""processo-detalhes-bold"">COORDENADORIA DE SERVIÇOS E LOGÍSTICA</span>
-                </div>
-            </div>
-            <div class=""lista-dados__col--detalhes"">
-                <span class=""processo-detalhes"">Enviado por COORDENADORIA DE MEMÓRIA E GESTÃO DOCUMENTAL em 14/06/2019</span>
-            </div>
-        </div>
-        <div class=""lista-dados__col col-md-3"">
-            <div class=""col-md-12 text-right"">
-                <span class=""processo-detalhes"">Guia 218/2019</span>
-            </div>
-            <div class=""col-md-12 text-right"">
-                
-                    <span class=""processo-detalhes bg-font-success"">Recebido em 12/11/2020</span>
+                    <span class=""processo-detalhes bg-font-success"">Recebido em 30/01/2021</span>
                 
             </div>
         </div>
@@ -2617,11 +2752,11 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
         </div>
         <div class=""lista-dados__col col-md-3"">
             <div class=""col-md-12 text-right"">
-                <span class=""processo-detalhes"">Guia 390/2019</span>
+                <span class=""processo-detalhes"">Guia 385/2019</span>
             </div>
             <div class=""col-md-12 text-right"">
                 
-                    <span class=""processo-detalhes bg-font-success"">Recebido em 14/06/2019</span>
+                    <span class=""processo-detalhes bg-font-success"">Recebido em 13/06/2019</span>
                 
             </div>
         </div>
@@ -2725,7 +2860,7 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
         </div>
         <div class=""lista-dados__col col-md-3"">
             <div class=""col-md-12 text-right"">
-                <span class=""processo-detalhes"">Guia 17121/2010</span>
+                <span class=""processo-detalhes"">Guia 17897/2010</span>
             </div>
             <div class=""col-md-12 text-right"">
                 
@@ -2752,11 +2887,65 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
         </div>
         <div class=""lista-dados__col col-md-3"">
             <div class=""col-md-12 text-right"">
-                <span class=""processo-detalhes"">Guia 299/2004</span>
+                <span class=""processo-detalhes"">Guia 281/2004</span>
             </div>
             <div class=""col-md-12 text-right"">
                 
                     <span class=""processo-detalhes bg-font-success"">Recebido em 25/07/2004</span>
+                
+            </div>
+        </div>
+    </div>
+    
+
+    <div class=""col-md-12 lista-dados p-r-0 p-l-0"">
+        <div class=""lista-dados__col col-md-9"">
+            <div class=""d-flex lh-1"">
+                <div class=""icone-mapa col-md-1"">
+                    <i class=""processo-detalhes-bold fas fa-map-marker-alt bg-font-success""></i>
+                </div>
+                <div class=""col-md-11"">
+                    <span class=""processo-detalhes-bold"">SEÇÃO DE ARQUIVO JUDICIARIO</span>
+                </div>
+            </div>
+            <div class=""lista-dados__col--detalhes"">
+                <span class=""processo-detalhes"">Enviado por MUSEU DO TRIBUNAL em 10/11/2003</span>
+            </div>
+        </div>
+        <div class=""lista-dados__col col-md-3"">
+            <div class=""col-md-12 text-right"">
+                <span class=""processo-detalhes"">Guia 1/2003</span>
+            </div>
+            <div class=""col-md-12 text-right"">
+                
+                    <span class=""processo-detalhes bg-font-success"">Recebido em 10/11/2003</span>
+                
+            </div>
+        </div>
+    </div>
+    
+
+    <div class=""col-md-12 lista-dados p-r-0 p-l-0"">
+        <div class=""lista-dados__col col-md-9"">
+            <div class=""d-flex lh-1"">
+                <div class=""icone-mapa col-md-1"">
+                    <i class=""processo-detalhes-bold fas fa-map-marker-alt bg-font-success""></i>
+                </div>
+                <div class=""col-md-11"">
+                    <span class=""processo-detalhes-bold"">MUSEU DO TRIBUNAL</span>
+                </div>
+            </div>
+            <div class=""lista-dados__col--detalhes"">
+                <span class=""processo-detalhes"">Enviado por SEÇÃO DE ARQUIVO JUDICIARIO em 30/09/2003</span>
+            </div>
+        </div>
+        <div class=""lista-dados__col col-md-3"">
+            <div class=""col-md-12 text-right"">
+                <span class=""processo-detalhes"">Guia 326/2003</span>
+            </div>
+            <div class=""col-md-12 text-right"">
+                
+                    <span class=""processo-detalhes bg-font-success"">Recebido em 10/11/2003</span>
                 
             </div>
         </div>
@@ -2801,43 +2990,16 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
                 </div>
             </div>
             <div class=""lista-dados__col--detalhes"">
-                <span class=""processo-detalhes"">Enviado por SEÇÃO DE BAIXA em 29/09/1994</span>
+                <span class=""processo-detalhes"">Enviado por SEÇÃO DE BAIXA em 10/03/1992</span>
             </div>
         </div>
         <div class=""lista-dados__col col-md-3"">
             <div class=""col-md-12 text-right"">
-                <span class=""processo-detalhes"">Guia 2327/1994</span>
+                <span class=""processo-detalhes"">Guia 350/9992</span>
             </div>
             <div class=""col-md-12 text-right"">
                 
-                    <span class=""processo-detalhes bg-font-success"">Recebido em 29/09/1994</span>
-                
-            </div>
-        </div>
-    </div>
-    
-
-    <div class=""col-md-12 lista-dados p-r-0 p-l-0"">
-        <div class=""lista-dados__col col-md-9"">
-            <div class=""d-flex lh-1"">
-                <div class=""icone-mapa col-md-1"">
-                    <i class=""processo-detalhes-bold fas fa-map-marker-alt bg-font-success""></i>
-                </div>
-                <div class=""col-md-11"">
-                    <span class=""processo-detalhes-bold"">SEÇÃO DE CONFERENCIA E PUBLICACAO DE ACORDAOS</span>
-                </div>
-            </div>
-            <div class=""lista-dados__col--detalhes"">
-                <span class=""processo-detalhes"">Enviado por DIVISAO DE ACORDAOS em 15/08/1994</span>
-            </div>
-        </div>
-        <div class=""lista-dados__col col-md-3"">
-            <div class=""col-md-12 text-right"">
-                <span class=""processo-detalhes"">Guia 763/1994</span>
-            </div>
-            <div class=""col-md-12 text-right"">
-                
-                    <span class=""processo-detalhes bg-font-success"">Recebido em 08/09/1994</span>
+                    <span class=""processo-detalhes bg-font-success"">Recebido em 10/03/1992</span>
                 
             </div>
         </div>
@@ -2855,16 +3017,43 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
                 </div>
             </div>
             <div class=""lista-dados__col--detalhes"">
-                <span class=""processo-detalhes"">Enviado por DIVISAO DE ACORDAOS em 08/09/1994</span>
+                <span class=""processo-detalhes"">Enviado por DIVISAO DE PROCESSOS ORIGINARIOS em 10/03/1992</span>
             </div>
         </div>
         <div class=""lista-dados__col col-md-3"">
             <div class=""col-md-12 text-right"">
-                <span class=""processo-detalhes"">Guia 845/1994</span>
+                <span class=""processo-detalhes"">Guia 853/9992</span>
             </div>
             <div class=""col-md-12 text-right"">
                 
-                    <span class=""processo-detalhes bg-font-success"">Recebido em 08/09/1994</span>
+                    <span class=""processo-detalhes bg-font-success"">Recebido em 10/03/1992</span>
+                
+            </div>
+        </div>
+    </div>
+    
+
+    <div class=""col-md-12 lista-dados p-r-0 p-l-0"">
+        <div class=""lista-dados__col col-md-9"">
+            <div class=""d-flex lh-1"">
+                <div class=""icone-mapa col-md-1"">
+                    <i class=""processo-detalhes-bold fas fa-map-marker-alt bg-font-success""></i>
+                </div>
+                <div class=""col-md-11"">
+                    <span class=""processo-detalhes-bold"">DIVISAO DE PROCESSOS ORIGINARIOS</span>
+                </div>
+            </div>
+            <div class=""lista-dados__col--detalhes"">
+                <span class=""processo-detalhes"">Enviado por DIVISAO DE PUBLICACOES E INTIMACOES em 26/02/1992</span>
+            </div>
+        </div>
+        <div class=""lista-dados__col col-md-3"">
+            <div class=""col-md-12 text-right"">
+                <span class=""processo-detalhes"">Guia 4295/9992</span>
+            </div>
+            <div class=""col-md-12 text-right"">
+                
+                    <span class=""processo-detalhes bg-font-success"">Recebido em 26/02/1992</span>
                 
             </div>
         </div>
@@ -2897,32 +3086,32 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
   </script>
 
 <script>
-    $.get('abaPartes.asp?incidente=1579244', function(resposta) {
+    $.get('abaPartes.asp?incidente=1480010', function(resposta) {
         $('#partes').html($(resposta)[0]);
         $('#resumo-partes').prepend($(resposta)[2]);
     });
-    $('#andamentos').load('abaAndamentos.asp?incidente=1579244&imprimir=');
+    $('#andamentos').load('abaAndamentos.asp?incidente=1480010&imprimir=');
 
-    $.get('abaInformacoes.asp?incidente=1579244', function(resposta) {
+    $.get('abaInformacoes.asp?incidente=1480010', function(resposta) {
        $('#informacoes').html($(resposta)[0]);       
        $('#orgao-procedencia').html($(resposta)[2]); 
        $('#descricao-procedencia').html($(resposta)[4]);       
     });
 
     num_tema = 'N';
-    $('#decisoes').load('abaDecisoes.asp?incidente=1579244');
-    $('#sessao-virtual').load('abaSessao.asp?incidente=1579244&tema=' + num_tema);
-    $('#deslocamentos').load('abaDeslocamentos.asp?incidente=1579244');
-    $('#peticoes').load('abaPeticoes.asp?incidente=1579244');
-    $('#recursos').load('abaRecursos.asp?incidente=1579244');
-    $('#pautas').load('abaPautas.asp?incidente=1579244');
+    $('#decisoes').load('abaDecisoes.asp?incidente=1480010');
+    $('#sessao-virtual').load('abaSessao.asp?incidente=1480010&tema=' + num_tema);
+    $('#deslocamentos').load('abaDeslocamentos.asp?incidente=1480010');
+    $('#peticoes').load('abaPeticoes.asp?incidente=1480010');
+    $('#recursos').load('abaRecursos.asp?incidente=1480010');
+    $('#pautas').load('abaPautas.asp?incidente=1480010');
 
 	$('#btn-dje').click(function(){
         if ('Público' == ""Sigiloso"") {
             var url = 'https://digital.stf.jus.br/publico/publicacoes'
             window.open(url, '_blank');
         }
-		var url = '/servicos/dje/listarDiarioJustica.asp?tipoPesquisaDJ=AP&classe='+ 'ADI' + '&numero=' + 987
+		var url = '/servicos/dje/listarDiarioJustica.asp?tipoPesquisaDJ=AP&classe='+ 'ADI' + '&numero=' + 1
 		window.open(url, '_blank');
 	});
 </script>
@@ -3195,9 +3384,9 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
                                         </button>
                                     </div>
                                 </div>
-                            </div></body></html>",1579244,,0,0000038-90.1994.0.01.0000,DF - DISTRITO FEDERAL,SUPREMO TRIBUNAL FEDERAL,"[{'index': 1, 'tipo': 'PARTE', 'nome': 'REQTE.(S)'}, {'index': 2, 'tipo': 'PARTE', 'nome': 'FEDERACAO NACIONAL DAS ASSOCIACOES ECONOMIARIAS - FENAE'}, {'index': 3, 'tipo': 'PARTE', 'nome': 'ADV.(A/S)'}, {'index': 4, 'tipo': 'PARTE', 'nome': 'RICARDO QUINTAS CARNEIRO E OUTROS'}, {'index': 5, 'tipo': 'PARTE', 'nome': 'INTDO.(A/S)'}, {'index': 6, 'tipo': 'PARTE', 'nome': 'PRESIDENTE DA REPÚBLICA'}]",,,987,"[{'index_num': 5, 'data': '26/05/1994', 'nome': 'JULGAMENTO DO PLENO - NAO CONHECIDO', 'julgador': 'TRIBUNAL PLENO', 'complemento': 'POR VOTAÇÃO UNÂNIME, O TRIBUNAL NÃO CONHECEU DA AÇÃO, POR ILEGITIMIDADE ATIVA, FICANDO, EM CONSEQÜÊNCIA, PREJUDICADO O PEDIDO DE MEDIDA LIMINAR. VOTOU O PRESIDENTE. PLENÁRIO, 26.5.94.', 'autor': None}]",ILMAR GALVÃO,"{'data': None, 'tipo': None, 'numero': None, 'relator': None, 'status': None, 'participantes': []}",200,Físico
+                            </div></body></html>",1480010,,1,0003935-39.1988.0.01.0000,RO - RONDÔNIA,FÓRUM DA COMARCA DE RANCHARIA,"[{'index': 1, 'tipo': 'PARTE', 'nome': 'REQTE.(S)'}, {'index': 2, 'tipo': 'PARTE', 'nome': 'GOVERNADOR DO ESTADO DE RONDÔNIA'}, {'index': 3, 'tipo': 'PARTE', 'nome': 'ADV.(A/S)'}, {'index': 4, 'tipo': 'PARTE', 'nome': 'ERASTO VILLA VERDE DE CARVALHO'}, {'index': 5, 'tipo': 'PARTE', 'nome': 'INTDO.(A/S)'}, {'index': 6, 'tipo': 'PARTE', 'nome': 'ASSEMBLEIA LEGISLATIVA DO ESTADO DE RONDÔNIA'}, {'index': 7, 'tipo': 'PARTE', 'nome': 'INTDO.(A/S)'}, {'index': 8, 'tipo': 'PARTE', 'nome': 'GOVERNADOR DO ESTADO DE RONDÔNIA'}]",,,1,,CÉLIO BORJA,"{'data': None, 'tipo': None, 'numero': None, 'relator': None, 'status': None, 'participantes': []}",200,Físico
 _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_protocolo,decisoes,deslocamentos,extraido,html,incidente,informacoes,liminar,numero_unico,origem,origem_orgao,partes,pautas,peticoes,processo_id,recursos,relator,sessao,status,tipo_processo
-0,2025-10-18 00:26:20.733757+00:00,stf,"[{'index_num': 14, 'data': '29/09/1994', 'nome': 'BAIXA AO ARQUIVO DO STF', 'complemento': 'GUIA 02327', 'julgador': None}, {'index_num': 13, 'data': '16/09/1994', 'nome': 'TRANSITADO EM JULGADO', 'complemento': '', 'julgador': None}, {'index_num': 12, 'data': '09/09/1994', 'nome': 'PUBLICADO ACORDAO, DJ:', 'complemento': '', 'julgador': None}, {'index_num': 11, 'data': '06/06/1994', 'nome': 'DECISAO PUBLICADA, DJ:', 'complemento': '', 'julgador': None}, {'index_num': 10, 'data': '26/05/1994', 'nome': 'JULGAMENTO DO PLENO - NAO CONHECIDO', 'complemento': 'POR VOTAÇÃO UNÂNIME, O TRIBUNAL NÃO CONHECEU DA AÇÃO, POR ILEGITIMIDADE ATIVA, FICANDO, EM CONSEQÜÊNCIA, PREJUDICADO O PEDIDO DE MEDIDA LIMINAR. VOTOU O PRESIDENTE. PLENÁRIO, 26.5.94.', 'julgador': 'TRIBUNAL PLENO'}, {'index_num': 9, 'data': '01/03/1994', 'nome': 'CONCLUSOS AO RELATOR', 'complemento': '', 'julgador': None}, {'index_num': 8, 'data': '28/02/1994', 'nome': 'INFORMACOES RECEBIDAS, OFICIO NRO.:', 'complemento': 'MSG 146/94 (PG 004679) DO PRESIDENTE DA REPUBLICA', 'julgador': None}, {'index_num': 7, 'data': '01/02/1994', 'nome': 'PUBLICADO DESPACHO NO DJ', 'complemento': 'DESPACHO DE 19.01.94', 'julgador': None}, {'index_num': 6, 'data': '01/02/1994', 'nome': 'DISTRIBUIDO', 'complemento': 'MIN. ILMAR GALVAO', 'julgador': None}, {'index_num': 5, 'data': '27/01/1994', 'nome': 'APENSADO, PROCESSO NRO.:', 'complemento': 'ADI 991-5.', 'julgador': None}, {'index_num': 4, 'data': '26/01/1994', 'nome': 'EXPEDIDO OFICIO/TELEX N.', 'complemento': 'MENS.003 AO PRESIDENTE DA REPUBLICA, SOLIC.INFORM.', 'julgador': None}, {'index_num': 3, 'data': '19/01/1994', 'nome': 'LIMINAR JULG. POR DESPACHO - INDEFERIDA', 'complemento': '""AD REFERENDUM"" DO PLENARIO. SOLICITEM-SE INFORM.', 'julgador': None}, {'index_num': 2, 'data': '07/01/1994', 'nome': 'CONCLUSOS.', 'complemento': 'MINISTRO SEPULVEDA PERTENCE', 'julgador': None}, {'index_num': 1, 'data': '07/01/1994', 'nome': 'REGISTRADO', 'complemento': 'MINISTRO PRESIDENTE', 'julgador': None}]","[""DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Servidor Público Civil | Sistema Remuneratório e Benefícios | Teto Salarial""]",FEDERACAO NACIONAL DAS ASSOCIACOES ECONOMIARIAS - FENAE,ADI,1994-01-07T00:00:00Z,"[{'index_num': 5, 'data': '26/05/1994', 'nome': 'JULGAMENTO DO PLENO - NAO CONHECIDO', 'complemento': 'POR VOTAÇÃO UNÂNIME, O TRIBUNAL NÃO CONHECEU DA AÇÃO, POR ILEGITIMIDADE ATIVA, FICANDO, EM CONSEQÜÊNCIA, PREJUDICADO O PEDIDO DE MEDIDA LIMINAR. VOTOU O PRESIDENTE. PLENÁRIO, 26.5.94.', 'julgador': 'TRIBUNAL PLENO', 'link': None}]","[{'index_num': 12, 'data_enviado': '19/11/2020', 'data_recebido': '19/11/2020', 'enviado_por': 'COORDENADORIA DE SERVIÇOS E LOGÍSTICA', 'recebido_por': 'COORDENADORIA DE GESTÃO DA INFORMAÇÃO, MEMÓRIA INSTITUCIONAL E MUSEU', 'guia': 'Guia 164/2020'}, {'index_num': 11, 'data_enviado': '14/06/2019', 'data_recebido': '12/11/2020', 'enviado_por': 'COORDENADORIA DE MEMÓRIA E GESTÃO DOCUMENTAL', 'recebido_por': 'COORDENADORIA DE SERVIÇOS E LOGÍSTICA', 'guia': 'Guia 218/2019'}, {'index_num': 10, 'data_enviado': '13/06/2019', 'data_recebido': '14/06/2019', 'enviado_por': 'SEÇÃO DE ARQUIVO', 'recebido_por': 'COORDENADORIA DE MEMÓRIA E GESTÃO DOCUMENTAL', 'guia': 'Guia 390/2019'}, {'index_num': 9, 'data_enviado': '11/11/2014', 'data_recebido': '11/11/2014', 'enviado_por': 'SEÇÃO DE ARQUIVO', 'recebido_por': 'SEÇÃO DE ARQUIVO', 'guia': 'Guia 309/2014'}, {'index_num': 8, 'data_enviado': '06/06/2012', 'data_recebido': '06/06/2012', 'enviado_por': 'SEÇÃO DE ARQUIVO', 'recebido_por': 'SEÇÃO DE ARQUIVO', 'guia': 'Guia 35/2012'}, {'index_num': 7, 'data_enviado': '02/05/2012', 'data_recebido': '02/05/2012', 'enviado_por': 'SEÇÃO DE ARQUIVO', 'recebido_por': 'SEÇÃO DE ARQUIVO', 'guia': 'Guia 158/2012'}, {'index_num': 6, 'data_enviado': '13/09/2010', 'data_recebido': '13/09/2010', 'enviado_por': 'SEÇÃO DE ARQUIVO', 'recebido_por': 'SEÇÃO DE ARQUIVO', 'guia': 'Guia 17121/2010'}, {'index_num': 5, 'data_enviado': '25/07/2004', 'data_recebido': '25/07/2004', 'enviado_por': 'SEÇÃO DE ARQUIVO JUDICIARIO', 'recebido_por': 'SEÇÃO DE ARQUIVO', 'guia': 'Guia 299/2004'}, {'index_num': 4, 'data_enviado': '05/02/2003', 'data_recebido': '05/02/2003', 'enviado_por': 'SEÇÃO DE ARQUIVO', 'recebido_por': 'SEÇÃO DE ARQUIVO JUDICIARIO', 'guia': 'Guia 15/2003'}, {'index_num': 3, 'data_enviado': '29/09/1994', 'data_recebido': '29/09/1994', 'enviado_por': 'SEÇÃO DE BAIXA', 'recebido_por': 'SEÇÃO DE ARQUIVO', 'guia': 'Guia 2327/1994'}, {'index_num': 2, 'data_enviado': '15/08/1994', 'data_recebido': '08/09/1994', 'enviado_por': 'DIVISAO DE ACORDAOS', 'recebido_por': 'SEÇÃO DE CONFERENCIA E PUBLICACAO DE ACORDAOS', 'guia': 'Guia 763/1994'}, {'index_num': 1, 'data_enviado': '08/09/1994', 'data_recebido': '08/09/1994', 'enviado_por': 'DIVISAO DE ACORDAOS', 'recebido_por': 'SEÇÃO DE BAIXA', 'guia': 'Guia 845/1994'}]",2025-10-18T01:26:30.789044Z,"<html lang=""pt-BR""><head>
+0,2025-10-18 15:02:55.224942+00:00,stf,"[{'index_num': 21, 'data': '13/12/2023', 'nome': 'Petição', 'complemento': 'Amicus curiae - Petição: 139250 Data: 13/12/2023, às 18:07:32', 'julgador': None}, {'index_num': 20, 'data': '11/09/2013', 'nome': 'Petição', 'complemento': 'Juntada de documentos - Petição: 45190 Data: 11/09/2013 19:59:29.657 GMT-03:00', 'julgador': None}, {'index_num': 19, 'data': '11/09/2013', 'nome': 'Petição', 'complemento': 'Juntada de documentos - Petição: 45174 Data: 11/09/2013 18:45:42.65 GMT-03:00', 'julgador': None}, {'index_num': 18, 'data': '10/03/1992', 'nome': 'BAIXA AO ARQUIVO DO STF', 'complemento': '', 'julgador': None}, {'index_num': 17, 'data': '10/03/1992', 'nome': 'DECORRIDO O PRAZO', 'complemento': 'INTERPOSICAO DE RECURSO - REMESSA A S.BAIXA', 'julgador': None}, {'index_num': 16, 'data': '27/02/1992', 'nome': 'PUBLICADO DESPACHO NO DJ', 'complemento': '', 'julgador': None}, {'index_num': 15, 'data': '24/02/1992', 'nome': 'JULG. POR DESPACHO - NEGADO SEGUIMENTO', 'complemento': '', 'julgador': None}, {'index_num': 14, 'data': '03/02/1992', 'nome': 'CONCLUSOS AO RELATOR', 'complemento': '', 'julgador': None}, {'index_num': 13, 'data': '24/01/1992', 'nome': 'RECEBIMENTO DOS AUTOS', 'complemento': 'DO AGU, C/ PARECER PELA IMPROCEDENCIA', 'julgador': None}, {'index_num': 12, 'data': '06/06/1991', 'nome': 'VISTA AO ADVOGADO-GERAL DA UNIAO', 'complemento': '', 'julgador': None}, {'index_num': 11, 'data': '29/05/1991', 'nome': 'CONCLUSOS AO RELATOR', 'complemento': '', 'julgador': None}, {'index_num': 10, 'data': '29/05/1991', 'nome': 'AUTOS DEVOLVIDOS', 'complemento': 'DA PGR COM PARECER DO PROCURADOR-GERAL', 'julgador': None}, {'index_num': 9, 'data': '05/01/1989', 'nome': 'VISTA AO PROCURADOR-GERAL DA REPUBLICA', 'complemento': '', 'julgador': None}, {'index_num': 8, 'data': '28/11/1988', 'nome': 'CONCLUSAO', 'complemento': '', 'julgador': None}, {'index_num': 7, 'data': '28/11/1988', 'nome': 'INFORMACOES RECEBIDAS, OFICIO NRO.:', 'complemento': 'OF.N.557 DA ASS.LEG/RO PRESTANDO INFORMACAO', 'julgador': None}, {'index_num': 6, 'data': '04/11/1988', 'nome': 'INFORMACOES RECEBIDAS, OFICIO NRO.:', 'complemento': 'DO GOVERNADOR/RO', 'julgador': None}, {'index_num': 5, 'data': '20/10/1988', 'nome': 'PEDIDO DE INFORMACOES', 'complemento': 'A ASS.LEG.DO EST/RO', 'julgador': None}, {'index_num': 4, 'data': '19/10/1988', 'nome': 'PEDIDO DE INFORMACOES', 'complemento': 'AO GOVERNADOR/RO', 'julgador': None}, {'index_num': 3, 'data': '11/10/1988', 'nome': 'DESPACHO ORDINATORIO', 'complemento': 'SOLICITANDO INFORMACOES. DPI.', 'julgador': None}, {'index_num': 2, 'data': '06/10/1988', 'nome': 'CONCLUSAO', 'complemento': '', 'julgador': None}, {'index_num': 1, 'data': '06/10/1988', 'nome': 'DISTRIBUIDO', 'complemento': 'MIN. CELIO BORJA', 'julgador': None}]","[""ASSUNTO PARA PROCESSO ANTIGO |   | PROCESSO ANTIGO""]",GOVERNADOR DO ESTADO DE RONDÔNIA,ADI,1988-10-06T00:00:00Z,,"[{'index_num': 13, 'data_enviado': '30/01/2021', 'data_recebido': '30/01/2021', 'enviado_por': 'COORDENADORIA DE MEMÓRIA E GESTÃO DOCUMENTAL', 'recebido_por': 'COORDENADORIA DE GESTÃO DA INFORMAÇÃO, MEMÓRIA INSTITUCIONAL E MUSEU', 'guia': 'Guia 6/2021'}, {'index_num': 12, 'data_enviado': '13/06/2019', 'data_recebido': '13/06/2019', 'enviado_por': 'SEÇÃO DE ARQUIVO', 'recebido_por': 'COORDENADORIA DE MEMÓRIA E GESTÃO DOCUMENTAL', 'guia': 'Guia 385/2019'}, {'index_num': 11, 'data_enviado': '11/11/2014', 'data_recebido': '11/11/2014', 'enviado_por': 'SEÇÃO DE ARQUIVO', 'recebido_por': 'SEÇÃO DE ARQUIVO', 'guia': 'Guia 309/2014'}, {'index_num': 10, 'data_enviado': '06/06/2012', 'data_recebido': '06/06/2012', 'enviado_por': 'SEÇÃO DE ARQUIVO', 'recebido_por': 'SEÇÃO DE ARQUIVO', 'guia': 'Guia 35/2012'}, {'index_num': 9, 'data_enviado': '02/05/2012', 'data_recebido': '02/05/2012', 'enviado_por': 'SEÇÃO DE ARQUIVO', 'recebido_por': 'SEÇÃO DE ARQUIVO', 'guia': 'Guia 158/2012'}, {'index_num': 8, 'data_enviado': '13/09/2010', 'data_recebido': '13/09/2010', 'enviado_por': 'SEÇÃO DE ARQUIVO', 'recebido_por': 'SEÇÃO DE ARQUIVO', 'guia': 'Guia 17897/2010'}, {'index_num': 7, 'data_enviado': '25/07/2004', 'data_recebido': '25/07/2004', 'enviado_por': 'SEÇÃO DE ARQUIVO JUDICIARIO', 'recebido_por': 'SEÇÃO DE ARQUIVO', 'guia': 'Guia 281/2004'}, {'index_num': 6, 'data_enviado': '10/11/2003', 'data_recebido': '10/11/2003', 'enviado_por': 'MUSEU DO TRIBUNAL', 'recebido_por': 'SEÇÃO DE ARQUIVO JUDICIARIO', 'guia': 'Guia 1/2003'}, {'index_num': 5, 'data_enviado': '30/09/2003', 'data_recebido': '10/11/2003', 'enviado_por': 'SEÇÃO DE ARQUIVO JUDICIARIO', 'recebido_por': 'MUSEU DO TRIBUNAL', 'guia': 'Guia 326/2003'}, {'index_num': 4, 'data_enviado': '05/02/2003', 'data_recebido': '05/02/2003', 'enviado_por': 'SEÇÃO DE ARQUIVO', 'recebido_por': 'SEÇÃO DE ARQUIVO JUDICIARIO', 'guia': 'Guia 15/2003'}, {'index_num': 3, 'data_enviado': '10/03/1992', 'data_recebido': '10/03/1992', 'enviado_por': 'SEÇÃO DE BAIXA', 'recebido_por': 'SEÇÃO DE ARQUIVO', 'guia': 'Guia 350/9992'}, {'index_num': 2, 'data_enviado': '10/03/1992', 'data_recebido': '10/03/1992', 'enviado_por': 'DIVISAO DE PROCESSOS ORIGINARIOS', 'recebido_por': 'SEÇÃO DE BAIXA', 'guia': 'Guia 853/9992'}, {'index_num': 1, 'data_enviado': '26/02/1992', 'data_recebido': '26/02/1992', 'enviado_por': 'DIVISAO DE PUBLICACOES E INTIMACOES', 'recebido_por': 'DIVISAO DE PROCESSOS ORIGINARIOS', 'guia': 'Guia 4295/9992'}]",2025-10-18T16:03:08.758360Z,"<html lang=""pt-BR""><head>
     <meta charset=""UTF-8"">
     <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
     <meta http-equiv=""X-UA-Compatible"" content=""ie=edge"">
@@ -4918,18 +5107,20 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
                     
                         <div class=""col-md-4"">
                             <div class=""processo-titulo m-b-8"">
-                                ADI&nbsp;987
+                                ADI&nbsp;1
                                 <div>
                                     <span class=""badge bg-secondary"">Processo Físico</span>
                                     <span class=""badge bg-success"">Público</span>
                                     
+                                                <span class=""badge bg-danger"">Medida Liminar</span>    
+                                            
                                 </div>
-                                <input type=""hidden"" id=""incidente"" value=""1579244"">
-                                <input type=""hidden"" id=""classe-numero-processo"" value=""ADI 987"">
+                                <input type=""hidden"" id=""incidente"" value=""1480010"">
+                                <input type=""hidden"" id=""classe-numero-processo"" value=""ADI 1"">
                                 <input type=""hidden"" id=""peca"" value=""S"">
                                 <input type=""hidden"" id=""meio"" value=""F"">
                             </div>
-                            <div class=""processo-rotulo"">Número Único: 0000038-90.1994.0.01.0000</div>
+                            <div class=""processo-rotulo"">Número Único: 0003935-39.1988.0.01.0000</div>
                         </div>
                         <div class=""col-md-8 btn-group__wrapper"">
                             <div class=""btn-group"">
@@ -4946,7 +5137,7 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
                                 <button type=""button"" class=""btn btn-default btn-primary-spacing"" aria-label=""push"" id=""btn-push"">
                                     <span aria-hidden=""true""> Push</span>
                                 </button>
-                                <a href=""verImpressao.asp?imprimir=true&amp;incidente=1579244"" target=""_blank"" type=""button"" class=""btn btn-default btn-primary-spacing"" aria-label=""Imprimir"" id=""btn-imprimir"">
+                                <a href=""verImpressao.asp?imprimir=true&amp;incidente=1480010"" target=""_blank"" type=""button"" class=""btn btn-default btn-primary-spacing"" aria-label=""Imprimir"" id=""btn-imprimir"">
                                     <span class=""fas fa-print"" style=""font-size: 1rem;"" aria-hidden=""true""></span>
                                 </a>
                                 
@@ -4959,35 +5150,31 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
                                 <div class=""processo-classe p-t-8 p-l-16"">AÇÃO DIRETA DE INCONSTITUCIONALIDADE</div>
                                 
                                 <div class=""processo-dados p-l-16""><a href=""#"" data-toggle=""tooltip"" title=""Corresponde ao Estado da federação de onde provém o processo."">Origem:</a>&nbsp;<span id=""descricao-procedencia""><span id=""descricao-procedencia"">
-    DF - DISTRITO FEDERAL
+    RO - RONDÔNIA
 </span></span></div>
-                                <div class=""processo-dados p-l-16"">Relator(a): MIN. ILMAR GALVÃO</div>
-                                <div class=""processo-dados p-l-16"">Relator(a) do último incidente: MIN. ILMAR GALVÃO (ADI-MC)  </div>
-                                    <div class=""processo-dados processo-rotulo p-l-16"">
-                                        Processo(s) Apensado(s):
-                                        
-                                            <a href=""/processos/detalhe.asp?incidente=1579756"">
-                                                ADI&nbsp;991
-                                            </a>
-                                        
-                                    </div>
+                                <div class=""processo-dados p-l-16"">Relator(a): MIN. CÉLIO BORJA</div>
                                 
                                 <hr style=""margin-left: 16px;"">
                                 <div id=""resumo-partes"" class=""resumo-partes""><div id=""partes-resumidas"">
     
         <div style=""display: flex; flex-direction:row"">
             <div class=""processo-partes m-t-4 col-md-2"">REQTE.(S)</div>
-            <div class=""processo-partes m-t-4 col-md-8"">FEDERACAO NACIONAL DAS ASSOCIACOES ECONOMIARIAS - FENAE&nbsp;</div>
+            <div class=""processo-partes m-t-4 col-md-8"">GOVERNADOR DO ESTADO DE RONDÔNIA&nbsp;</div>
         </div>
     
         <div style=""display: flex; flex-direction:row"">
             <div class=""processo-partes m-t-4 col-md-2"">ADV.(A/S)</div>
-            <div class=""processo-partes m-t-4 col-md-8"">RICARDO QUINTAS CARNEIRO&nbsp;E OUTROS</div>
+            <div class=""processo-partes m-t-4 col-md-8"">ERASTO VILLA VERDE DE CARVALHO&nbsp;</div>
         </div>
     
         <div style=""display: flex; flex-direction:row"">
             <div class=""processo-partes m-t-4 col-md-2"">INTDO.(A/S)</div>
-            <div class=""processo-partes m-t-4 col-md-8"">PRESIDENTE DA REPÚBLICA&nbsp;</div>
+            <div class=""processo-partes m-t-4 col-md-8"">ASSEMBLEIA LEGISLATIVA DO ESTADO DE RONDÔNIA&nbsp;</div>
+        </div>
+    
+        <div style=""display: flex; flex-direction:row"">
+            <div class=""processo-partes m-t-4 col-md-2"">INTDO.(A/S)</div>
+            <div class=""processo-partes m-t-4 col-md-8"">GOVERNADOR DO ESTADO DE RONDÔNIA&nbsp;</div>
         </div>
     
 </div>
@@ -5125,7 +5312,7 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
                 
                     <ul>
                         
-                            <li>DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Servidor Público Civil | Sistema Remuneratório e Benefícios | Teto Salarial</li>
+                            <li>ASSUNTO PARA PROCESSO ANTIGO |   | PROCESSO ANTIGO</li>
                         
                     </ul>
                 
@@ -5142,25 +5329,25 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
                     Data de Protocolo:
                 </div>
                 <div class=""col-md-5 processo-detalhes-bold m-l-0"">
-                    07/01/1994
+                    06/10/1988
                 </div>
                 <div class=""col-md-7 processo-detalhes-bold p-l-0"">
                     Órgão de Origem:
                 </div>
                 <div class=""col-md-5 processo-detalhes"">
-                    SUPREMO TRIBUNAL FEDERAL
+                    FÓRUM DA COMARCA DE RANCHARIA
                 </div>
                 <div class=""col-md-7 processo-detalhes-bold p-l-0"">
                     Origem:
                 </div>
                 <div class=""col-md-5 processo-detalhes"">
-                    DISTRITO FEDERAL
+                    RONDÔNIA
                 </div>
                 <div class=""col-md-7 processo-detalhes-bold p-l-0"">
                     Número de Origem:
                 </div>
                 <div class=""col-md-5 processo-detalhes"">
-                    268
+                    12, 
                 </div>
             </div>
         </div>
@@ -5170,7 +5357,7 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
                 <div class=""rotulo"">Volumes</div>
             </div>
             <div class=""col-md-3 processo-quadro"">
-                <div class=""numero"">48</div>
+                <div class=""numero"">0</div>
                 <div class=""rotulo"">Folhas</div>
             </div>
             
@@ -5187,21 +5374,28 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
         <div class=""processo-partes lista-dados m-l-16 p-t-0"">
     
     <div class=""detalhe-parte"">REQTE.(S)</div>
-    <div class=""nome-parte"">FEDERACAO NACIONAL DAS ASSOCIACOES ECONOMIARIAS - FENAE</div>
+    <div class=""nome-parte"">GOVERNADOR DO ESTADO DE RONDÔNIA</div>
     
     </div>  
    
         <div class=""processo-partes lista-dados m-l-16 p-t-0"">
     
     <div class=""detalhe-parte"">ADV.(A/S)</div>
-    <div class=""nome-parte"">RICARDO QUINTAS CARNEIRO</div>
+    <div class=""nome-parte"">ERASTO VILLA VERDE DE CARVALHO</div>
     
     </div>  
    
         <div class=""processo-partes lista-dados m-l-16 p-t-0"">
     
     <div class=""detalhe-parte"">INTDO.(A/S)</div>
-    <div class=""nome-parte"">PRESIDENTE DA REPÚBLICA</div>
+    <div class=""nome-parte"">ASSEMBLEIA LEGISLATIVA DO ESTADO DE RONDÔNIA</div>
+    
+    </div>  
+   
+        <div class=""processo-partes lista-dados m-l-16 p-t-0"">
+    
+    <div class=""detalhe-parte"">INTDO.(A/S)</div>
+    <div class=""nome-parte"">GOVERNADOR DO ESTADO DE RONDÔNIA</div>
     
     </div>  
   
@@ -5216,7 +5410,85 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
             <div class=""message-head clearfix"">
               <div class=""andamento-detalhe"">
                 <div class=""col-md-3 p-l-0"">
-                  <div class=""andamento-data "">29/09/1994</div>
+                  <div class=""andamento-data andamento-invalido"">13/12/2023</div>
+                </div>
+                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
+                  <h5 class=""andamento-nome andamento-invalido"">Petição</h5>
+                  
+                </div>
+                <div class=""col-md-4 andamento-docs"">
+                  
+                </div>
+
+                
+                  <div class=""col-md-3 p-0""></div>
+                  <div class=""col-md-9 p-0andamento-invalido"">Amicus curiae - Petição: 139250 Data: 13/12/2023, às 18:07:32</div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      
+      <li>
+        <div class=""andamento-item"">
+          <div class=""andamento-inner"">
+            <div class=""message-head clearfix"">
+              <div class=""andamento-detalhe"">
+                <div class=""col-md-3 p-l-0"">
+                  <div class=""andamento-data "">11/09/2013</div>
+                </div>
+                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
+                  <h5 class=""andamento-nome "">Petição</h5>
+                  
+                </div>
+                <div class=""col-md-4 andamento-docs"">
+                  
+                </div>
+
+                
+                  <div class=""col-md-3 p-0""></div>
+                  <div class=""col-md-9 p-0"">Juntada de documentos - Petição: 45190 Data: 11/09/2013 19:59:29.657 GMT-03:00</div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      
+      <li>
+        <div class=""andamento-item"">
+          <div class=""andamento-inner"">
+            <div class=""message-head clearfix"">
+              <div class=""andamento-detalhe"">
+                <div class=""col-md-3 p-l-0"">
+                  <div class=""andamento-data "">11/09/2013</div>
+                </div>
+                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
+                  <h5 class=""andamento-nome "">Petição</h5>
+                  
+                </div>
+                <div class=""col-md-4 andamento-docs"">
+                  
+                </div>
+
+                
+                  <div class=""col-md-3 p-0""></div>
+                  <div class=""col-md-9 p-0"">Juntada de documentos - Petição: 45174 Data: 11/09/2013 18:45:42.65 GMT-03:00</div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      
+      <li>
+        <div class=""andamento-item"">
+          <div class=""andamento-inner"">
+            <div class=""message-head clearfix"">
+              <div class=""andamento-detalhe"">
+                <div class=""col-md-3 p-l-0"">
+                  <div class=""andamento-data "">10/03/1992</div>
                 </div>
                 <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
                   <h5 class=""andamento-nome "">BAIXA AO ARQUIVO DO STF</h5>
@@ -5228,7 +5500,7 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
 
                 
                   <div class=""col-md-3 p-0""></div>
-                  <div class=""col-md-9 p-0"">GUIA 02327</div>
+                  <div class=""col-md-9 p-0""></div>
                 
               </div>
             </div>
@@ -5242,10 +5514,36 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
             <div class=""message-head clearfix"">
               <div class=""andamento-detalhe"">
                 <div class=""col-md-3 p-l-0"">
-                  <div class=""andamento-data "">16/09/1994</div>
+                  <div class=""andamento-data "">10/03/1992</div>
                 </div>
                 <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
-                  <h5 class=""andamento-nome "">TRANSITADO EM JULGADO</h5>
+                  <h5 class=""andamento-nome "">DECORRIDO O PRAZO</h5>
+                  
+                </div>
+                <div class=""col-md-4 andamento-docs"">
+                  
+                </div>
+
+                
+                  <div class=""col-md-3 p-0""></div>
+                  <div class=""col-md-9 p-0"">INTERPOSICAO DE RECURSO - REMESSA A S.BAIXA</div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      
+      <li>
+        <div class=""andamento-item"">
+          <div class=""andamento-inner"">
+            <div class=""message-head clearfix"">
+              <div class=""andamento-detalhe"">
+                <div class=""col-md-3 p-l-0"">
+                  <div class=""andamento-data "">27/02/1992</div>
+                </div>
+                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
+                  <h5 class=""andamento-nome "">PUBLICADO DESPACHO NO DJ</h5>
                   
                 </div>
                 <div class=""col-md-4 andamento-docs"">
@@ -5268,10 +5566,10 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
             <div class=""message-head clearfix"">
               <div class=""andamento-detalhe"">
                 <div class=""col-md-3 p-l-0"">
-                  <div class=""andamento-data "">09/09/1994</div>
+                  <div class=""andamento-data "">24/02/1992</div>
                 </div>
                 <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
-                  <h5 class=""andamento-nome "">PUBLICADO ACORDAO, DJ:</h5>
+                  <h5 class=""andamento-nome "">JULG. POR DESPACHO - NEGADO SEGUIMENTO</h5>
                   
                 </div>
                 <div class=""col-md-4 andamento-docs"">
@@ -5294,61 +5592,7 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
             <div class=""message-head clearfix"">
               <div class=""andamento-detalhe"">
                 <div class=""col-md-3 p-l-0"">
-                  <div class=""andamento-data "">06/06/1994</div>
-                </div>
-                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
-                  <h5 class=""andamento-nome "">DECISAO PUBLICADA, DJ:</h5>
-                  
-                </div>
-                <div class=""col-md-4 andamento-docs"">
-                  
-                </div>
-
-                
-                  <div class=""col-md-3 p-0""></div>
-                  <div class=""col-md-9 p-0""></div>
-                
-              </div>
-            </div>
-          </div>
-        </div>
-      </li>
-      
-      <li>
-        <div class=""andamento-item"">
-          <div class=""andamento-inner"">
-            <div class=""message-head clearfix"">
-              <div class=""andamento-detalhe"">
-                <div class=""col-md-3 p-l-0"">
-                  <div class=""andamento-data "">26/05/1994</div>
-                </div>
-                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
-                  <h5 class=""andamento-nome "">JULGAMENTO DO PLENO - NAO CONHECIDO</h5>
-                  
-                </div>
-                <div class=""col-md-4 andamento-docs"">
-                  
-                </div>
-
-                
-                  <div class=""col-md-3 p-0"">
-                    <span class=""andamento-julgador badge bg-info "">TRIBUNAL PLENO</span>
-                  </div>
-                  <div class=""col-md-9 p-0 "">POR VOTAÇÃO UNÂNIME, O TRIBUNAL NÃO CONHECEU DA AÇÃO, POR ILEGITIMIDADE ATIVA, FICANDO, EM CONSEQÜÊNCIA, PREJUDICADO O PEDIDO DE MEDIDA LIMINAR. VOTOU O PRESIDENTE. PLENÁRIO, 26.5.94.</div>
-                
-              </div>
-            </div>
-          </div>
-        </div>
-      </li>
-      
-      <li>
-        <div class=""andamento-item"">
-          <div class=""andamento-inner"">
-            <div class=""message-head clearfix"">
-              <div class=""andamento-detalhe"">
-                <div class=""col-md-3 p-l-0"">
-                  <div class=""andamento-data "">01/03/1994</div>
+                  <div class=""andamento-data "">03/02/1992</div>
                 </div>
                 <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
                   <h5 class=""andamento-nome "">CONCLUSOS AO RELATOR</h5>
@@ -5374,7 +5618,163 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
             <div class=""message-head clearfix"">
               <div class=""andamento-detalhe"">
                 <div class=""col-md-3 p-l-0"">
-                  <div class=""andamento-data "">28/02/1994</div>
+                  <div class=""andamento-data "">24/01/1992</div>
+                </div>
+                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
+                  <h5 class=""andamento-nome "">RECEBIMENTO DOS AUTOS</h5>
+                  
+                </div>
+                <div class=""col-md-4 andamento-docs"">
+                  
+                </div>
+
+                
+                  <div class=""col-md-3 p-0""></div>
+                  <div class=""col-md-9 p-0"">DO AGU, C/ PARECER PELA IMPROCEDENCIA</div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      
+      <li>
+        <div class=""andamento-item"">
+          <div class=""andamento-inner"">
+            <div class=""message-head clearfix"">
+              <div class=""andamento-detalhe"">
+                <div class=""col-md-3 p-l-0"">
+                  <div class=""andamento-data "">06/06/1991</div>
+                </div>
+                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
+                  <h5 class=""andamento-nome "">VISTA AO ADVOGADO-GERAL DA UNIAO</h5>
+                  
+                </div>
+                <div class=""col-md-4 andamento-docs"">
+                  
+                </div>
+
+                
+                  <div class=""col-md-3 p-0""></div>
+                  <div class=""col-md-9 p-0""></div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      
+      <li>
+        <div class=""andamento-item"">
+          <div class=""andamento-inner"">
+            <div class=""message-head clearfix"">
+              <div class=""andamento-detalhe"">
+                <div class=""col-md-3 p-l-0"">
+                  <div class=""andamento-data "">29/05/1991</div>
+                </div>
+                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
+                  <h5 class=""andamento-nome "">CONCLUSOS AO RELATOR</h5>
+                  
+                </div>
+                <div class=""col-md-4 andamento-docs"">
+                  
+                </div>
+
+                
+                  <div class=""col-md-3 p-0""></div>
+                  <div class=""col-md-9 p-0""></div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      
+      <li>
+        <div class=""andamento-item"">
+          <div class=""andamento-inner"">
+            <div class=""message-head clearfix"">
+              <div class=""andamento-detalhe"">
+                <div class=""col-md-3 p-l-0"">
+                  <div class=""andamento-data "">29/05/1991</div>
+                </div>
+                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
+                  <h5 class=""andamento-nome "">AUTOS DEVOLVIDOS</h5>
+                  
+                </div>
+                <div class=""col-md-4 andamento-docs"">
+                  
+                </div>
+
+                
+                  <div class=""col-md-3 p-0""></div>
+                  <div class=""col-md-9 p-0"">DA PGR COM PARECER DO PROCURADOR-GERAL</div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      
+      <li>
+        <div class=""andamento-item"">
+          <div class=""andamento-inner"">
+            <div class=""message-head clearfix"">
+              <div class=""andamento-detalhe"">
+                <div class=""col-md-3 p-l-0"">
+                  <div class=""andamento-data "">05/01/1989</div>
+                </div>
+                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
+                  <h5 class=""andamento-nome "">VISTA AO PROCURADOR-GERAL DA REPUBLICA</h5>
+                  
+                </div>
+                <div class=""col-md-4 andamento-docs"">
+                  
+                </div>
+
+                
+                  <div class=""col-md-3 p-0""></div>
+                  <div class=""col-md-9 p-0""></div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      
+      <li>
+        <div class=""andamento-item"">
+          <div class=""andamento-inner"">
+            <div class=""message-head clearfix"">
+              <div class=""andamento-detalhe"">
+                <div class=""col-md-3 p-l-0"">
+                  <div class=""andamento-data "">28/11/1988</div>
+                </div>
+                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
+                  <h5 class=""andamento-nome "">CONCLUSAO</h5>
+                  
+                </div>
+                <div class=""col-md-4 andamento-docs"">
+                  
+                </div>
+
+                
+                  <div class=""col-md-3 p-0""></div>
+                  <div class=""col-md-9 p-0""></div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      
+      <li>
+        <div class=""andamento-item"">
+          <div class=""andamento-inner"">
+            <div class=""message-head clearfix"">
+              <div class=""andamento-detalhe"">
+                <div class=""col-md-3 p-l-0"">
+                  <div class=""andamento-data "">28/11/1988</div>
                 </div>
                 <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
                   <h5 class=""andamento-nome "">INFORMACOES RECEBIDAS, OFICIO NRO.:</h5>
@@ -5386,7 +5786,7 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
 
                 
                   <div class=""col-md-3 p-0""></div>
-                  <div class=""col-md-9 p-0"">MSG 146/94 (PG 004679) DO PRESIDENTE DA REPUBLICA</div>
+                  <div class=""col-md-9 p-0"">OF.N.557 DA ASS.LEG/RO PRESTANDO  INFORMACAO</div>
                 
               </div>
             </div>
@@ -5400,10 +5800,10 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
             <div class=""message-head clearfix"">
               <div class=""andamento-detalhe"">
                 <div class=""col-md-3 p-l-0"">
-                  <div class=""andamento-data "">01/02/1994</div>
+                  <div class=""andamento-data "">04/11/1988</div>
                 </div>
                 <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
-                  <h5 class=""andamento-nome "">PUBLICADO DESPACHO NO DJ</h5>
+                  <h5 class=""andamento-nome "">INFORMACOES RECEBIDAS, OFICIO NRO.:</h5>
                   
                 </div>
                 <div class=""col-md-4 andamento-docs"">
@@ -5412,7 +5812,7 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
 
                 
                   <div class=""col-md-3 p-0""></div>
-                  <div class=""col-md-9 p-0"">DESPACHO DE 19.01.94</div>
+                  <div class=""col-md-9 p-0"">DO GOVERNADOR/RO</div>
                 
               </div>
             </div>
@@ -5426,7 +5826,111 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
             <div class=""message-head clearfix"">
               <div class=""andamento-detalhe"">
                 <div class=""col-md-3 p-l-0"">
-                  <div class=""andamento-data "">01/02/1994</div>
+                  <div class=""andamento-data "">20/10/1988</div>
+                </div>
+                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
+                  <h5 class=""andamento-nome "">PEDIDO DE INFORMACOES</h5>
+                  
+                </div>
+                <div class=""col-md-4 andamento-docs"">
+                  
+                </div>
+
+                
+                  <div class=""col-md-3 p-0""></div>
+                  <div class=""col-md-9 p-0"">A ASS.LEG.DO EST/RO</div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      
+      <li>
+        <div class=""andamento-item"">
+          <div class=""andamento-inner"">
+            <div class=""message-head clearfix"">
+              <div class=""andamento-detalhe"">
+                <div class=""col-md-3 p-l-0"">
+                  <div class=""andamento-data "">19/10/1988</div>
+                </div>
+                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
+                  <h5 class=""andamento-nome "">PEDIDO DE INFORMACOES</h5>
+                  
+                </div>
+                <div class=""col-md-4 andamento-docs"">
+                  
+                </div>
+
+                
+                  <div class=""col-md-3 p-0""></div>
+                  <div class=""col-md-9 p-0"">AO GOVERNADOR/RO</div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      
+      <li>
+        <div class=""andamento-item"">
+          <div class=""andamento-inner"">
+            <div class=""message-head clearfix"">
+              <div class=""andamento-detalhe"">
+                <div class=""col-md-3 p-l-0"">
+                  <div class=""andamento-data "">11/10/1988</div>
+                </div>
+                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
+                  <h5 class=""andamento-nome "">DESPACHO ORDINATORIO</h5>
+                  
+                </div>
+                <div class=""col-md-4 andamento-docs"">
+                  
+                </div>
+
+                
+                  <div class=""col-md-3 p-0""></div>
+                  <div class=""col-md-9 p-0"">SOLICITANDO INFORMACOES. DPI.</div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      
+      <li>
+        <div class=""andamento-item"">
+          <div class=""andamento-inner"">
+            <div class=""message-head clearfix"">
+              <div class=""andamento-detalhe"">
+                <div class=""col-md-3 p-l-0"">
+                  <div class=""andamento-data "">06/10/1988</div>
+                </div>
+                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
+                  <h5 class=""andamento-nome "">CONCLUSAO</h5>
+                  
+                </div>
+                <div class=""col-md-4 andamento-docs"">
+                  
+                </div>
+
+                
+                  <div class=""col-md-3 p-0""></div>
+                  <div class=""col-md-9 p-0""></div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      
+      <li>
+        <div class=""andamento-item"">
+          <div class=""andamento-inner"">
+            <div class=""message-head clearfix"">
+              <div class=""andamento-detalhe"">
+                <div class=""col-md-3 p-l-0"">
+                  <div class=""andamento-data "">06/10/1988</div>
                 </div>
                 <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
                   <h5 class=""andamento-nome "">DISTRIBUIDO</h5>
@@ -5438,137 +5942,7 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
 
                 
                   <div class=""col-md-3 p-0""></div>
-                  <div class=""col-md-9 p-0"">MIN. ILMAR GALVAO</div>
-                
-              </div>
-            </div>
-          </div>
-        </div>
-      </li>
-      
-      <li>
-        <div class=""andamento-item"">
-          <div class=""andamento-inner"">
-            <div class=""message-head clearfix"">
-              <div class=""andamento-detalhe"">
-                <div class=""col-md-3 p-l-0"">
-                  <div class=""andamento-data "">27/01/1994</div>
-                </div>
-                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
-                  <h5 class=""andamento-nome "">APENSADO, PROCESSO NRO.:</h5>
-                  
-                </div>
-                <div class=""col-md-4 andamento-docs"">
-                  
-                </div>
-
-                
-                  <div class=""col-md-3 p-0""></div>
-                  <div class=""col-md-9 p-0"">ADI 991-5.</div>
-                
-              </div>
-            </div>
-          </div>
-        </div>
-      </li>
-      
-      <li>
-        <div class=""andamento-item"">
-          <div class=""andamento-inner"">
-            <div class=""message-head clearfix"">
-              <div class=""andamento-detalhe"">
-                <div class=""col-md-3 p-l-0"">
-                  <div class=""andamento-data "">26/01/1994</div>
-                </div>
-                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
-                  <h5 class=""andamento-nome "">EXPEDIDO OFICIO/TELEX N.</h5>
-                  
-                </div>
-                <div class=""col-md-4 andamento-docs"">
-                  
-                </div>
-
-                
-                  <div class=""col-md-3 p-0""></div>
-                  <div class=""col-md-9 p-0"">MENS.003 AO PRESIDENTE DA REPUBLICA, SOLIC.INFORM.</div>
-                
-              </div>
-            </div>
-          </div>
-        </div>
-      </li>
-      
-      <li>
-        <div class=""andamento-item"">
-          <div class=""andamento-inner"">
-            <div class=""message-head clearfix"">
-              <div class=""andamento-detalhe"">
-                <div class=""col-md-3 p-l-0"">
-                  <div class=""andamento-data "">19/01/1994</div>
-                </div>
-                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
-                  <h5 class=""andamento-nome "">LIMINAR JULG. POR DESPACHO - INDEFERIDA</h5>
-                  
-                </div>
-                <div class=""col-md-4 andamento-docs"">
-                  
-                </div>
-
-                
-                  <div class=""col-md-3 p-0""></div>
-                  <div class=""col-md-9 p-0"">""AD REFERENDUM"" DO PLENARIO. SOLICITEM-SE INFORM.</div>
-                
-              </div>
-            </div>
-          </div>
-        </div>
-      </li>
-      
-      <li>
-        <div class=""andamento-item"">
-          <div class=""andamento-inner"">
-            <div class=""message-head clearfix"">
-              <div class=""andamento-detalhe"">
-                <div class=""col-md-3 p-l-0"">
-                  <div class=""andamento-data "">07/01/1994</div>
-                </div>
-                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
-                  <h5 class=""andamento-nome "">CONCLUSOS.</h5>
-                  
-                </div>
-                <div class=""col-md-4 andamento-docs"">
-                  
-                </div>
-
-                
-                  <div class=""col-md-3 p-0""></div>
-                  <div class=""col-md-9 p-0"">MINISTRO SEPULVEDA PERTENCE</div>
-                
-              </div>
-            </div>
-          </div>
-        </div>
-      </li>
-      
-      <li>
-        <div class=""andamento-item"">
-          <div class=""andamento-inner"">
-            <div class=""message-head clearfix"">
-              <div class=""andamento-detalhe"">
-                <div class=""col-md-3 p-l-0"">
-                  <div class=""andamento-data "">07/01/1994</div>
-                </div>
-                <div class=""col-md-5 p-l-0 d-flex align-items-center gap-4"">
-                  <h5 class=""andamento-nome "">REGISTRADO</h5>
-                  
-                </div>
-                <div class=""col-md-4 andamento-docs"">
-                  
-                </div>
-
-                
-                  <div class=""col-md-3 p-0""></div>
-                  <div class=""col-md-9 p-0"">MINISTRO PRESIDENTE</div>
+                  <div class=""col-md-9 p-0"">MIN. CELIO BORJA</div>
                 
               </div>
             </div>
@@ -5582,30 +5956,7 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
 </div></div>
                                 <div id=""decisoes"" class=""tab-pane"">
 <div class=""processo-andamentos m-t-8"">
-    	
-            <div class=""andamento-item"" id=""3322"">
-                <div class=""andamento-inner"">
-                    <div class=""message-head"">
-                        <div class=""andamento-detalhe"">
-                            <div class=""col-md-3 p-l-0"">
-                                <div class=""andamento-data"">26/05/1994</div>
-                            </div>
-                            <div class=""col-md-5 p-l-0"">
-                                <h5 class=""andamento-nome"">JULGAMENTO DO PLENO - NAO CONHECIDO</h5>
-                            </div>
-                            <div class=""col-md-4 andamento-docs""> 
-                                
-                            </div>
-                            <div class=""clearfix""></div>
-                            <div class=""col-md-3 p-0"">
-                                <span class=""andamento-julgador badge bg-info"">TRIBUNAL PLENO</span>
-                            </div>
-                            <div class=""col-md-9 p-0"">POR VOTAÇÃO UNÂNIME, O TRIBUNAL NÃO CONHECEU DA AÇÃO, POR ILEGITIMIDADE ATIVA, FICANDO, EM CONSEQÜÊNCIA, PREJUDICADO O PEDIDO DE MEDIDA LIMINAR. VOTOU O PRESIDENTE. PLENÁRIO, 26.5.94.</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        
+    
 </div>
 </div>
                                 <div id=""sessao-virtual"" class=""tab-pane"">
@@ -5708,7 +6059,7 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
             $.ajax({
                 type    : ""GET"",
                 dataType: 'json',                
-                url     : ""https://sistemas.stf.jus.br/repgeral/votacao?oi=1579244"",
+                url     : ""https://sistemas.stf.jus.br/repgeral/votacao?oi=1480010"",
                 cache   :  true,
                 crossDomain: true,
                 success : function(data){                  
@@ -5756,43 +6107,16 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
                 </div>
             </div>
             <div class=""lista-dados__col--detalhes"">
-                <span class=""processo-detalhes"">Enviado por COORDENADORIA DE SERVIÇOS E LOGÍSTICA em 19/11/2020</span>
+                <span class=""processo-detalhes"">Enviado por COORDENADORIA DE MEMÓRIA E GESTÃO DOCUMENTAL em 30/01/2021</span>
             </div>
         </div>
         <div class=""lista-dados__col col-md-3"">
             <div class=""col-md-12 text-right"">
-                <span class=""processo-detalhes"">Guia 164/2020</span>
+                <span class=""processo-detalhes"">Guia 6/2021</span>
             </div>
             <div class=""col-md-12 text-right"">
                 
-                    <span class=""processo-detalhes bg-font-success"">Recebido em 19/11/2020</span>
-                
-            </div>
-        </div>
-    </div>
-    
-
-    <div class=""col-md-12 lista-dados p-r-0 p-l-0"">
-        <div class=""lista-dados__col col-md-9"">
-            <div class=""d-flex lh-1"">
-                <div class=""icone-mapa col-md-1"">
-                    <i class=""processo-detalhes-bold fas fa-map-marker-alt bg-font-success""></i>
-                </div>
-                <div class=""col-md-11"">
-                    <span class=""processo-detalhes-bold"">COORDENADORIA DE SERVIÇOS E LOGÍSTICA</span>
-                </div>
-            </div>
-            <div class=""lista-dados__col--detalhes"">
-                <span class=""processo-detalhes"">Enviado por COORDENADORIA DE MEMÓRIA E GESTÃO DOCUMENTAL em 14/06/2019</span>
-            </div>
-        </div>
-        <div class=""lista-dados__col col-md-3"">
-            <div class=""col-md-12 text-right"">
-                <span class=""processo-detalhes"">Guia 218/2019</span>
-            </div>
-            <div class=""col-md-12 text-right"">
-                
-                    <span class=""processo-detalhes bg-font-success"">Recebido em 12/11/2020</span>
+                    <span class=""processo-detalhes bg-font-success"">Recebido em 30/01/2021</span>
                 
             </div>
         </div>
@@ -5815,11 +6139,11 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
         </div>
         <div class=""lista-dados__col col-md-3"">
             <div class=""col-md-12 text-right"">
-                <span class=""processo-detalhes"">Guia 390/2019</span>
+                <span class=""processo-detalhes"">Guia 385/2019</span>
             </div>
             <div class=""col-md-12 text-right"">
                 
-                    <span class=""processo-detalhes bg-font-success"">Recebido em 14/06/2019</span>
+                    <span class=""processo-detalhes bg-font-success"">Recebido em 13/06/2019</span>
                 
             </div>
         </div>
@@ -5923,7 +6247,7 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
         </div>
         <div class=""lista-dados__col col-md-3"">
             <div class=""col-md-12 text-right"">
-                <span class=""processo-detalhes"">Guia 17121/2010</span>
+                <span class=""processo-detalhes"">Guia 17897/2010</span>
             </div>
             <div class=""col-md-12 text-right"">
                 
@@ -5950,11 +6274,65 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
         </div>
         <div class=""lista-dados__col col-md-3"">
             <div class=""col-md-12 text-right"">
-                <span class=""processo-detalhes"">Guia 299/2004</span>
+                <span class=""processo-detalhes"">Guia 281/2004</span>
             </div>
             <div class=""col-md-12 text-right"">
                 
                     <span class=""processo-detalhes bg-font-success"">Recebido em 25/07/2004</span>
+                
+            </div>
+        </div>
+    </div>
+    
+
+    <div class=""col-md-12 lista-dados p-r-0 p-l-0"">
+        <div class=""lista-dados__col col-md-9"">
+            <div class=""d-flex lh-1"">
+                <div class=""icone-mapa col-md-1"">
+                    <i class=""processo-detalhes-bold fas fa-map-marker-alt bg-font-success""></i>
+                </div>
+                <div class=""col-md-11"">
+                    <span class=""processo-detalhes-bold"">SEÇÃO DE ARQUIVO JUDICIARIO</span>
+                </div>
+            </div>
+            <div class=""lista-dados__col--detalhes"">
+                <span class=""processo-detalhes"">Enviado por MUSEU DO TRIBUNAL em 10/11/2003</span>
+            </div>
+        </div>
+        <div class=""lista-dados__col col-md-3"">
+            <div class=""col-md-12 text-right"">
+                <span class=""processo-detalhes"">Guia 1/2003</span>
+            </div>
+            <div class=""col-md-12 text-right"">
+                
+                    <span class=""processo-detalhes bg-font-success"">Recebido em 10/11/2003</span>
+                
+            </div>
+        </div>
+    </div>
+    
+
+    <div class=""col-md-12 lista-dados p-r-0 p-l-0"">
+        <div class=""lista-dados__col col-md-9"">
+            <div class=""d-flex lh-1"">
+                <div class=""icone-mapa col-md-1"">
+                    <i class=""processo-detalhes-bold fas fa-map-marker-alt bg-font-success""></i>
+                </div>
+                <div class=""col-md-11"">
+                    <span class=""processo-detalhes-bold"">MUSEU DO TRIBUNAL</span>
+                </div>
+            </div>
+            <div class=""lista-dados__col--detalhes"">
+                <span class=""processo-detalhes"">Enviado por SEÇÃO DE ARQUIVO JUDICIARIO em 30/09/2003</span>
+            </div>
+        </div>
+        <div class=""lista-dados__col col-md-3"">
+            <div class=""col-md-12 text-right"">
+                <span class=""processo-detalhes"">Guia 326/2003</span>
+            </div>
+            <div class=""col-md-12 text-right"">
+                
+                    <span class=""processo-detalhes bg-font-success"">Recebido em 10/11/2003</span>
                 
             </div>
         </div>
@@ -5999,43 +6377,16 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
                 </div>
             </div>
             <div class=""lista-dados__col--detalhes"">
-                <span class=""processo-detalhes"">Enviado por SEÇÃO DE BAIXA em 29/09/1994</span>
+                <span class=""processo-detalhes"">Enviado por SEÇÃO DE BAIXA em 10/03/1992</span>
             </div>
         </div>
         <div class=""lista-dados__col col-md-3"">
             <div class=""col-md-12 text-right"">
-                <span class=""processo-detalhes"">Guia 2327/1994</span>
+                <span class=""processo-detalhes"">Guia 350/9992</span>
             </div>
             <div class=""col-md-12 text-right"">
                 
-                    <span class=""processo-detalhes bg-font-success"">Recebido em 29/09/1994</span>
-                
-            </div>
-        </div>
-    </div>
-    
-
-    <div class=""col-md-12 lista-dados p-r-0 p-l-0"">
-        <div class=""lista-dados__col col-md-9"">
-            <div class=""d-flex lh-1"">
-                <div class=""icone-mapa col-md-1"">
-                    <i class=""processo-detalhes-bold fas fa-map-marker-alt bg-font-success""></i>
-                </div>
-                <div class=""col-md-11"">
-                    <span class=""processo-detalhes-bold"">SEÇÃO DE CONFERENCIA E PUBLICACAO DE ACORDAOS</span>
-                </div>
-            </div>
-            <div class=""lista-dados__col--detalhes"">
-                <span class=""processo-detalhes"">Enviado por DIVISAO DE ACORDAOS em 15/08/1994</span>
-            </div>
-        </div>
-        <div class=""lista-dados__col col-md-3"">
-            <div class=""col-md-12 text-right"">
-                <span class=""processo-detalhes"">Guia 763/1994</span>
-            </div>
-            <div class=""col-md-12 text-right"">
-                
-                    <span class=""processo-detalhes bg-font-success"">Recebido em 08/09/1994</span>
+                    <span class=""processo-detalhes bg-font-success"">Recebido em 10/03/1992</span>
                 
             </div>
         </div>
@@ -6053,16 +6404,43 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
                 </div>
             </div>
             <div class=""lista-dados__col--detalhes"">
-                <span class=""processo-detalhes"">Enviado por DIVISAO DE ACORDAOS em 08/09/1994</span>
+                <span class=""processo-detalhes"">Enviado por DIVISAO DE PROCESSOS ORIGINARIOS em 10/03/1992</span>
             </div>
         </div>
         <div class=""lista-dados__col col-md-3"">
             <div class=""col-md-12 text-right"">
-                <span class=""processo-detalhes"">Guia 845/1994</span>
+                <span class=""processo-detalhes"">Guia 853/9992</span>
             </div>
             <div class=""col-md-12 text-right"">
                 
-                    <span class=""processo-detalhes bg-font-success"">Recebido em 08/09/1994</span>
+                    <span class=""processo-detalhes bg-font-success"">Recebido em 10/03/1992</span>
+                
+            </div>
+        </div>
+    </div>
+    
+
+    <div class=""col-md-12 lista-dados p-r-0 p-l-0"">
+        <div class=""lista-dados__col col-md-9"">
+            <div class=""d-flex lh-1"">
+                <div class=""icone-mapa col-md-1"">
+                    <i class=""processo-detalhes-bold fas fa-map-marker-alt bg-font-success""></i>
+                </div>
+                <div class=""col-md-11"">
+                    <span class=""processo-detalhes-bold"">DIVISAO DE PROCESSOS ORIGINARIOS</span>
+                </div>
+            </div>
+            <div class=""lista-dados__col--detalhes"">
+                <span class=""processo-detalhes"">Enviado por DIVISAO DE PUBLICACOES E INTIMACOES em 26/02/1992</span>
+            </div>
+        </div>
+        <div class=""lista-dados__col col-md-3"">
+            <div class=""col-md-12 text-right"">
+                <span class=""processo-detalhes"">Guia 4295/9992</span>
+            </div>
+            <div class=""col-md-12 text-right"">
+                
+                    <span class=""processo-detalhes bg-font-success"">Recebido em 26/02/1992</span>
                 
             </div>
         </div>
@@ -6095,32 +6473,32 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
   </script>
 
 <script>
-    $.get('abaPartes.asp?incidente=1579244', function(resposta) {
+    $.get('abaPartes.asp?incidente=1480010', function(resposta) {
         $('#partes').html($(resposta)[0]);
         $('#resumo-partes').prepend($(resposta)[2]);
     });
-    $('#andamentos').load('abaAndamentos.asp?incidente=1579244&imprimir=');
+    $('#andamentos').load('abaAndamentos.asp?incidente=1480010&imprimir=');
 
-    $.get('abaInformacoes.asp?incidente=1579244', function(resposta) {
+    $.get('abaInformacoes.asp?incidente=1480010', function(resposta) {
        $('#informacoes').html($(resposta)[0]);       
        $('#orgao-procedencia').html($(resposta)[2]); 
        $('#descricao-procedencia').html($(resposta)[4]);       
     });
 
     num_tema = 'N';
-    $('#decisoes').load('abaDecisoes.asp?incidente=1579244');
-    $('#sessao-virtual').load('abaSessao.asp?incidente=1579244&tema=' + num_tema);
-    $('#deslocamentos').load('abaDeslocamentos.asp?incidente=1579244');
-    $('#peticoes').load('abaPeticoes.asp?incidente=1579244');
-    $('#recursos').load('abaRecursos.asp?incidente=1579244');
-    $('#pautas').load('abaPautas.asp?incidente=1579244');
+    $('#decisoes').load('abaDecisoes.asp?incidente=1480010');
+    $('#sessao-virtual').load('abaSessao.asp?incidente=1480010&tema=' + num_tema);
+    $('#deslocamentos').load('abaDeslocamentos.asp?incidente=1480010');
+    $('#peticoes').load('abaPeticoes.asp?incidente=1480010');
+    $('#recursos').load('abaRecursos.asp?incidente=1480010');
+    $('#pautas').load('abaPautas.asp?incidente=1480010');
 
 	$('#btn-dje').click(function(){
         if ('Público' == ""Sigiloso"") {
             var url = 'https://digital.stf.jus.br/publico/publicacoes'
             window.open(url, '_blank');
         }
-		var url = '/servicos/dje/listarDiarioJustica.asp?tipoPesquisaDJ=AP&classe='+ 'ADI' + '&numero=' + 987
+		var url = '/servicos/dje/listarDiarioJustica.asp?tipoPesquisaDJ=AP&classe='+ 'ADI' + '&numero=' + 1
 		window.open(url, '_blank');
 	});
 </script>
@@ -6393,4 +6771,4 @@ _item_count,_scraped_at,_spider_name,andamentos,assuntos,autor1,classe,data_prot
                                         </button>
                                     </div>
                                 </div>
-                            </div></body></html>",1579244,,0,0000038-90.1994.0.01.0000,DF - DISTRITO FEDERAL,SUPREMO TRIBUNAL FEDERAL,"[{'index': 1, 'tipo': 'PARTE', 'nome': 'REQTE.(S)'}, {'index': 2, 'tipo': 'PARTE', 'nome': 'FEDERACAO NACIONAL DAS ASSOCIACOES ECONOMIARIAS - FENAE'}, {'index': 3, 'tipo': 'PARTE', 'nome': 'ADV.(A/S)'}, {'index': 4, 'tipo': 'PARTE', 'nome': 'RICARDO QUINTAS CARNEIRO E OUTROS'}, {'index': 5, 'tipo': 'PARTE', 'nome': 'INTDO.(A/S)'}, {'index': 6, 'tipo': 'PARTE', 'nome': 'PRESIDENTE DA REPÚBLICA'}]",,,987,"[{'index_num': 5, 'data': '26/05/1994', 'nome': 'JULGAMENTO DO PLENO - NAO CONHECIDO', 'julgador': 'TRIBUNAL PLENO', 'complemento': 'POR VOTAÇÃO UNÂNIME, O TRIBUNAL NÃO CONHECEU DA AÇÃO, POR ILEGITIMIDADE ATIVA, FICANDO, EM CONSEQÜÊNCIA, PREJUDICADO O PEDIDO DE MEDIDA LIMINAR. VOTOU O PRESIDENTE. PLENÁRIO, 26.5.94.', 'autor': None}]",ILMAR GALVÃO,"{'data': None, 'tipo': None, 'numero': None, 'relator': None, 'status': None, 'participantes': []}",200,Físico
+                            </div></body></html>",1480010,,1,0003935-39.1988.0.01.0000,RO - RONDÔNIA,FÓRUM DA COMARCA DE RANCHARIA,"[{'index': 1, 'tipo': 'PARTE', 'nome': 'REQTE.(S)'}, {'index': 2, 'tipo': 'PARTE', 'nome': 'GOVERNADOR DO ESTADO DE RONDÔNIA'}, {'index': 3, 'tipo': 'PARTE', 'nome': 'ADV.(A/S)'}, {'index': 4, 'tipo': 'PARTE', 'nome': 'ERASTO VILLA VERDE DE CARVALHO'}, {'index': 5, 'tipo': 'PARTE', 'nome': 'INTDO.(A/S)'}, {'index': 6, 'tipo': 'PARTE', 'nome': 'ASSEMBLEIA LEGISLATIVA DO ESTADO DE RONDÔNIA'}, {'index': 7, 'tipo': 'PARTE', 'nome': 'INTDO.(A/S)'}, {'index': 8, 'tipo': 'PARTE', 'nome': 'GOVERNADOR DO ESTADO DE RONDÔNIA'}]",,,1,,CÉLIO BORJA,"{'data': None, 'tipo': None, 'numero': None, 'relator': None, 'status': None, 'participantes': []}",200,Físico
