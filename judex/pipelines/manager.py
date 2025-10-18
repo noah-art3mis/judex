@@ -5,25 +5,25 @@ from scrapy.utils.project import get_project_settings
 
 from judex.database import init_database
 
-PersistenceTypes = list[Literal["json", "csv", "sql"]] | None
+PersistenceTypes = list[Literal["json", "csv", "sql"]]
 
 
 class PipelineManager:
     @staticmethod
     def select_persistence(
-        persistence_types: PersistenceTypes,
+        salvar_como: PersistenceTypes,
         output_path: str,
         classe: str | None = None,
         db_path: str | None = None,
     ) -> None:
         """Configure persistence pipelines and output files"""
-        if not persistence_types:
+        if not salvar_como:
             return
 
         settings = get_project_settings()
         pipelines = settings.get("ITEM_PIPELINES", {})
 
-        for persistence_type in persistence_types:
+        for persistence_type in salvar_como:
             if persistence_type == "json":
                 pipelines["judex.pipelines.JSONPipeline"] = 500
             elif persistence_type == "csv":
@@ -58,5 +58,5 @@ class PipelineManager:
             settings.set("JSON_OUTPUT_FILE", os.path.join(output_path, "data.json"))
             settings.set("CSV_OUTPUT_FILE", os.path.join(output_path, "data.csv"))
 
-        if "sql" in persistence_types:
+        if "sql" in salvar_como:
             init_database(settings.get("DATABASE_PATH"))

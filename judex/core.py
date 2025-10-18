@@ -20,7 +20,7 @@ class JudexScraper:
         processos: The processes to scrape
         scraper_kind: The kind of scraper to use
         output_path: The path to the output directory
-        persistence_types: The persistence types to use
+        salvar_como: The persistence types to use
         skip_existing: Whether to skip existing processes
         retry_failed: Whether to retry failed processes
         max_age_hours: The maximum age of the processes to scrape
@@ -30,9 +30,9 @@ class JudexScraper:
         self,
         classe: str,
         processos: str,
+        salvar_como: PersistenceTypes | list[PersistenceTypes],
         scraper_kind: str = "stf",
         output_path: str = "judex_output",
-        persistence_types: PersistenceTypes = None,
         skip_existing: bool = True,
         retry_failed: bool = True,
         max_age_hours: int = 24,
@@ -40,17 +40,26 @@ class JudexScraper:
     ):
         if not isinstance(processos, str):
             raise Exception("processos must be a string")
-        if not isinstance(persistence_types, (list, tuple)):
-            raise Exception("persistence_types must be a list or tuple")
-        if not all(isinstance(item, str) for item in persistence_types):
-            raise Exception("persistence_types must be a list or tuple of strings")
-        if not all(item in ["json", "csv", "sql"] for item in persistence_types):
+        if not isinstance(salvar_como, (list, tuple)):
+            raise Exception("salvar_como must be a list or tuple")
+        if not all(isinstance(item, str) for item in salvar_como):
+            raise Exception("salvar_como must be a list or tuple of strings")
+        if not all(item in ["json", "csv", "sql"] for item in salvar_como):
             raise Exception(
-                "persistence_types must be a list of any of: 'json', 'csv', 'sql' or None"
+                "salvar_como must be a list of any of: 'json', 'csv', 'sql' or None"
             )
 
+        if not isinstance(salvar_como, list):
+            salvar_como = [salvar_como]
+
+        if not salvar_como:
+            salvar_como = ["json"]
+
+        if not isinstance(salvar_como, list[str]):
+            raise Exception("salvar_como must be a list of strings")
+
         os.makedirs(output_path, exist_ok=True)
-        self.persistence_types = persistence_types
+        self.salvar_como = salvar_como
         self.output_path = output_path
         self.db_path = db_path
         self.spider = self.select_spider(
@@ -58,9 +67,7 @@ class JudexScraper:
         )
 
         # Configure persistence pipelines
-        PipelineManager.select_persistence(
-            persistence_types, output_path, classe, db_path
-        )
+        PipelineManager.select_persistence(salvar_como, output_path, classe, db_path)
 
     def select_spider(
         self,

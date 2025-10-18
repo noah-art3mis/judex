@@ -5,7 +5,7 @@ BOT_NAME = "judex"
 SPIDER_MODULES = ["judex.spiders"]
 NEWSPIDER_MODULE = "judex.spiders"
 
-USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
 
 ROBOTSTXT_OBEY = False
 
@@ -87,9 +87,6 @@ STRICT_ITEMS = True
 
 SELENIUM_DRIVER_NAME = "chrome"
 SELENIUM_DRIVER_EXECUTABLE_PATH = which("chromedriver")
-
-USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
-
 SELENIUM_DRIVER_ARGUMENTS = [
     "--headless",
     "--incognito",
@@ -98,6 +95,4 @@ SELENIUM_DRIVER_ARGUMENTS = [
     f"--user-agent={USER_AGENT}",
 ]
 
-# LOG_LEVEL = "DEBUG"
-# LOG_LEVEL = "WARNING"
-LOG_LEVEL = "INFO"
+LOG_LEVEL = "DEBUG"

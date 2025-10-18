@@ -106,7 +106,7 @@ Examples:
             processos=processos_json,
             scraper_kind=args.scraper_kind,
             output_path=args.output_path,
-            persistence_types=args.persistence,
+            salvar_como=args.persistence,
             skip_existing=args.skip_existing,
             retry_failed=args.retry_failed,
             max_age_hours=args.max_age,

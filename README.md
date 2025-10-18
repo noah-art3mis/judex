@@ -1,17 +1,8 @@
 # Judex
 
-Ferramenta para extração de dados jurídicos do STF.
+Ferramenta para extração automatizada de dados do portal do STF.
 
-Utiliza scrapy-selenium. Tem performance de ~4 processos por minuto.
-
-## Características
-
--   **Web Scraping**: Extração automatizada de dados do portal do STF
--   **Validação de Dados**: Modelos Pydantic garantem integridade dos dados
--   **Integração com Banco**: Armazenamento SQLite com tabelas normalizadas
--   **Segurança de Tipos**: Validação em tempo de execução com mensagens claras
--   **Mapeamento de Campos**: Conversão automática entre schemas de scraping e banco de dados
--   **Exportação Flexível**: Suporte a JSON e CSV
+Utiliza scrapy-selenium. Tem performance de ~4 processos por minuto. Possui suporte a JSON, CSV e SQLite.
 
 ## Uso simples via scrapy (Linux)
 
@@ -29,13 +20,20 @@ git clone https://github.com/noah-art3mis/judex
 cd judex && uv sync
 
 # scrape
-scrapy crawl stf -a classe=ADI -a processos=[4916,4917,4918] -O output.json
+uv run scrapy crawl stf -a classe=ADI -a processos=[4916,4917] -O output.json
 ```
 
 -   _classe_: classe dos processos de interesse (e.g., ADI, AR, etc.)
 -   _processo_: número dos processos. Na CLI, devem ter o formato `[165,568]`, sem espaço.
+-   _salvar_como_: permite alterar como os dados são armazenados. Pode ser `json`, `csv` e/ou `sql`.
 
-Para outros parâmetros, ver `settings.py` ou a documentação do scrapy.
+Para outros parâmetros, ver `settings.py` ou a documentação do scrapy. Configurações relevantes do scrapy incluem:
+
+```json
+LOG_LEVEL = "DEBUG"
+HTTPCACHE_ENABLED = True
+AUTOTHROTTLE_ENABLED = True
+```
 
 ### 2. Como biblioteca
 
@@ -48,61 +46,17 @@ The main entry point is the `JudexScraper` class, which takes a class, a list of
 ```python
 from judex import judexScraper
 
-scraper = JudexScraper(classe="ADI", processos="[1,2]", )
+scraper = JudexScraper(
+    classe="ADI",
+    processos="[1,2]",
+    salvar_como=['json']
+    )
 scraper.scrape()
-```
-
-Com mais parâmetros:
-
-```python
-scrape = JudexScraper(
-    output_dir="output",
-    db_path="judex.db",
-    filename="processos.csv",
-    skip_existing=True,  # Skip cases already in database
-    retry_failed=True,  # Retry cases that previously failed
-    max_age_hours=24,  # Only skip cases scraped within last 24 hours
-)
-scraper.scrape("ADI", "[4916, 4917]")
-```
-
-### 3. Exemplos Avançados
-
-#### Usando arquivo YAML de entrada
-
-```python
-# processos.yaml
-ADI:
-  - 4916
-  - 4917
-  - 4918
-ADPF:
-  - 165
-  - 568
-
-# main.py
-from judex.core import JudexScraper
-
-scraper = JudexScraper(
-    input_file="processos.yaml",
-    output_dir="output",
-    db_path="judex.db"
-)
-```
-
-#### Configurações de Performance
-
-```python
-scraper = JudexScraper(
-    skip_existing=True,    # Pular casos já no banco
-    retry_failed=True,     # Tentar novamente casos que falharam
-    max_age_hours=24,      # Só pular casos extraídos nas últimas 24h
-)
 ```
 
 ## Resultado
 
-O resultado é armazenado em um banco de dados SQLite normalizado com as seguintes tabelas:
+Os dados em json ficam alinhandos, enquanto em sql eles são normalizados nas seguintes tabelas:
 
 -   `processos`: Informações gerais do processo (número único, classe, relator, etc.)
 -   `partes`: Partes envolvidas no processo (autores, réus, etc.)
@@ -111,8 +65,6 @@ O resultado é armazenado em um banco de dados SQLite normalizado com as seguint
 -   `peticoes`: Petições apresentadas no processo
 -   `recursos`: Recursos interpostos
 -   `pautas`: Pautas de julgamento
-
-Os dados também podem ser exportados como JSON aninhado usando a opção `-O output.json` na linha de comando.
 
 ```python
 
