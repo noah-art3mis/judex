@@ -38,7 +38,7 @@ def track_extraction_timing(func: Callable) -> Callable:
             if spider and hasattr(spider, "crawler") and spider.crawler:
                 spider.crawler.stats.inc_value(f"extraction/{func_name}/success")
                 spider.crawler.stats.set_value(
-                    f"extraction/{func_name}/duration", duration
+                    f"extraction/{func_name}/duration", round(duration, 2)
                 )
 
             # Log timing
@@ -54,14 +54,12 @@ def track_extraction_timing(func: Callable) -> Callable:
             if spider and hasattr(spider, "crawler") and spider.crawler:
                 spider.crawler.stats.inc_value(f"extraction/{func_name}/failed")
                 spider.crawler.stats.set_value(
-                    f"extraction/{func_name}/duration", duration
+                    f"extraction/{func_name}/duration", round(duration, 2)
                 )
 
             # Log timing and error
             if spider and hasattr(spider, "logger") and spider.logger:
-                spider.logger.warning(
-                    f"{func_name} extraction failed after {duration:.3f}s: {e}"
-                )
+                spider.logger.warning(f"{func_name} extraction failed after {duration:.3f}s: {e}")
 
             # Re-raise the exception
             raise
@@ -69,9 +67,7 @@ def track_extraction_timing(func: Callable) -> Callable:
     return wrapper
 
 
-def handle_extraction_errors(
-    default_value: Any = None, log_errors: bool = True
-) -> Callable:
+def handle_extraction_errors(default_value: Any = None, log_errors: bool = True) -> Callable:
     """
     Decorator to handle extraction errors with consistent error handling and stats tracking
 
@@ -110,17 +106,10 @@ def handle_extraction_errors(
                 # Track failure
                 if spider and hasattr(spider, "crawler") and spider.crawler:
                     spider.crawler.stats.inc_value(f"extraction/{func_name}/failed")
-                    spider.crawler.stats.inc_value(
-                        f"extraction/{func_name}/error_count"
-                    )
+                    spider.crawler.stats.inc_value(f"extraction/{func_name}/error_count")
 
                 # Log error if enabled
-                if (
-                    log_errors
-                    and spider
-                    and hasattr(spider, "logger")
-                    and spider.logger
-                ):
+                if log_errors and spider and hasattr(spider, "logger") and spider.logger:
                     spider.logger.warning(f"Could not extract {func_name}: {e}")
 
                 # Return default value instead of raising
@@ -368,7 +357,6 @@ def extract_andamentos(spider, driver: WebDriver, soup) -> list:
         for i, andamento in enumerate(andamentos):
             try:
                 index = len(andamentos) - i
-                html = andamento.get_attribute("innerHTML")
 
                 # Extract data, nome, complemento, julgador
                 data = andamento.find_element(By.CLASS_NAME, "andamento-data").text
@@ -377,9 +365,7 @@ def extract_andamentos(spider, driver: WebDriver, soup) -> list:
 
                 # Check for julgador
                 try:
-                    julgador = andamento.find_element(
-                        By.CLASS_NAME, "andamento-julgador"
-                    ).text
+                    julgador = andamento.find_element(By.CLASS_NAME, "andamento-julgador").text
                 except Exception:
                     julgador = None
 
@@ -417,18 +403,10 @@ def extract_decisoes(spider, driver: WebDriver, soup) -> list:
                 # Check if this andamento has a julgador badge (indicating a decision)
                 if "andamento-julgador badge bg-info" in html:
                     # Extract decision data
-                    data_element = andamento.find_element(
-                        By.CLASS_NAME, "andamento-data"
-                    )
-                    nome_element = andamento.find_element(
-                        By.CLASS_NAME, "andamento-nome"
-                    )
-                    julgador_element = andamento.find_element(
-                        By.CLASS_NAME, "andamento-julgador"
-                    )
-                    complemento_element = andamento.find_element(
-                        By.CLASS_NAME, "col-md-9"
-                    )
+                    data_element = andamento.find_element(By.CLASS_NAME, "andamento-data")
+                    nome_element = andamento.find_element(By.CLASS_NAME, "andamento-nome")
+                    julgador_element = andamento.find_element(By.CLASS_NAME, "andamento-julgador")
+                    complemento_element = andamento.find_element(By.CLASS_NAME, "col-md-9")
 
                     # Extract link if present
                     link = None
@@ -437,10 +415,9 @@ def extract_decisoes(spider, driver: WebDriver, soup) -> list:
 
                         link_match = re.search(r'href="([^"]+)"', html)
                         if link_match:
-                            link = (
-                                "https://portal.stf.jus.br/processos/"
-                                + link_match.group(1).replace("amp;", "")
-                            )
+                            link = "https://portal.stf.jus.br/processos/" + link_match.group(
+                                1
+                            ).replace("amp;", "")
 
                     # Clean the extracted data
                     data = spider.clean_text(data_element.text)
@@ -495,24 +472,16 @@ def extract_deslocamentos(spider, driver: WebDriver, soup) -> list:
                 import re
 
                 enviado_match = re.search(r'"processo-detalhes-bold">([^<]+)', html)
-                data_recebido_match = re.search(
-                    r'processo-detalhes bg-font-success">([^<]+)', html
-                )
+                data_recebido_match = re.search(r'processo-detalhes bg-font-success">([^<]+)', html)
                 recebido_match = re.search(r'"processo-detalhes">([^<]+)', html)
-                data_enviado_match = re.search(
-                    r'processo-detalhes bg-font-info">([^<]+)', html
-                )
+                data_enviado_match = re.search(r'processo-detalhes bg-font-info">([^<]+)', html)
                 guia_match = re.search(
                     r'text-right">\s*<span class="processo-detalhes">([^<]+)', html
                 )
 
                 # Clean the extracted data
-                data_recebido = (
-                    data_recebido_match.group(1) if data_recebido_match else None
-                )
-                data_enviado = (
-                    data_enviado_match.group(1) if data_enviado_match else None
-                )
+                data_recebido = data_recebido_match.group(1) if data_recebido_match else None
+                data_enviado = data_enviado_match.group(1) if data_enviado_match else None
                 guia = guia_match.group(1) if guia_match else None
 
                 # Get raw text for parsing
@@ -524,9 +493,7 @@ def extract_deslocamentos(spider, driver: WebDriver, soup) -> list:
                     data_recebido = spider.clean_text(data_recebido)
                     # Remove common prefixes/suffixes
                     data_recebido = (
-                        data_recebido.replace("Recebido em ", "")
-                        .replace(" em ", "")
-                        .strip()
+                        data_recebido.replace("Recebido em ", "").replace(" em ", "").strip()
                     )
 
                 # Clean data_enviado - remove extra text, keep only date
@@ -534,9 +501,7 @@ def extract_deslocamentos(spider, driver: WebDriver, soup) -> list:
                     data_enviado = spider.clean_text(data_enviado)
                     # Remove common prefixes/suffixes
                     data_enviado = (
-                        data_enviado.replace("Enviado em ", "")
-                        .replace(" em ", "")
-                        .strip()
+                        data_enviado.replace("Enviado em ", "").replace(" em ", "").strip()
                     )
 
                 # Extract date from enviado_por text and clean it
@@ -549,27 +514,19 @@ def extract_deslocamentos(spider, driver: WebDriver, soup) -> list:
                         data_enviado = date_match.group(1)
                     # Remove boilerplate text
                     enviado_por_clean = re.sub(r"^Enviado por ", "", enviado_por_clean)
-                    enviado_por_clean = re.sub(
-                        r" em \d{2}/\d{2}/\d{4}$", "", enviado_por_clean
-                    )
+                    enviado_por_clean = re.sub(r" em \d{2}/\d{2}/\d{4}$", "", enviado_por_clean)
 
                 # Extract date from recebido_por text and clean it
                 recebido_por_clean = recebido_raw
                 if recebido_raw is not None:
                     recebido_por_clean = spider.clean_text(recebido_raw)
                     # Extract date from "Recebido por X em DD/MM/YYYY" format
-                    date_match = re.search(
-                        r"em (\d{2}/\d{2}/\d{4})", recebido_por_clean
-                    )
+                    date_match = re.search(r"em (\d{2}/\d{2}/\d{4})", recebido_por_clean)
                     if date_match and data_recebido is None:
                         data_recebido = date_match.group(1)
                     # Remove boilerplate text
-                    recebido_por_clean = re.sub(
-                        r"^Recebido por ", "", recebido_por_clean
-                    )
-                    recebido_por_clean = re.sub(
-                        r" em \d{2}/\d{2}/\d{4}$", "", recebido_por_clean
-                    )
+                    recebido_por_clean = re.sub(r"^Recebido por ", "", recebido_por_clean)
+                    recebido_por_clean = re.sub(r" em \d{2}/\d{2}/\d{4}$", "", recebido_por_clean)
 
                 # Clean guia - remove extra text, keep only number
                 if guia is not None:
@@ -643,9 +600,7 @@ def extract_peticoes(spider, driver: WebDriver, soup) -> list:
                     # Extract date and organization from "04/05/1994 00:00:00 por DIVISAO DE PROCESSOS ORIGINARIOS"
                     recebido_parts = recebido.split(" por ")
                     if len(recebido_parts) == 2:
-                        recebido_data = recebido_parts[
-                            0
-                        ].strip()  # "04/05/1994 00:00:00"
+                        recebido_data = recebido_parts[0].strip()  # "04/05/1994 00:00:00"
                         recebido_por = recebido_parts[
                             1
                         ].strip()  # "DIVISAO DE PROCESSOS ORIGINARIOS"
@@ -689,18 +644,10 @@ def extract_recursos(spider, driver: WebDriver, soup) -> list:
                 # Check if this andamento has a julgador badge (indicating a decision/recurso)
                 if "andamento-julgador badge bg-info" in html:
                     # Extract recurso data
-                    data_element = andamento.find_element(
-                        By.CLASS_NAME, "andamento-data"
-                    )
-                    nome_element = andamento.find_element(
-                        By.CLASS_NAME, "andamento-nome"
-                    )
-                    julgador_element = andamento.find_element(
-                        By.CLASS_NAME, "andamento-julgador"
-                    )
-                    complemento_element = andamento.find_element(
-                        By.CLASS_NAME, "col-md-9"
-                    )
+                    data_element = andamento.find_element(By.CLASS_NAME, "andamento-data")
+                    nome_element = andamento.find_element(By.CLASS_NAME, "andamento-nome")
+                    julgador_element = andamento.find_element(By.CLASS_NAME, "andamento-julgador")
+                    complemento_element = andamento.find_element(By.CLASS_NAME, "col-md-9")
 
                     # Try to extract autor from complemento or other elements
                     autor = None
@@ -777,12 +724,8 @@ def extract_pautas(spider, driver: WebDriver, soup) -> list:
                 # Check if this andamento is a pauta (has "pauta" in the name)
                 if "pauta" in nome_text:
                     # Extract pauta data
-                    data_element = andamento.find_element(
-                        By.CLASS_NAME, "andamento-data"
-                    )
-                    complemento_element = andamento.find_element(
-                        By.CLASS_NAME, "col-md-9"
-                    )
+                    data_element = andamento.find_element(By.CLASS_NAME, "andamento-data")
+                    complemento_element = andamento.find_element(By.CLASS_NAME, "col-md-9")
 
                     # Try to extract relator from complemento or other elements
                     relator = None
@@ -848,9 +791,7 @@ def extract_sessao(spider, driver: WebDriver, soup) -> dict:
             pass
 
         try:
-            tipo_element = sessao_info.find_element(
-                By.CLASS_NAME, "processo-detalhes-bold"
-            )
+            tipo_element = sessao_info.find_element(By.CLASS_NAME, "processo-detalhes-bold")
             sessao_data["tipo"] = spider.clean_text(tipo_element.text)
         except Exception:
             pass

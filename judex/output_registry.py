@@ -40,9 +40,7 @@ class OutputFormatRegistry:
         pipelines = {}
 
         # Only configure pipelines for requested formats
-        formats_to_check = (
-            requested_formats if requested_formats else cls._formats.keys()
-        )
+        formats_to_check = requested_formats if requested_formats else cls._formats.keys()
 
         for format_name in formats_to_check:
             config = cls._formats.get(format_name)
@@ -141,8 +139,8 @@ OutputFormatRegistry.register_format(
     {
         "format": "sql",
         "extension": "db",
-        "use_feeds": False,  # Uses custom pipeline
         "pipeline": "judex.pipelines.DatabasePipeline",
         "priority": 300,
+        "extra_config": {},
     },
 )

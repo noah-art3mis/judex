@@ -5,6 +5,7 @@ Test script to scrape one processo, find it in database, and compare results.
 
 import argparse
 import json
+import os
 import sqlite3
 import subprocess
 import tempfile
@@ -82,12 +83,8 @@ def get_database_processo(db_path: str, incidente: int) -> Dict[str, Any]:
                     )
                     rows = cursor.fetchall()
                     if rows:
-                        table_columns = [
-                            description[0] for description in cursor.description
-                        ]
-                        processo_data[table] = [
-                            dict(zip(table_columns, row)) for row in rows
-                        ]
+                        table_columns = [description[0] for description in cursor.description]
+                        processo_data[table] = [dict(zip(table_columns, row)) for row in rows]
                     else:
                         processo_data[table] = []
                 except sqlite3.OperationalError:
@@ -126,9 +123,7 @@ def load_scraped_json(output_path: str, classe: str) -> Dict[str, Any]:
         return {}
 
 
-def compare_data(
-    scraped_data: Dict[str, Any], db_data: Dict[str, Any]
-) -> Dict[str, Any]:
+def compare_data(scraped_data: Dict[str, Any], db_data: Dict[str, Any]) -> Dict[str, Any]:
     """Compare scraped data with database data"""
     comparison = {
         "matches": {},
@@ -213,21 +208,17 @@ def print_comparison_report(comparison: Dict[str, Any], incidente: int):
         if table.endswith("_count"):
             table_name = table.replace("_count", "")
             status = "✅" if counts["match"] else "❌"
-            print(
-                f"  {status} {table_name}: Scraped={counts['scraped']}, DB={counts['database']}"
-            )
+            print(f"  {status} {table_name}: Scraped={counts['scraped']}, DB={counts['database']}")
 
 
 def main():
     """Main test function"""
-    parser = argparse.ArgumentParser(
-        description="Compare scraped data with database data"
-    )
+    parser = argparse.ArgumentParser(description="Compare scraped data with database data")
     parser.add_argument("classe", help="Classe do processo (e.g. ADI)")
     parser.add_argument("incidente", type=int, help="Número do incidente")
     args = parser.parse_args()
 
-    db_path = "/home/noah-art3mis/projects/lexicon/judex.db"
+    db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "judex.db")
 
     print("🧪 TESTING SCRAPER vs DATABASE COMPARISON")
     print(f"📋 Target: {args.classe} {args.incidente}")

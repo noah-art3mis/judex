@@ -32,9 +32,7 @@ class TestOverwriteCLIOption:
             mock_scraper_class.return_value = mock_scraper
 
             # Test with overwrite option (when implemented)
-            result = self.runner.invoke(
-                app, ["scrape", "-c", "ADI", "-p", "1", "-s", "json", "--overwrite"]
-            )
+            self.runner.invoke(app, ["scrape", "-c", "ADI", "-p", "1", "-s", "json", "--overwrite"])
 
             # This test will fail until we add the --overwrite option
             # assert result.exit_code == 0
@@ -48,9 +46,7 @@ class TestOverwriteCLIOption:
             mock_scraper = MagicMock()
             mock_scraper_class.return_value = mock_scraper
 
-            result = self.runner.invoke(
-                app, ["scrape", "-c", "ADI", "-p", "1", "-s", "json"]
-            )
+            self.runner.invoke(app, ["scrape", "-c", "ADI", "-p", "1", "-s", "json"])
 
             # This test will work once we add the overwrite parameter
             # assert result.exit_code == 0
@@ -61,7 +57,7 @@ class TestOverwriteCLIOption:
     def test_overwrite_affects_output_registry(self):
         """Test that overwrite option affects output registry configuration"""
         # This test will fail initially - we need to implement the logic
-        scraper = JudexScraper(
+        JudexScraper(
             classe="ADI",
             processos="[1]",
             output_path="test_output",
@@ -76,7 +72,7 @@ class TestOverwriteCLIOption:
     def test_overwrite_false_creates_append_behavior(self):
         """Test that overwrite=False creates append behavior"""
         # This test will fail initially - we need to implement the logic
-        scraper = JudexScraper(
+        JudexScraper(
             classe="ADI",
             processos="[1]",
             output_path="test_output",
@@ -92,42 +88,20 @@ class TestOverwriteCLIOption:
         """Test that output registry uses the overwrite setting from CLI"""
         from judex.output_registry import OutputFormatRegistry
 
-        # Test with overwrite=True (when implemented)
-        # feeds_config = OutputFormatRegistry.configure_feeds(
-        #     "test_output", "ADI", None, ["json"], None, overwrite=True
-        # )
-        # Verify that the feeds configuration includes overwrite=True (when implemented)
-        # assert feeds_config is not None
-        # assert len(feeds_config) > 0
-        # Check that at least one feed has overwrite=True (when implemented)
-        # for file_path, config in feeds_config.items():
-        #     assert config.get("overwrite") is True
-        # For now, just test that the registry works
+        # Test that the registry works
         assert OutputFormatRegistry is not None
 
     def test_output_registry_uses_append_when_overwrite_false(self):
         """Test that output registry uses append when overwrite=False"""
         from judex.output_registry import OutputFormatRegistry
 
-        # Test with overwrite=False (when implemented)
-        # feeds_config = OutputFormatRegistry.configure_feeds(
-        #     "test_output", "ADI", None, ["json"], None, overwrite=False
-        # )
-        # Verify that the feeds configuration includes overwrite=False (when implemented)
-        # assert feeds_config is not None
-        # assert len(feeds_config) > 0
-        # Check that at least one feed has overwrite=False (when implemented)
-        # for file_path, config in feeds_config.items():
-        #     assert config.get("overwrite") is False
-        # For now, just test that the registry works
+        # Test that the registry works
         assert OutputFormatRegistry is not None
 
     def test_json_without_overwrite_raises_error(self):
         """Test that JSON output without --overwrite flag raises an error"""
         # This test will be implemented when we add the overwrite validation
-        result = self.runner.invoke(
-            app, ["scrape", "-c", "ADI", "-p", "1", "-s", "json"]
-        )
+        self.runner.invoke(app, ["scrape", "-c", "ADI", "-p", "1", "-s", "json"])
 
         # This test will fail until we add the overwrite validation
         # assert result.exit_code != 0
@@ -138,9 +112,7 @@ class TestOverwriteCLIOption:
         with patch("main.JudexScraper") as mock_scraper:
             mock_scraper.return_value.scrape.return_value = None
 
-            result = self.runner.invoke(
-                app, ["scrape", "-c", "ADI", "-p", "1", "-s", "json", "--overwrite"]
-            )
+            self.runner.invoke(app, ["scrape", "-c", "ADI", "-p", "1", "-s", "json", "--overwrite"])
 
             # This test will work once we add the overwrite option
             # assert result.exit_code == 0
@@ -150,9 +122,7 @@ class TestOverwriteCLIOption:
         with patch("main.JudexScraper") as mock_scraper:
             mock_scraper.return_value.scrape.return_value = None
 
-            result = self.runner.invoke(
-                app, ["scrape", "-c", "ADI", "-p", "1", "-s", "csv"]
-            )
+            self.runner.invoke(app, ["scrape", "-c", "ADI", "-p", "1", "-s", "csv"])
 
             # This test will work once we add the overwrite option
             # assert result.exit_code == 0
@@ -162,9 +132,7 @@ class TestOverwriteCLIOption:
         with patch("main.JudexScraper") as mock_scraper:
             mock_scraper.return_value.scrape.return_value = None
 
-            result = self.runner.invoke(
-                app, ["scrape", "-c", "ADI", "-p", "1", "-s", "sql"]
-            )
+            self.runner.invoke(app, ["scrape", "-c", "ADI", "-p", "1", "-s", "sql"])
 
             # This test will work once we add the overwrite option
             # assert result.exit_code == 0
@@ -172,9 +140,7 @@ class TestOverwriteCLIOption:
     def test_mixed_output_json_without_overwrite_raises_error(self):
         """Test that mixed output with JSON without --overwrite raises error"""
         # This test will be implemented when we add the overwrite validation
-        result = self.runner.invoke(
-            app, ["scrape", "-c", "ADI", "-p", "1", "-s", "json", "csv"]
-        )
+        self.runner.invoke(app, ["scrape", "-c", "ADI", "-p", "1", "-s", "json", "csv"])
 
         # This test will fail until we add the overwrite validation
         # assert result.exit_code != 0

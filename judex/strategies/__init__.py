@@ -3,7 +3,7 @@ Spider strategy pattern for judex
 """
 
 from abc import ABC, abstractmethod
-from typing import Any, Dict, List, Optional
+from typing import Dict, List
 
 from scrapy.spiders import Spider
 
@@ -98,9 +98,7 @@ class SpiderStrategyFactory:
         """Get a spider strategy by name"""
         if strategy_name not in cls._strategies:
             available = ", ".join(cls._strategies.keys())
-            raise ValueError(
-                f"Unknown spider strategy: {strategy_name}. Available: {available}"
-            )
+            raise ValueError(f"Unknown spider strategy: {strategy_name}. Available: {available}")
 
         return cls._strategies[strategy_name]
 

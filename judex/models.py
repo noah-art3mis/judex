@@ -204,6 +204,7 @@ class STFCaseModel(BaseModel):
     )
 
     @field_validator("classe", mode="before")
+    @classmethod
     def validate_classe(cls, v):
         if isinstance(v, str):
             try:
@@ -215,6 +216,7 @@ class STFCaseModel(BaseModel):
         return v
 
     @field_validator("tipo_processo", mode="before")
+    @classmethod
     def validate_tipo_processo(cls, v):
         if isinstance(v, str):
             try:
@@ -225,6 +227,7 @@ class STFCaseModel(BaseModel):
         return v
 
     @field_validator("liminar", mode="before")
+    @classmethod
     def validate_liminar(cls, v):
         # Convert list to int (0 or 1) for database compatibility
         if isinstance(v, list):
@@ -236,6 +239,7 @@ class STFCaseModel(BaseModel):
         return v
 
     @field_validator("assuntos", mode="before")
+    @classmethod
     def validate_assuntos(cls, v):
         # Convert list to JSON string for database compatibility
         if isinstance(v, list):
@@ -245,6 +249,7 @@ class STFCaseModel(BaseModel):
         return v
 
     @field_validator("partes", mode="before")
+    @classmethod
     def validate_partes(cls, v):
         if isinstance(v, list):
             # Handle field name mapping from '_index' to 'index'
@@ -253,13 +258,12 @@ class STFCaseModel(BaseModel):
                 if isinstance(item, dict) and "_index" in item:
                     item = item.copy()
                     item["index"] = item.pop("_index")
-                processed_items.append(
-                    Parte(**item) if isinstance(item, dict) else item
-                )
+                processed_items.append(Parte(**item) if isinstance(item, dict) else item)
             return processed_items
         return v
 
     @field_validator("andamentos", mode="before")
+    @classmethod
     def validate_andamentos(cls, v):
         if isinstance(v, list):
             # Handle field name mapping from 'index' to 'index_num'
@@ -268,13 +272,12 @@ class STFCaseModel(BaseModel):
                 if isinstance(item, dict) and "index" in item:
                     item = item.copy()
                     item["index_num"] = item.pop("index")
-                processed_items.append(
-                    Andamento(**item) if isinstance(item, dict) else item
-                )
+                processed_items.append(Andamento(**item) if isinstance(item, dict) else item)
             return processed_items
         return v
 
     @field_validator("decisoes", mode="before")
+    @classmethod
     def validate_decisoes(cls, v):
         if isinstance(v, list):
             # Handle field name mapping from 'index' to 'index_num'
@@ -283,13 +286,12 @@ class STFCaseModel(BaseModel):
                 if isinstance(item, dict) and "index" in item:
                     item = item.copy()
                     item["index_num"] = item.pop("index")
-                processed_items.append(
-                    Decisao(**item) if isinstance(item, dict) else item
-                )
+                processed_items.append(Decisao(**item) if isinstance(item, dict) else item)
             return processed_items
         return v
 
     @field_validator("deslocamentos", mode="before")
+    @classmethod
     def validate_deslocamentos(cls, v):
         if isinstance(v, list):
             # Handle field name mapping from 'index' to 'index_num'
@@ -298,13 +300,12 @@ class STFCaseModel(BaseModel):
                 if isinstance(item, dict) and "index" in item:
                     item = item.copy()
                     item["index_num"] = item.pop("index")
-                processed_items.append(
-                    Deslocamento(**item) if isinstance(item, dict) else item
-                )
+                processed_items.append(Deslocamento(**item) if isinstance(item, dict) else item)
             return processed_items
         return v
 
     @field_validator("peticoes", mode="before")
+    @classmethod
     def validate_peticoes(cls, v):
         if isinstance(v, list):
             # Handle field name mapping from 'index' to 'index_num'
@@ -313,13 +314,12 @@ class STFCaseModel(BaseModel):
                 if isinstance(item, dict) and "index" in item:
                     item = item.copy()
                     item["index_num"] = item.pop("index")
-                processed_items.append(
-                    Peticao(**item) if isinstance(item, dict) else item
-                )
+                processed_items.append(Peticao(**item) if isinstance(item, dict) else item)
             return processed_items
         return v
 
     @field_validator("recursos", mode="before")
+    @classmethod
     def validate_recursos(cls, v):
         if isinstance(v, list):
             # Handle field name mapping from 'index' to 'index_num'
@@ -328,13 +328,12 @@ class STFCaseModel(BaseModel):
                 if isinstance(item, dict) and "index" in item:
                     item = item.copy()
                     item["index_num"] = item.pop("index")
-                processed_items.append(
-                    Recurso(**item) if isinstance(item, dict) else item
-                )
+                processed_items.append(Recurso(**item) if isinstance(item, dict) else item)
             return processed_items
         return v
 
     @field_validator("pautas", mode="before")
+    @classmethod
     def validate_pautas(cls, v):
         if isinstance(v, list):
             # Handle field name mapping from 'index' to 'index_num'
@@ -343,13 +342,12 @@ class STFCaseModel(BaseModel):
                 if isinstance(item, dict) and "index" in item:
                     item = item.copy()
                     item["index_num"] = item.pop("index")
-                processed_items.append(
-                    Pauta(**item) if isinstance(item, dict) else item
-                )
+                processed_items.append(Pauta(**item) if isinstance(item, dict) else item)
             return processed_items
         return v
 
     @field_validator("sessao", mode="before")
+    @classmethod
     def validate_sessao(cls, v):
         if isinstance(v, dict):
             return Sessao(**v)

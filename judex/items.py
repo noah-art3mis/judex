@@ -12,6 +12,8 @@ class STFCaseItem(scrapy.Item):
     liminar = scrapy.Field()
     tipo_processo = scrapy.Field()
     relator = scrapy.Field()
+    # todo meio fisico ou eletronico
+    # todo publicidade publico ou secreto
 
     # detalhes do processo
     origem = scrapy.Field()

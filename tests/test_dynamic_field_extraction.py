@@ -97,42 +97,33 @@ class TestDynamicFieldExtraction:
         # Test that STFCaseItem has all expected fields
         fields = list(STFCaseItem.fields.keys())
         expected_fields = [
-            "processo_id",
-            "incidente",
-            "numero_unico",
-            "classe",
-            "liminar",
-            "tipo_processo",
-            "relator",
-            "origem",
-            "data_protocolo",
-            "origem_orgao",
-            "autor1",
-            "assuntos",
-            "partes",
             "andamentos",
+            "assuntos",
+            "autor1",
+            "classe",
+            "data_protocolo",
             "decisoes",
             "deslocamentos",
-            "peticoes",
-            "recursos",
-            "pautas",
+            "extraido",
+            "html",
+            "incidente",
             "informacoes",
+            "liminar",
+            "numero_unico",
+            "origem",
+            "origem_orgao",
+            "partes",
+            "pautas",
+            "peticoes",
+            "processo_id",
+            "recursos",
+            "relator",
             "sessao",
             "status",
-            "html",
-            "extraido",
+            "tipo_processo",
         ]
 
         assert fields == expected_fields
-
-    def test_sql_format_does_not_use_feeds(self):
-        """Test that SQL format doesn't use FEEDS (no field ordering needed)"""
-        sql_config = OutputFormatRegistry.get_format("sql")
-
-        assert sql_config is not None
-        assert sql_config.get("use_feeds", True) is False
-        assert "pipeline" in sql_config
-        assert sql_config["pipeline"] == "judex.pipelines.DatabasePipeline"
 
     def test_all_formats_have_required_config(self):
         """Test that all formats have the required configuration"""
@@ -162,7 +153,7 @@ class TestDynamicFieldExtraction:
     def test_field_extraction_handles_empty_item(self):
         """Test that field extraction works even with empty item"""
         # Create a minimal item to test field extraction
-        item = STFCaseItem()
+        STFCaseItem()
 
         # The item should have all the fields defined in the class
         expected_fields = list(STFCaseItem.fields.keys())

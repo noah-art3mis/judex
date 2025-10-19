@@ -32,7 +32,7 @@ DOWNLOADER_MIDDLEWARES = {
 ITEM_PIPELINES = {
     "judex.pydantic_pipeline.PydanticValidationPipeline": 200,
     # "judex.pipelines.DatabasePipeline": 300,  # SQLite database (enabled dynamically)
-    # JSON and CSV handled by FEEDS configuration
+    # JSON, CSV, and JSONL handled by custom pipelines
 }
 
 JSON_OUTPUT_FILE = "data.json"

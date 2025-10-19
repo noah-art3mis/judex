@@ -83,16 +83,18 @@ class StfSpider(scrapy.Spider):
         try:
             self.numeros = json.loads(processos)
         except Exception as e:
-            raise ValueError(
-                "processos must be a JSON list, e.g., '[4916, 4917]'"
-            ) from e
+            raise ValueError("processos must be a JSON list, e.g., '[4916, 4917]'") from e
 
-    async def start(self) -> AsyncGenerator[scrapy.Request, None]:
-        base = "https://portal.stf.jus.br"
+    def _filter_processos_by_database(self, db_path: str) -> tuple[list, int]:
+        """
+        Filter process numbers based on database checks for existing and failed records.
 
-        # Get database path from settings
-        db_path = self.settings.get("DATABASE_PATH")
+        Args:
+            db_path: Path to the database file
 
+        Returns:
+            Tuple of (filtered_processos, skipped_count)
+        """
         # Get existing and failed processo IDs from database
         existing_ids = set()
         failed_ids = set()
@@ -103,17 +105,11 @@ class StfSpider(scrapy.Spider):
                     existing_ids = get_existing_processo_ids(
                         db_path, self.classe, self.max_age_hours
                     )
-                    self.logger.info(
-                        f"Found {len(existing_ids)} existing processo IDs to skip"
-                    )
+                    self.logger.info(f"Found {len(existing_ids)} existing processo IDs to skip")
 
                 if self.retry_failed:
-                    failed_ids = get_failed_processo_ids(
-                        db_path, self.classe, self.max_age_hours
-                    )
-                    self.logger.info(
-                        f"Found {len(failed_ids)} failed processo IDs to retry"
-                    )
+                    failed_ids = get_failed_processo_ids(db_path, self.classe, self.max_age_hours)
+                    self.logger.info(f"Found {len(failed_ids)} failed processo IDs to retry")
 
             except Exception as e:
                 self.logger.warning(f"Could not check database for existing data: {e}")
@@ -138,9 +134,22 @@ class StfSpider(scrapy.Spider):
             f"Scraping {len(numeros_to_scrape)} out of {len(self.numeros)} processos (skipped {skipped_count})"
         )
 
+        return numeros_to_scrape, skipped_count
+
+    async def start(self) -> AsyncGenerator[scrapy.Request, None]:
+        base = "https://portal.stf.jus.br"
+
+        # Get database path from settings
+        db_path = self.settings.get("DATABASE_PATH")
+
+        # Filter process numbers based on database checks
+        numeros_to_scrape, skipped_count = self._filter_processos_by_database(db_path)
+
         # Generate requests only for numeros that need scraping
         for numero in numeros_to_scrape:
-            url = f"{base}/processos/listarProcessos.asp?classe={self.classe}&numeroProcesso={numero}"
+            url = (
+                f"{base}/processos/listarProcessos.asp?classe={self.classe}&numeroProcesso={numero}"
+            )
 
             yield SeleniumRequest(
                 url=url,
@@ -219,9 +228,7 @@ class StfSpider(scrapy.Spider):
         try:
             Wait = WebDriverWait(driver, 10)
             Wait.until(
-                lambda d: d.find_element(By.ID, "resumo-partes")
-                .get_attribute("innerHTML")
-                .strip()
+                lambda d: d.find_element(By.ID, "resumo-partes").get_attribute("innerHTML").strip()
                 != ""
                 or d.find_element(By.ID, "resumo-partes")
                 .get_attribute("innerHTML")
@@ -245,7 +252,7 @@ class StfSpider(scrapy.Spider):
         # Track total extraction time
         total_extraction_time = time.time() - extraction_start_time
         self.crawler.stats.inc_value("extraction/completed")
-        self.crawler.stats.set_value("extraction/total_duration", total_extraction_time)
+        self.crawler.stats.set_value("extraction/total_duration", round(total_extraction_time, 2))
 
         # Log total timing
         self.logger.info(f"Total extraction time: {total_extraction_time:.3f}s")

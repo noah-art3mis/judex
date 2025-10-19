@@ -32,7 +32,7 @@ class TestMinifyCLIOption:
             mock_scraper_class.return_value = mock_scraper
 
             # Test with minify-html option (when implemented)
-            result = self.runner.invoke(
+            self.runner.invoke(
                 app, ["scrape", "-c", "ADI", "-p", "1", "-s", "json", "--minify-html"]
             )
 
@@ -48,7 +48,7 @@ class TestMinifyCLIOption:
             mock_scraper = MagicMock()
             mock_scraper_class.return_value = mock_scraper
 
-            result = self.runner.invoke(
+            self.runner.invoke(
                 app, ["scrape", "-c", "ADI", "-p", "1", "-s", "json"]
             )
 
@@ -61,7 +61,7 @@ class TestMinifyCLIOption:
     def test_minify_html_affects_spider_behavior(self):
         """Test that minify_html option affects spider HTML processing"""
         # This test will fail initially - we need to implement the logic
-        scraper = JudexScraper(
+        JudexScraper(
             classe="ADI",
             processos="[1]",
             output_path="test_output",

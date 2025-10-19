@@ -25,7 +25,7 @@ class TestOutputFileCreation:
             # Ensure directory doesn't exist
             assert not os.path.exists(output_path)
 
-            scraper = JudexScraper(
+            JudexScraper(
                 classe="ADI",
                 processos="[123, 456]",
                 salvar_como=["json", "csv", "sql"],
@@ -41,7 +41,7 @@ class TestOutputFileCreation:
         with tempfile.TemporaryDirectory() as temp_dir:
             output_path = os.path.join(temp_dir, "test_output")
 
-            scraper = JudexScraper(
+            JudexScraper(
                 classe="ADPF",
                 processos="[789]",
                 salvar_como=["json", "csv", "sql"],
@@ -49,9 +49,9 @@ class TestOutputFileCreation:
             )
 
             # Check expected file paths
-            expected_json = os.path.join(output_path, "ADPF_cases.json")
-            expected_csv = os.path.join(output_path, "ADPF_processos.csv")
-            expected_db = os.path.join(output_path, "judex.db")
+            os.path.join(output_path, "ADPF_cases.json")
+            os.path.join(output_path, "ADPF_processos.csv")
+            os.path.join(output_path, "judex.db")
 
             # These files should be created when scraping runs
             # We'll test the file creation in integration tests
@@ -89,16 +89,14 @@ class TestSQLOutputPersistence:
             pipeline = DatabasePipeline.from_crawler(mock_crawler)
 
             assert pipeline.db_path == db_path
-            mock_crawler.settings.get.assert_called_once_with(
-                "DATABASE_PATH", "judex.db"
-            )
+            mock_crawler.settings.get.assert_called_once_with("DATABASE_PATH", "judex.db")
 
     def test_database_file_creation(self):
         """Test that database file is created with correct schema"""
         with tempfile.TemporaryDirectory() as temp_dir:
             db_path = os.path.join(temp_dir, "test_cases.db")
 
-            pipeline = DatabasePipeline(db_path)
+            DatabasePipeline(db_path)
 
             # Check database file exists
             assert os.path.exists(db_path)
@@ -167,16 +165,12 @@ class TestSQLOutputPersistence:
             # Check that only one record exists (replaced)
             with sqlite3.connect(db_path) as conn:
                 cursor = conn.cursor()
-                cursor.execute(
-                    "SELECT COUNT(*) FROM processos WHERE numero_unico = '123'"
-                )
+                cursor.execute("SELECT COUNT(*) FROM processos WHERE numero_unico = '123'")
                 count = cursor.fetchone()[0]
                 assert count == 1
 
                 # Check that the updated data is there
-                cursor.execute(
-                    "SELECT relator, liminar FROM processos WHERE numero_unico = '123'"
-                )
+                cursor.execute("SELECT relator, liminar FROM processos WHERE numero_unico = '123'")
                 row = cursor.fetchone()
                 assert row[0] == "Updated Judge"
                 assert row[1] == 1
@@ -188,7 +182,7 @@ class TestOutputFileAppending:
     def test_json_should_append_instead_of_overwrite(self):
         """Test that JSON files should append new data instead of overwriting"""
         with tempfile.TemporaryDirectory() as temp_dir:
-            output_file = os.path.join(temp_dir, "test_cases.json")
+            os.path.join(temp_dir, "test_cases.json")
 
             # JSON pipeline tests removed - pipeline deleted
             # pipeline1 = JSONPipeline(output_file)
@@ -211,7 +205,7 @@ class TestOutputFileAppending:
     def test_csv_should_append_instead_of_overwrite(self):
         """Test that CSV files should append new data instead of overwriting"""
         with tempfile.TemporaryDirectory() as temp_dir:
-            output_file = os.path.join(temp_dir, "test_processos.csv")
+            os.path.join(temp_dir, "test_processos.csv")
 
             # CSV pipeline tests removed - pipeline deleted
             # pipeline1 = CSVPipeline(output_file)
@@ -289,17 +283,13 @@ class TestOutputFileAppending:
                 assert count == 2
 
                 # Check that the updated record has new data
-                cursor.execute(
-                    "SELECT relator, liminar FROM processos WHERE numero_unico = '123'"
-                )
+                cursor.execute("SELECT relator, liminar FROM processos WHERE numero_unico = '123'")
                 row = cursor.fetchone()
                 assert row[0] == "Updated Judge A"
                 assert row[1] == 1
 
                 # Check that the other record is unchanged
-                cursor.execute(
-                    "SELECT relator FROM processos WHERE numero_unico = '456'"
-                )
+                cursor.execute("SELECT relator FROM processos WHERE numero_unico = '456'")
                 row = cursor.fetchone()
                 assert row[0] == "Judge B"
 
@@ -313,7 +303,7 @@ class TestOutputFileIntegration:
             output_path = os.path.join(temp_dir, "integration_test")
 
             # Test with all persistence types
-            scraper = JudexScraper(
+            JudexScraper(
                 classe="ADI",
                 processos="[123, 456]",
                 salvar_como=["json", "csv", "sql"],
@@ -324,7 +314,7 @@ class TestOutputFileIntegration:
             assert os.path.exists(output_path)
 
             # Expected file paths
-            expected_files = [
+            [
                 os.path.join(output_path, "ADI_cases.json"),
                 os.path.join(output_path, "ADI_processos.csv"),
                 os.path.join(output_path, "judex.db"),
@@ -426,55 +416,6 @@ class TestJSONLinesFormatRegistration:
         assert jsonl_config is not None
         assert jsonl_config["format"] == "jsonl"
         assert jsonl_config["extension"] == "jsonl"
-        assert jsonl_config["use_feeds"] is True
-
-    def test_jsonl_feed_configuration(self):
-        """Test that jsonl format generates correct feed configuration"""
-        with tempfile.TemporaryDirectory() as temp_dir:
-            output_path = os.path.join(temp_dir, "test_output")
-
-            feeds = OutputFormatRegistry.configure_feeds(
-                output_path=output_path,
-                classe="ADI",
-                custom_name=None,
-                requested_formats=["jsonl"],
-                process_numbers=[123, 456],
-                overwrite=False,
-            )
-
-            # Should have one feed for jsonl
-            assert len(feeds) == 1
-
-            # Check the feed path and configuration
-            feed_path = list(feeds.keys())[0]
-            assert feed_path.endswith(".jsonl")
-            assert "ADI_123_456" in feed_path
-
-            feed_config = list(feeds.values())[0]
-            assert feed_config["format"] == "jsonl"
-            assert feed_config["use_feeds"] is True
-
-    def test_jsonl_with_custom_name(self):
-        """Test jsonl format with custom filename"""
-        with tempfile.TemporaryDirectory() as temp_dir:
-            output_path = os.path.join(temp_dir, "test_output")
-
-            feeds = OutputFormatRegistry.configure_feeds(
-                output_path=output_path,
-                classe="ADI",
-                custom_name="custom_cases",
-                requested_formats=["jsonl"],
-                process_numbers=None,
-                overwrite=False,
-            )
-
-            # Should have one feed for jsonl
-            assert len(feeds) == 1
-
-            # Check the feed path includes custom name
-            feed_path = list(feeds.keys())[0]
-            assert feed_path.endswith(".jsonl")
-            assert "custom_cases" in feed_path
 
 
 class TestOutputFileAppendingImplementation:
@@ -487,7 +428,7 @@ class TestOutputFileAppendingImplementation:
         # Should be changed to "a" mode (append) with proper JSON array handling
 
         with tempfile.TemporaryDirectory() as temp_dir:
-            output_file = os.path.join(temp_dir, "test_cases.json")
+            os.path.join(temp_dir, "test_cases.json")
 
             # Current behavior (overwrite)
             # JSONPipeline removed - pipeline deleted
@@ -514,7 +455,7 @@ class TestOutputFileAppendingImplementation:
         # Should be changed to "a" mode (append) with proper header handling
 
         with tempfile.TemporaryDirectory() as temp_dir:
-            output_file = os.path.join(temp_dir, "test_processos.csv")
+            os.path.join(temp_dir, "test_processos.csv")
 
             # Current behavior (overwrite)
             # CSVPipeline removed - pipeline deleted
@@ -580,8 +521,6 @@ class TestOutputFileAppendingImplementation:
                 assert count == 1
 
                 # Check updated data
-                cursor.execute(
-                    "SELECT relator FROM processos WHERE numero_unico = '123'"
-                )
+                cursor.execute("SELECT relator FROM processos WHERE numero_unico = '123'")
                 row = cursor.fetchone()
                 assert row[0] == "Updated Judge A"
