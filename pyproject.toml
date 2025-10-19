@@ -1,6 +1,6 @@
 [project]
 name = "judex"
-version = "1.1.0"
+version = "1.1.1"
 description = "Judex Legal Case Scraper - Scrape legal cases from STF"
 authors = [{name = "Gustavo Costa", email = "gustavo@arcos.org.br"}]
 readme = "README.md"
