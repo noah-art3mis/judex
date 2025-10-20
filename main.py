@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 from typing import List, Optional
 
@@ -130,9 +131,51 @@ def scrape(
 
         scraper.scrape()
 
+        # Log saved file paths after scraping is complete
+        _log_saved_files(output_path, classe, custom_name, processo, salvar_como)
+
     except Exception as e:
         print(f"[bold red]❌ Erro: {e}[/bold red]")
         raise typer.Exit(1)
+
+
+def _log_saved_files(
+    output_path: Path,
+    classe: str,
+    custom_name: Optional[str],
+    processo: List[int],
+    salvar_como: List[str],
+) -> None:
+    """Log the paths to saved files after scraping is complete"""
+    from judex.output_registry import OutputFormatRegistry
+
+    print("\n[bold green]✅ Raspagem concluída! Arquivos salvos em:[/bold green]")
+
+    for format_name in salvar_como:
+        config = OutputFormatRegistry.get_pipeline_config(
+            format_name=format_name,
+            output_path=str(output_path),
+            classe=classe,
+            custom_name=custom_name,
+            process_numbers=processo,
+            overwrite=True,
+        )
+
+        if config and "file_path" in config:
+            file_path = config["file_path"]
+            if os.path.exists(file_path):
+                file_size = os.path.getsize(file_path)
+                print(f"[green]  📄 {file_path} ({file_size:,} bytes)[/green]")
+            else:
+                print(f"[yellow]  ⚠️  {file_path} (arquivo não encontrado)[/yellow]")
+        elif format_name == "sql":
+            # Special case for SQL - database file path
+            db_path = os.path.join(output_path, "judex.db")
+            if os.path.exists(db_path):
+                file_size = os.path.getsize(db_path) / (1024 * 1024)  # Convert bytes to MB
+                print(f"[green]  🗄️  {db_path} ({file_size:.2f} MB)[/green]")
+            else:
+                print(f"[yellow]  ⚠️  {db_path} (arquivo não encontrado)[/yellow]")
 
 
 if __name__ == "__main__":

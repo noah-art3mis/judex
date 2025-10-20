@@ -40,9 +40,9 @@ def _assert_json_equal(expected, actual, path: str = "") -> None:
 @pytest.mark.parametrize(
     "classe, processo, ground_truth_filename",
     [
+        ("RE", 1234567, "tests/ground_truth/RE_1234567.json"),
         ("AI", 772309, "tests/ground_truth/AI_772309.json"),
         ("MI", 12, "tests/ground_truth/MI_12.json"),
-        ("RE", 1234567, "tests/ground_truth/RE_1234567.json"),
     ],
 )
 def test_cli_output_matches_ground_truth(classe, processo, ground_truth_filename):

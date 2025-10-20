@@ -7,7 +7,6 @@
         "meio": "ELETRONICO",
         "publicidade": "PUBLICO",
         "badges": ["Maior de 60 anos ou portador de doença grave"],
-        "liminar": 0,
         "assuntos": [
             "DIREITO PREVIDENCIÁRIO | Benefícios em Espécie",
             "DIREITO PREVIDENCIÁRIO | RMI - Renda Mensal Inicial, Reajustes e Revisões Específicas",
@@ -17,7 +16,7 @@
         ],
         "data_protocolo": "20/09/2019",
         "orgao_origem": "TRIBUNAL REGIONAL FEDERAL DA 4ª REGIÃO",
-        "origem": "RIO GRANDE DO SUL",
+        "origem": "RS - RIO GRANDE DO SUL",
         "numero_origem": [50033962720104047201],
         "volumes": 0,
         "folhas": null,
@@ -180,7 +179,7 @@
                 "index_num": 10,
                 "guia": "38828/2019",
                 "recebido_por": "TRIBUNAL REGIONAL FEDERAL DA 4ª REGIÃO",
-                "data_recebido": "22/10/2019",
+                "data_recebido": null,
                 "enviado_por": "GERÊNCIA DE RECURSOS EXTRAORDINÁRIOS",
                 "data_enviado": "22/10/2019"
             },
