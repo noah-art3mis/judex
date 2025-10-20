@@ -160,6 +160,9 @@ def extract_relator(soup) -> str | None:
             # Remove "MIN." prefix if present
             if relator.startswith("MIN. "):
                 relator = relator[5:]  # Remove "MIN. " (5 characters)
+            # Normalize empty strings to None
+            if not relator:
+                return None
             return relator
     return None
 
@@ -318,7 +321,7 @@ def extract_data_protocolo(spider, driver: WebDriver, soup) -> str | None:
 
 @track_extraction_timing
 @handle_extraction_errors(default_value=None, log_errors=True)
-def extract_origem_orgao(spider, driver: WebDriver, soup) -> str | None:
+def extract_orgao_origem(spider, driver: WebDriver, soup) -> str | None:
     """Extract orgao_origem using XPath from backup"""
     try:
         orgao_html = spider.get_element_by_xpath(

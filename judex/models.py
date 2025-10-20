@@ -178,7 +178,7 @@ class STFCaseModel(BaseModel):
     # Process details
     origem: str | None = None
     data_protocolo: str | None = None
-    origem_orgao: str | None = None
+    orgao_origem: str | None = None
     primeiro_autor: str | None = None
     assuntos: list[str] | None = None
 

@@ -26,7 +26,7 @@ def init_database(db_path: str):
                 liminar INT CHECK (liminar IN (0, 1)),
                 relator TEXT,
                 origem TEXT,
-                origem_orgao TEXT,
+                orgao_origem TEXT,
                 data_protocolo TEXT,
                 primeiro_autor TEXT,
                 assuntos TEXT, -- Keep as JSON for now
@@ -214,7 +214,7 @@ def processo_write(db_path: str, processo_data: dict[str, Any]) -> bool:
                 """
                 INSERT OR REPLACE INTO processos (
                     numero_unico, incidente, processo_id, classe, tipo_processo, liminar, relator,
-                    origem, origem_orgao, data_protocolo, primeiro_autor, assuntos,
+                    origem, orgao_origem, data_protocolo, primeiro_autor, assuntos,
                     html, error_message, updated_at
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
@@ -227,7 +227,7 @@ def processo_write(db_path: str, processo_data: dict[str, Any]) -> bool:
                     processo_data.get("liminar"),
                     processo_data.get("relator"),
                     processo_data.get("origem"),
-                    processo_data.get("origem_orgao"),
+                    processo_data.get("orgao_origem"),
                     processo_data.get("data_protocolo"),
                     processo_data.get("primeiro_autor"),
                     json.dumps(processo_data.get("assuntos"), ensure_ascii=False),

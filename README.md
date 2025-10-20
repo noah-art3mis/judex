@@ -112,7 +112,7 @@ class Processo:
     liminar: bool
     relator: str
     origem: str
-    origem_orgao: str
+    orgao_origem: str
     data_protocolo: str
     primeiro_autor: str
     assuntos: str

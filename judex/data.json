@@ -270,7 +270,7 @@
   "liminar": 1,
   "numero_unico": "0003935-39.1988.0.01.0000",
   "origem": "RO - RONDÔNIA",
-  "origem_orgao": "FÓRUM DA COMARCA DE RANCHARIA",
+  "orgao_origem": "FÓRUM DA COMARCA DE RANCHARIA",
   "partes": [
     {
       "index": 1,
@@ -601,7 +601,7 @@
   "liminar": 1,
   "numero_unico": "0003935-39.1988.0.01.0000",
   "origem": "RO - RONDÔNIA",
-  "origem_orgao": "FÓRUM DA COMARCA DE RANCHARIA",
+  "orgao_origem": "FÓRUM DA COMARCA DE RANCHARIA",
   "partes": [
     {
       "index": 1,

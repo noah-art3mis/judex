@@ -61,7 +61,7 @@ def sample_processo_data():
         "liminar": 0,
         "relator": "MIN. CÁRMEN LÚCIA",
         "origem": "GOVERNADOR DO ESTADO DO RIO DE JANEIRO",
-        "origem_orgao": "TRIBUNAL DE JUSTIÇA DO ESTADO DO RIO DE JANEIRO",
+        "orgao_origem": "TRIBUNAL DE JUSTIÇA DO ESTADO DO RIO DE JANEIRO",
         "data_protocolo": "2013-03-15T00:00:00Z",
         "primeiro_autor": "GOVERNADOR DO ESTADO DO RIO DE JANEIRO",
         "assuntos": [
@@ -306,7 +306,7 @@ class TestEdgeCases:
             "liminar": 0,
             "relator": "TEST MINISTER",
             "origem": "TEST ORIGIN",
-            "origem_orgao": "TEST ORG",
+            "orgao_origem": "TEST ORG",
             "data_protocolo": "2023-01-01T00:00:00Z",
             "primeiro_autor": "TEST AUTHOR",
             "assuntos": [],
@@ -338,7 +338,7 @@ class TestEdgeCases:
             "liminar": 0,
             "relator": "MIN. CÁRMEN LÚCIA",
             "origem": "GOVERNADOR DO ESTADO DO RIO DE JANEIRO",
-            "origem_orgao": "TRIBUNAL DE JUSTIÇA DO ESTADO DO RIO DE JANEIRO",
+            "orgao_origem": "TRIBUNAL DE JUSTIÇA DO ESTADO DO RIO DE JANEIRO",
             "data_protocolo": "2023-01-01T00:00:00Z",
             "primeiro_autor": "GOVERNADOR DO ESTADO DO RIO DE JANEIRO",
             "assuntos": [

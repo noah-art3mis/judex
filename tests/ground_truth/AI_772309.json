@@ -43,7 +43,7 @@
         ],
         "andamentos": [
             {
-                "index_num": 1,
+                "index_num": 2,
                 "data": "23/03/2018",
                 "nome": "Cancelamento de autuação",
                 "complemento": "Não consta nenhuma peça no processo.",
@@ -73,7 +73,7 @@
         ],
         "deslocamentos": [
             {
-                "index_num": 1,
+                "index_num": 3,
                 "guia": "5247/2018",
                 "recebido_por": "SEJ - ACERVO ELETRÔNICO INATIVO",
                 "data_recebido": "04/12/2018",
@@ -89,7 +89,7 @@
                 "data_enviado": "04/11/2018"
             },
             {
-                "index_num": 3,
+                "index_num": 1,
                 "guia": "1819270/2018",
                 "recebido_por": "SEÇÃO DE RECEBIMENTO E DISTRIBUIÇÃO DE RECURSOS",
                 "data_recebido": "23/03/2018",

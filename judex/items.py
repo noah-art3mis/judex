@@ -27,7 +27,7 @@ class STFCaseItem(scrapy.Item):
     liminar = scrapy.Field()
     numero_unico = scrapy.Field()
     origem = scrapy.Field()
-    origem_orgao = scrapy.Field()
+    orgao_origem = scrapy.Field()
     orgao_origem = scrapy.Field()
     numero_origem = scrapy.Field()
     meio = scrapy.Field()

@@ -350,7 +350,7 @@ class TestSTFCaseModel:
         assert case.relator is None
         assert case.origem is None
         assert case.data_protocolo is None
-        assert case.origem_orgao is None
+        assert case.orgao_origem is None
         assert case.primeiro_autor is None
         assert case.assuntos is None
         assert case.partes == []
@@ -393,7 +393,7 @@ class TestComplexValidation:
             "relator": "Ministro Silva",
             "origem": "STF",
             "data_protocolo": "2023-01-01",
-            "origem_orgao": "STF",
+            "orgao_origem": "STF",
             "primeiro_autor": "João Silva",
             "assuntos": ["Direito Constitucional", "Direito Administrativo"],
             "partes": [

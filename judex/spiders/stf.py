@@ -25,8 +25,8 @@ from judex.extract import (
     extract_meio,
     extract_numero_origem,
     extract_numero_unico,
+    extract_orgao_origem,
     extract_origem,
-    extract_origem_orgao,
     extract_partes,
     extract_pautas,
     extract_peticoes,
@@ -229,7 +229,7 @@ class StfSpider(scrapy.Spider):
         case_data["badges"] = extract_badges(self, driver, soup)
         case_data["origem"] = extract_origem(self, driver, soup)
         case_data["data_protocolo"] = extract_data_protocolo(self, driver, soup)
-        case_data["orgao_origem"] = extract_origem_orgao(self, driver, soup)
+        case_data["orgao_origem"] = extract_orgao_origem(self, driver, soup)
         case_data["numero_origem"] = extract_numero_origem(self, driver, soup)
         case_data["primeiro_autor"] = extract_primeiro_autor(self, driver, soup)
         case_data["assuntos"] = extract_assuntos(self, driver, soup)
@@ -254,7 +254,7 @@ class StfSpider(scrapy.Spider):
         # All AJAX extractions now handle their own errors and timing via decorators
         case_data["partes"] = extract_partes(self, driver, soup)
         case_data["andamentos"] = extract_andamentos(self, driver, soup)
-        case_data["decisoes"] = extract_decisoes(self, driver, soup)
+        # case_data["decisoes"] = extract_decisoes(self, driver, soup)
         case_data["deslocamentos"] = extract_deslocamentos(self, driver, soup)
         case_data["peticoes"] = extract_peticoes(self, driver, soup)
         case_data["recursos"] = extract_recursos(self, driver, soup)
