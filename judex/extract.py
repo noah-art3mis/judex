@@ -615,16 +615,21 @@ def extract_deslocamentos(spider, driver: WebDriver, soup) -> list:
                 # Clean guia - remove extra text, keep only number
                 if guia is not None:
                     guia = spider.clean_text(guia)
-                    # Remove common prefixes/suffixes
-                    guia = guia.replace("Guia: ", "").replace("Nº ", "").strip()
+                    # Remove common prefixes/suffixes (with and without colon)
+                    guia = (
+                        guia.replace("Guia: ", "")
+                        .replace("Guia ", "")
+                        .replace("Nº ", "")
+                        .strip()
+                    )
 
                 deslocamento_data = {
                     "index_num": index,
-                    "data_enviado": data_enviado,
+                    "guia": guia,
+                    "recebido_por": recebido_por_clean,
                     "data_recebido": data_recebido,
                     "enviado_por": enviado_por_clean,
-                    "recebido_por": recebido_por_clean,
-                    "guia": guia,
+                    "data_enviado": data_enviado,
                 }
                 deslocamentos_list.append(deslocamento_data)
             except Exception as e:
