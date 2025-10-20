@@ -2,63 +2,60 @@
 STF (Supremo Tribunal Federal) types and validation
 """
 
-from enum import Enum
-
 from pydantic import BaseModel, field_validator
 
+from .models import CaseType
 
-class CaseType(str, Enum):
-    """STF case types enum"""
-
-    AC = "AC"  # Ação Cível
-    ACO = "ACO"  # Ação Cível Originária
-    ADC = "ADC"  # Ação Declaratória de Constitucionalidade
-    ADI = "ADI"  # Ação Direta de Inconstitucionalidade
-    ADO = "ADO"  # Ação Direta de Inconstitucionalidade por Omissão
-    ADPF = "ADPF"  # Arguição de Descumprimento de Preceito Fundamental
-    AI = "AI"  # Ação Interlocutória
-    AImp = "AImp"  # Ação de Improbidade Administrativa
-    AO = "AO"  # Ação Originária
-    AOE = "AOE"  # Ação Originária Especial
-    AP = "AP"  # Ação Penal
-    AR = "AR"  # Ação Rescisória
-    ARE = "ARE"  # Agravo em Recurso Extraordinário
-    AS = "AS"  # Ação de Suspensão
-    CC = "CC"  # Conflito de Competência
-    Cm = "Cm"  # Comunicado
-    EI = "EI"  # Embargos Infringentes
-    EL = "EL"  # Embargos de Declaração
-    EP = "EP"  # Embargos de Petição
-    Ext = "Ext"  # Extradição
-    HC = "HC"  # Habeas Corpus
-    HD = "HD"  # Habeas Data
-    IF = "IF"  # Inquérito Federal
-    Inq = "Inq"  # Inquérito
-    MI = "MI"  # Mandado de Injunção
-    MS = "MS"  # Mandado de Segurança
-    PADM = "PADM"  # Processo Administrativo Disciplinar Militar
-    Pet = "Pet"  # Petição
-    PPE = "PPE"  # Processo de Prestação de Contas Eleitorais
-    PSV = "PSV"  # Processo de Suspensão de Vigência
-    RC = "RC"  # Recurso Cível
-    Rcl = "Rcl"  # Reclamação
-    RE = "RE"  # Recurso Extraordinário
-    RHC = "RHC"  # Recurso em Habeas Corpus
-    RHD = "RHD"  # Recurso em Habeas Data
-    RMI = "RMI"  # Recurso em Mandado de Injunção
-    RMS = "RMS"  # Recurso em Mandado de Segurança
-    RvC = "RvC"  # Recurso em Violação de Cláusula de Tratado
-    SE = "SE"  # Suspensão de Eficácia
-    SIRDR = "SIRDR"  # Suspensão de Inquérito ou Recurso com Deficiência
-    SL = "SL"  # Suspensão de Liminar
-    SS = "SS"  # Suspensão de Segurança
-    STA = "STA"  # Suspensão de Tutela Antecipada
-    STP = "STP"  # Suspensão de Tutela Provisória
-    TPA = "TPA"  # Tutela Provisória Antecipada
-
-
-# Set of valid STF case types derived from the enum
-STF_CASE_TYPES = frozenset([case_type.value for case_type in CaseType])
+# Set of valid STF case types with full names as comments
+STF_CASE_TYPES = frozenset(
+    [
+        "AC",  # Ação Cível
+        "ACO",  # Ação Cível Originária
+        "ADC",  # Ação Declaratória de Constitucionalidade
+        "ADI",  # Ação Direta de Inconstitucionalidade
+        "ADO",  # Ação Direta de Inconstitucionalidade por Omissão
+        "ADPF",  # Arguição de Descumprimento de Preceito Fundamental
+        "AI",  # Ação Interlocutória
+        "AImp",  # Ação de Improbidade Administrativa
+        "AO",  # Ação Originária
+        "AOE",  # Ação Originária Especial
+        "AP",  # Ação Penal
+        "AR",  # Ação Rescisória
+        "ARE",  # Agravo em Recurso Extraordinário
+        "AS",  # Ação de Suspensão
+        "CC",  # Conflito de Competência
+        "Cm",  # Comunicado
+        "EI",  # Embargos Infringentes
+        "EL",  # Embargos de Declaração
+        "EP",  # Embargos de Petição
+        "Ext",  # Extradição
+        "HC",  # Habeas Corpus
+        "HD",  # Habeas Data
+        "IF",  # Inquérito Federal
+        "Inq",  # Inquérito
+        "MI",  # Mandado de Injunção
+        "MS",  # Mandado de Segurança
+        "PADM",  # Processo Administrativo Disciplinar Militar
+        "Pet",  # Petição
+        "PPE",  # Processo de Prestação de Contas Eleitorais
+        "PSV",  # Processo de Suspensão de Vigência
+        "RC",  # Recurso Cível
+        "Rcl",  # Reclamação
+        "RE",  # Recurso Extraordinário
+        "RHC",  # Recurso em Habeas Corpus
+        "RHD",  # Recurso em Habeas Data
+        "RMI",  # Recurso em Mandado de Injunção
+        "RMS",  # Recurso em Mandado de Segurança
+        "RvC",  # Recurso em Violação de Cláusula de Tratado
+        "SE",  # Suspensão de Eficácia
+        "SIRDR",  # Suspensão de Inquérito ou Recurso com Deficiência
+        "SL",  # Suspensão de Liminar
+        "SS",  # Suspensão de Segurança
+        "STA",  # Suspensão de Tutela Antecipada
+        "STP",  # Suspensão de Tutela Provisória
+        "TPA",  # Tutela Provisória Antecipada
+    ]
+)
 
 
 class CaseTypeValidator(BaseModel):
@@ -73,18 +70,14 @@ class CaseTypeValidator(BaseModel):
             return CaseType(v)
         except ValueError:
             valid_types = [case_type.value for case_type in CaseType]
-            raise ValueError(
-                f"Invalid case type '{v}'. Valid types are: {', '.join(valid_types)}"
-            )
+            raise ValueError(f"Invalid case type '{v}'. Valid types are: {', '.join(valid_types)}")
 
 
 def validate_case_type(classe: str) -> str:
     """Validate that the case type is a valid STF case type"""
     if classe not in STF_CASE_TYPES:
         valid_types = sorted(STF_CASE_TYPES)
-        raise ValueError(
-            f"Invalid case type '{classe}'. Valid types are: {', '.join(valid_types)}"
-        )
+        raise ValueError(f"Invalid case type '{classe}'. Valid types are: {', '.join(valid_types)}")
     return classe
 
 

@@ -336,7 +336,7 @@ def sample_processo_data():
         "incidente": 456,
         "numero_unico": "ADI 123456",
         "classe": "ADI",
-        "meio": "Eletrônico",
+        "tipo_processo": "Eletrônico",
         "liminar": 1,
         "relator": "Ministro Silva",
         # ... other fields

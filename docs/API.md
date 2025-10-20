@@ -147,15 +147,15 @@ class STFCaseModel(BaseModel):
 
     # Classification
     classe: str
-    meio: Meio | None = None
+    tipo_processo: ProcessType | None = None
     liminar: int | None = None
     relator: str | None = None
 
     # Process details
     origem: str | None = None
     data_protocolo: str | None = None
-    origem_orgao: str | None = None
-    autor1: str | None = None
+    orgao_origem: str | None = None
+    primeiro_autor: str | None = None
     assuntos: str | None = None
 
     # AJAX-loaded content
@@ -180,13 +180,13 @@ class STFCaseModel(BaseModel):
 -   `incidente` (int): Incident number
 -   `numero_unico` (str | None): Unique process number
 -   `classe` (str): Case type (e.g., "ADI", "ADPF")
--   `meio` (Meio | None): Process type ("Físico" or "Eletrônico")
+-   `tipo_processo` (ProcessType | None): Process type ("Físico" or "Eletrônico")
 -   `liminar` (int | None): Injunction status (0 or 1)
 -   `relator` (str | None): Reporting judge name
 -   `origem` (str | None): Process origin
 -   `data_protocolo` (str | None): Protocol date
--   `origem_orgao` (str | None): Origin organization
--   `autor1` (str | None): First author/plaintiff
+-   `orgao_origem` (str | None): Origin organization
+-   `primeiro_autor` (str | None): First author/plaintiff
 -   `assuntos` (str | None): Subjects as JSON string
 -   `partes` (list[Parte]): Parties involved
 -   `andamentos` (list[Andamento]): Process movements
@@ -324,12 +324,12 @@ class CaseType(str, Enum):
     # ... 50+ other case types
 ```
 
-### `Meio`
+### `ProcessType`
 
 Enum for process types.
 
 ```python
-class Meio(str, Enum):
+class ProcessType(str, Enum):
     FISICO = "Físico"
     ELETRONICO = "Eletrônico"
 ```

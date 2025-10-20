@@ -1,7 +1,6 @@
 import json
 import logging
 import os
-from typing import Literal
 
 from scrapy.crawler import CrawlerProcess
 from scrapy.spiders import Spider
@@ -12,7 +11,7 @@ from .strategies import SpiderStrategyFactory
 
 logger = logging.getLogger(__name__)
 
-PersistenceTypes = list[Literal["json", "csv", "sql"]]
+PersistenceTypes = list[str]
 
 
 class JudexScraper:
@@ -47,6 +46,10 @@ class JudexScraper:
         # Validate inputs
         self._validate_inputs(processos, salvar_como)
 
+        # Normalize salvar_como to a list of strings early
+        if not isinstance(salvar_como, list):
+            salvar_como = [salvar_como]  # type: ignore[list-item]
+
         self.classe = classe
         self.processos = processos
         self.salvar_como = salvar_como
@@ -61,9 +64,7 @@ class JudexScraper:
         self.overwrite = overwrite
         self.settings = get_project_settings()
 
-        # Normalize salvar_como to list
-        if not isinstance(salvar_como, list):
-            salvar_como = [salvar_como]
+        # salvar_como already normalized above
 
         # Parse process numbers for filename generation
         self.process_numbers = self._parse_process_numbers()

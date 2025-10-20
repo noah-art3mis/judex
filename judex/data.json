@@ -153,7 +153,7 @@
     }
   ],
   "assuntos": "[\"ASSUNTO PARA PROCESSO ANTIGO |   | PROCESSO ANTIGO\"]",
-  "autor1": "GOVERNADOR DO ESTADO DE RONDÔNIA",
+  "primeiro_autor": "GOVERNADOR DO ESTADO DE RONDÔNIA",
   "classe": "ADI",
   "data_protocolo": "1988-10-06T00:00:00Z",
   "decisoes": [],
@@ -270,7 +270,7 @@
   "liminar": 1,
   "numero_unico": "0003935-39.1988.0.01.0000",
   "origem": "RO - RONDÔNIA",
-  "origem_orgao": "FÓRUM DA COMARCA DE RANCHARIA",
+  "orgao_origem": "FÓRUM DA COMARCA DE RANCHARIA",
   "partes": [
     {
       "index": 1,
@@ -327,7 +327,7 @@
     "participantes": []
   },
   "status": 200,
-  "meio": "Físico"
+  "tipo_processo": "Físico"
 }
 ][
 {
@@ -484,7 +484,7 @@
     }
   ],
   "assuntos": "[\"ASSUNTO PARA PROCESSO ANTIGO |   | PROCESSO ANTIGO\"]",
-  "autor1": "GOVERNADOR DO ESTADO DE RONDÔNIA",
+  "primeiro_autor": "GOVERNADOR DO ESTADO DE RONDÔNIA",
   "classe": "ADI",
   "data_protocolo": "1988-10-06T00:00:00Z",
   "decisoes": [],
@@ -601,7 +601,7 @@
   "liminar": 1,
   "numero_unico": "0003935-39.1988.0.01.0000",
   "origem": "RO - RONDÔNIA",
-  "origem_orgao": "FÓRUM DA COMARCA DE RANCHARIA",
+  "orgao_origem": "FÓRUM DA COMARCA DE RANCHARIA",
   "partes": [
     {
       "index": 1,
@@ -658,6 +658,6 @@
     "participantes": []
   },
   "status": 200,
-  "meio": "Físico"
+  "tipo_processo": "Físico"
 }
 ]

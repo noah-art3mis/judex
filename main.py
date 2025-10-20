@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 from typing import List, Optional
 
@@ -55,8 +56,8 @@ def scrape(
         "--output-path",
         help="O caminho para o diretório de saída (padrão: judex_output)",
     ),
-    verbose: bool = typer.Option(
-        False, "--verbose", "-v", help="Habilitar logging verboso"
+    quiet: bool = typer.Option(
+        False, "--quiet", "-q", help="Reduzir verbosidade (log apenas INFO)"
     ),
     custom_name: Optional[str] = typer.Option(
         None,
@@ -78,6 +79,16 @@ def scrape(
         "--max-age",
         help="Idade máxima do processo para raspar em horas (padrão: 24)",
     ),
+    log_level: Optional[str] = typer.Option(
+        None,
+        "--log-level",
+        help="Scrapy LOG_LEVEL (CRITICAL|ERROR|WARNING|INFO|DEBUG)",
+    ),
+    no_cache: bool = typer.Option(
+        False,
+        "--no-cache/--cache",
+        help="Desabilitar cache HTTP (sobrepõe configurações quando ativado)",
+    ),
 ):
     """Raspar casos jurídicos do STF"""
     try:
@@ -96,8 +107,20 @@ def scrape(
             max_age_hours=max_age,
             db_path=None,
             custom_name=custom_name,
-            verbose=verbose,
+            verbose=not quiet,
         )
+
+        # Apply CLI-controlled Scrapy settings
+        if log_level:
+            scraper.settings.set("LOG_LEVEL", str(log_level).upper())
+        else:
+            if quiet:
+                scraper.settings.set("LOG_LEVEL", "INFO")
+            else:
+                scraper.settings.set("LOG_LEVEL", "DEBUG")
+
+        if no_cache:
+            scraper.settings.set("HTTPCACHE_ENABLED", False)
 
         # Display startup information with rich formatting
         print(
@@ -108,13 +131,51 @@ def scrape(
 
         scraper.scrape()
 
-        print(f"[blue]📁 Diretório de saída: {output_path}[/blue]")
-        print(f"[blue]💾 Tipo de saída: {salvar_como}[/blue]")
-        print("[bold green]✅ Raspagem concluída com sucesso![/bold green]")
+        # Log saved file paths after scraping is complete
+        _log_saved_files(output_path, classe, custom_name, processo, salvar_como)
 
     except Exception as e:
         print(f"[bold red]❌ Erro: {e}[/bold red]")
         raise typer.Exit(1)
+
+
+def _log_saved_files(
+    output_path: Path,
+    classe: str,
+    custom_name: Optional[str],
+    processo: List[int],
+    salvar_como: List[str],
+) -> None:
+    """Log the paths to saved files after scraping is complete"""
+    from judex.output_registry import OutputFormatRegistry
+
+    print("\n[bold green]✅ Raspagem concluída! Arquivos salvos em:[/bold green]")
+
+    for format_name in salvar_como:
+        config = OutputFormatRegistry.get_pipeline_config(
+            format_name=format_name,
+            output_path=str(output_path),
+            classe=classe,
+            custom_name=custom_name,
+            process_numbers=processo,
+            overwrite=True,
+        )
+
+        if config and "file_path" in config:
+            file_path = config["file_path"]
+            if os.path.exists(file_path):
+                file_size = os.path.getsize(file_path)
+                print(f"[green]  📄 {file_path} ({file_size:,} bytes)[/green]")
+            else:
+                print(f"[yellow]  ⚠️  {file_path} (arquivo não encontrado)[/yellow]")
+        elif format_name == "sql":
+            # Special case for SQL - database file path
+            db_path = os.path.join(output_path, "judex.db")
+            if os.path.exists(db_path):
+                file_size = os.path.getsize(db_path) / (1024 * 1024)  # Convert bytes to MB
+                print(f"[green]  🗄️  {db_path} ({file_size:.2f} MB)[/green]")
+            else:
+                print(f"[yellow]  ⚠️  {db_path} (arquivo não encontrado)[/yellow]")
 
 
 if __name__ == "__main__":

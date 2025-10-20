@@ -7,7 +7,6 @@ from .database_pipeline import DatabasePipeline
 from .json_pipeline import JsonPipeline
 from .jsonl_pipeline import JsonLinesPipeline
 from .metadata_pipeline import MetadataPipeline
-from .order_pipeline import GroundTruthOrderPipeline
 
 __all__ = [
     "DatabasePipeline",
@@ -15,5 +14,4 @@ __all__ = [
     "JsonPipeline",
     "CsvPipeline",
     "JsonLinesPipeline",
-    "GroundTruthOrderPipeline",
 ]

@@ -1,5 +1,4 @@
 import os
-from typing import BinaryIO, List, Optional
 
 from scrapy.exporters import JsonLinesItemExporter
 
@@ -20,22 +19,18 @@ class JsonLinesPipeline:
         self.custom_name = custom_name
         self.process_numbers = process_numbers
         self.overwrite = overwrite
-        self.file: Optional[BinaryIO] = None
-        self.exporter: Optional[JsonLinesItemExporter] = None
-        self.fields_to_export: Optional[List[str]] = None
+        self.file = None
+        self.exporter = None
 
     @classmethod
     def from_crawler(cls, crawler):
-        obj = cls(
+        return cls(
             output_path=crawler.settings.get("OUTPUT_PATH", "judex_output"),
             classe=crawler.settings.get("CLASSE"),
             custom_name=crawler.settings.get("CUSTOM_NAME"),
             process_numbers=crawler.settings.get("PROCESS_NUMBERS"),
             overwrite=crawler.settings.get("OVERWRITE", False),
         )
-        # Pass FEED_EXPORT_FIELDS down to exporter for ordering
-        obj.fields_to_export = crawler.settings.getlist("FEED_EXPORT_FIELDS")
-        return obj
 
     def open_spider(self, spider):
         # Generate filename
@@ -55,11 +50,7 @@ class JsonLinesPipeline:
             os.remove(file_path)
 
         self.file = open(file_path, "ab")  # Append mode
-        # Respect top-level order from settings if provided
-        fields = self.fields_to_export
-        self.exporter = JsonLinesItemExporter(
-            self.file, encoding="utf-8", fields_to_export=fields
-        )
+        self.exporter = JsonLinesItemExporter(self.file, encoding="utf-8")
         self.exporter.start_exporting()
 
     def close_spider(self, spider):
@@ -69,6 +60,5 @@ class JsonLinesPipeline:
             self.file.close()
 
     def process_item(self, item, spider):
-        if self.exporter is not None:
-            self.exporter.export_item(item)
+        self.exporter.export_item(item)
         return item

@@ -6,10 +6,58 @@ from enum import Enum
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
-from .types import CaseType
+
+class CaseType(str, Enum):
+    """STF case types enum"""
+
+    AC = "AC"  # Ação Cível
+    ACO = "ACO"  # Ação Cível Originária
+    ADC = "ADC"  # Ação Declaratória de Constitucionalidade
+    ADI = "ADI"  # Ação Direta de Inconstitucionalidade
+    ADO = "ADO"  # Ação Direta de Inconstitucionalidade por Omissão
+    ADPF = "ADPF"  # Arguição de Descumprimento de Preceito Fundamental
+    AI = "AI"  # Ação Interlocutória
+    AImp = "AImp"  # Ação de Improbidade Administrativa
+    AO = "AO"  # Ação Originária
+    AOE = "AOE"  # Ação Originária Especial
+    AP = "AP"  # Ação Penal
+    AR = "AR"  # Ação Rescisória
+    ARE = "ARE"  # Agravo em Recurso Extraordinário
+    AS = "AS"  # Ação de Suspensão
+    CC = "CC"  # Conflito de Competência
+    Cm = "Cm"  # Comunicado
+    EI = "EI"  # Embargos Infringentes
+    EL = "EL"  # Embargos de Declaração
+    EP = "EP"  # Embargos de Petição
+    Ext = "Ext"  # Extradição
+    HC = "HC"  # Habeas Corpus
+    HD = "HD"  # Habeas Data
+    IF = "IF"  # Inquérito Federal
+    Inq = "Inq"  # Inquérito
+    MI = "MI"  # Mandado de Injunção
+    MS = "MS"  # Mandado de Segurança
+    PADM = "PADM"  # Processo Administrativo Disciplinar Militar
+    Pet = "Pet"  # Petição
+    PPE = "PPE"  # Processo de Prestação de Contas Eleitorais
+    PSV = "PSV"  # Processo de Suspensão de Vigência
+    RC = "RC"  # Recurso Cível
+    Rcl = "Rcl"  # Reclamação
+    RE = "RE"  # Recurso Extraordinário
+    RHC = "RHC"  # Recurso em Habeas Corpus
+    RHD = "RHD"  # Recurso em Habeas Data
+    RMI = "RMI"  # Recurso em Mandado de Injunção
+    RMS = "RMS"  # Recurso em Mandado de Segurança
+    RvC = "RvC"  # Recurso em Violação de Cláusula de Tratado
+    SE = "SE"  # Suspensão de Eficácia
+    SIRDR = "SIRDR"  # Suspensão de Inquérito ou Recurso com Deficiência
+    SL = "SL"  # Suspensão de Liminar
+    SS = "SS"  # Suspensão de Segurança
+    STA = "STA"  # Suspensão de Tutela Antecipada
+    STP = "STP"  # Suspensão de Tutela Provisória
+    TPA = "TPA"  # Tutela Provisória Antecipada
 
 
-class Meio(str, Enum):
+class ProcessType(str, Enum):
     """Process type enum"""
 
     FISICO = "Físico"
@@ -122,25 +170,17 @@ class STFCaseModel(BaseModel):
     numero_unico: str | None = None
 
     # Classification
-    classe: str  # Case type as string
-    meio: str | None = None  # FISICO or ELETRONICO
-    publicidade: str | None = None  # PUBLICO or RESTRITO
-    badges: list[str] = Field(default_factory=list)  # List of badges
+    classe: CaseType | str  # Allow both enum and string for backward compatibility
+    tipo_processo: ProcessType | None = None
     liminar: int | None = None  # Database stores as INT (0 or 1)
     relator: str | None = None
-    primeiro_autor: str | None = None
-    meio: Meio | None = None
 
     # Process details
     origem: str | None = None
     data_protocolo: str | None = None
-    orgao_origem: str | None = None  # Changed from origem_orgao
-    numero_origem: list[int] = Field(default_factory=list)  # List of numbers
-    volumes: int | None = None
-    folhas: int | None = None
-    apensos: int | None = None
-    autor1: str | None = None
-    assuntos: str | None = None  # Database stores as JSON TEXT
+    orgao_origem: str | None = None
+    primeiro_autor: str | None = None
+    assuntos: list[str] | None = None
 
     # AJAX-loaded content
     partes: list[Parte] = Field(default_factory=list)
@@ -150,8 +190,7 @@ class STFCaseModel(BaseModel):
     peticoes: list[Peticao] = Field(default_factory=list)
     recursos: list[Recurso] = Field(default_factory=list)
     pautas: list[Pauta] = Field(default_factory=list)
-    informacoes: list[dict] = Field(default_factory=list)  # Additional field
-    sessao_virtual: list[Sessao] = Field(default_factory=list)  # Changed from sessao
+    sessao: Sessao | None = None
 
     # Metadata
     status: int | None = None
@@ -176,12 +215,12 @@ class STFCaseModel(BaseModel):
                 return v
         return v
 
-    @field_validator("meio", mode="before")
+    @field_validator("tipo_processo", mode="before")
     @classmethod
     def validate_tipo_processo(cls, v):
         if isinstance(v, str):
             try:
-                return Meio(v)
+                return ProcessType(v)
             except ValueError:
                 # If it's not a valid enum value, return as string for now
                 return v
@@ -202,11 +241,22 @@ class STFCaseModel(BaseModel):
     @field_validator("assuntos", mode="before")
     @classmethod
     def validate_assuntos(cls, v):
-        # Convert list to JSON string for database compatibility
-        if isinstance(v, list):
+        if v is None or v == "":
+            return None
+        if isinstance(v, str):
+            # Accept legacy JSON string -> list, or single string
             import json
 
-            return json.dumps(v, ensure_ascii=False)
+            try:
+                parsed = json.loads(v)
+                if isinstance(parsed, list):
+                    return [str(x).strip() for x in parsed if str(x).strip()]
+                return [str(parsed).strip()] if str(parsed).strip() else None
+            except Exception:
+                trimmed = v.strip()
+                return [trimmed] if trimmed else None
+        if isinstance(v, list):
+            return [str(x).strip() for x in v if str(x).strip()]
         return v
 
     @field_validator("partes", mode="before")
@@ -321,39 +371,9 @@ class STFCaseModel(BaseModel):
             return processed_items
         return v
 
-    @field_validator("sessao_virtual", mode="before")
+    @field_validator("sessao", mode="before")
     @classmethod
-    def validate_sessao_virtual(cls, v):
-        if isinstance(v, list):
-            processed_items = []
-            for item in v:
-                if isinstance(item, dict):
-                    processed_items.append(Sessao(**item))
-                else:
-                    processed_items.append(item)
-            return processed_items
-        elif isinstance(v, dict):
-            return [Sessao(**v)]
-        return v
-
-    @field_validator("numero_origem", mode="before")
-    @classmethod
-    def validate_numero_origem(cls, v):
-        if isinstance(v, list):
-            return v
-        elif isinstance(v, str):
-            # Try to extract numbers from string
-            import re
-
-            numbers = re.findall(r"\d+", v)
-            return [int(num) for num in numbers]
-        return v
-
-    @field_validator("badges", mode="before")
-    @classmethod
-    def validate_badges(cls, v):
-        if isinstance(v, list):
-            return v
-        elif isinstance(v, str):
-            return [v]
+    def validate_sessao(cls, v):
+        if isinstance(v, dict):
+            return Sessao(**v)
         return v

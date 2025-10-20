@@ -51,7 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Technical Details
 
 -   **Models**: 8 sub-models (Parte, Andamento, Decisao, etc.)
--   **Enums**: CaseType (50+ case types), Meio
+-   **Enums**: CaseType (50+ case types), ProcessType
 -   **Validators**: Custom field mapping and type conversion
 -   **Pipeline**: Automatic validation before database storage
 -   **Testing**: 89.5% test coverage with comprehensive test suites

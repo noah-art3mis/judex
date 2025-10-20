@@ -30,174 +30,10 @@ DOWNLOADER_MIDDLEWARES = {
 # }
 
 ITEM_PIPELINES = {
-    "judex.pipelines.GroundTruthOrderPipeline": 150,
-    "judex.pydantic_pipeline.PydanticValidationPipeline": 200,
-}
-
-# Ensure top-level field order when exporting feeds
-FEED_EXPORT_FIELDS = [
-    "incidente",
-    "classe",
-    "processo_id",
-    "numero_unico",
-    "meio",
-    "publicidade",
-    "badges",
-    "liminar",
-    "assuntos",
-    "data_protocolo",
-    "orgao_origem",
-    "origem",
-    "numero_origem",
-    "volumes",
-    "folhas",
-    "apensos",
-    "relator",
-    "primeiro_autor",
-    "partes",
-    "andamentos",
-    "decisoes",
-    "sessao_virtual",
-    "deslocamentos",
-    "peticoes",
-    "recursos",
-    "pautas",
-    "status",
-    "extraido",
-    "html",
-]
-
-FEED_EXPORT_INDENT = 2
-FEED_EXPORT_ENCODING = "utf-8"
-
-# Global nested field order templates applied to all items
-NESTED_FIELD_ORDERS = {
-    "partes": ["index", "tipo", "nome"],
-    "andamentos": [
-        "index_num",
-        "data",
-        "nome",
-        "complemento",
-        "link_descricao",
-        "link",
-        "julgador",
-    ],
-    "decisoes": [
-        "index_num",
-        "data",
-        "nome",
-        "complemento",
-        "julgador",
-        "link",
-    ],
-    "sessao_virtual": ["data", "tipo", "numero", "relator", "status", "participantes"],
-    "deslocamentos": [
-        "index_num",
-        "guia",
-        "recebido_por",
-        "data_recebido",
-        "enviado_por",
-        "data_enviado",
-    ],
-    "peticoes": ["index", "data", "tipo", "autor", "recebido_data", "recebido_por"],
-    "recursos": ["index_num", "data", "nome", "julgador", "complemento", "autor"],
-    "pautas": ["index_num", "data", "nome", "complemento", "relator"],
-}
-
-# Full nested template to force exact ordering across entire item
-NESTED_TEMPLATE = {
-    "incidente": None,
-    "classe": None,
-    "processo_id": None,
-    "numero_unico": None,
-    "meio": None,
-    "publicidade": None,
-    "badges": [],
-    "liminar": None,
-    "assuntos": [],
-    "data_protocolo": None,
-    "orgao_origem": None,
-    "origem": None,
-    "numero_origem": [],
-    "volumes": None,
-    "folhas": None,
-    "apensos": None,
-    "relator": None,
-    "primeiro_autor": None,
-    "partes": [{"index": None, "tipo": None, "nome": None}],
-    "andamentos": [
-        {
-            "index_num": None,
-            "data": None,
-            "nome": None,
-            "complemento": None,
-            "link_descricao": None,
-            "link": None,
-            "julgador": None,
-        }
-    ],
-    "decisoes": [
-        {
-            "index_num": None,
-            "data": None,
-            "nome": None,
-            "complemento": None,
-            "julgador": None,
-            "link": None,
-        }
-    ],
-    "sessao_virtual": [
-        {
-            "data": None,
-            "tipo": None,
-            "numero": None,
-            "relator": None,
-            "status": None,
-            "participantes": [],
-        }
-    ],
-    "deslocamentos": [
-        {
-            "index_num": None,
-            "guia": None,
-            "recebido_por": None,
-            "data_recebido": None,
-            "enviado_por": None,
-            "data_enviado": None,
-        }
-    ],
-    "peticoes": [
-        {
-            "index": None,
-            "data": None,
-            "tipo": None,
-            "autor": None,
-            "recebido_data": None,
-            "recebido_por": None,
-        }
-    ],
-    "recursos": [
-        {
-            "index_num": None,
-            "data": None,
-            "nome": None,
-            "julgador": None,
-            "complemento": None,
-            "autor": None,
-        }
-    ],
-    "pautas": [
-        {
-            "index_num": None,
-            "data": None,
-            "nome": None,
-            "complemento": None,
-            "relator": None,
-        }
-    ],
-    "status": None,
-    "extraido": None,
-    "html": None,
+    # todo add "judex.pipelines.normalize_pipeline.NormalizePipeline": 100,
+    # "judex.pydantic_pipeline.PydanticValidationPipeline": 200,
+    # "judex.pipelines.DatabasePipeline": 300,  # SQLite database (enabled dynamically)
+    # JSON, CSV, and JSONL handled by custom pipelines
 }
 
 JSON_OUTPUT_FILE = "data.json"
@@ -207,10 +43,10 @@ DATABASE_PATH = "judex.db"
 AUTOTHROTTLE_ENABLED = True
 AUTOTHROTTLE_START_DELAY = 1.0
 AUTOTHROTTLE_MAX_DELAY = 60
-AUTOTHROTTLE_TARGET_CONCURRENCY = 2.0
+AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
 AUTOTHROTTLE_DEBUG = False
 
-HTTPCACHE_ENABLED = True
+HTTPCACHE_ENABLED = False
 HTTPCACHE_EXPIRATION_SECS = 360
 HTTPCACHE_DIR = "httpcache"
 HTTPCACHE_IGNORE_HTTP_CODES: list[int] = []

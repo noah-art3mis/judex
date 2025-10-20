@@ -1,6 +1,5 @@
 import datetime
 import json
-import re
 import time
 from collections.abc import AsyncGenerator, Iterator
 
@@ -16,21 +15,16 @@ from selenium.webdriver.support.wait import WebDriverWait
 from judex.database import get_existing_processo_ids, get_failed_processo_ids
 from judex.extract import (
     extract_andamentos,
-    extract_apensos,
     extract_assuntos,
-    extract_autor1,
     extract_badges,
     extract_classe,
     extract_data_protocolo,
-    extract_decisoes,
     extract_deslocamentos,
-    extract_folhas,
-    extract_liminar,
     extract_meio,
     extract_numero_origem,
     extract_numero_unico,
+    extract_orgao_origem,
     extract_origem,
-    extract_origem_orgao,
     extract_partes,
     extract_pautas,
     extract_peticoes,
@@ -38,12 +32,12 @@ from judex.extract import (
     extract_publicidade,
     extract_recursos,
     extract_relator,
-    extract_sessao,
-    extract_tipo_processo,
-    extract_volumes,
+    extract_sessao_virtual,
+    extract_volumes_folhas_apensos,
 )
 from judex.items import STFCaseItem
 from judex.types import validate_case_type
+from judex.utils.text import normalize_spaces
 
 
 class StfSpider(scrapy.Spider):
@@ -218,7 +212,6 @@ class StfSpider(scrapy.Spider):
 
         # Track overall extraction timing
         extraction_start_time = time.time()
-        self.crawler.stats.inc_value("extraction/started")
 
         # Create a dictionary for Pydantic validation
         case_data = {}
@@ -226,24 +219,17 @@ class StfSpider(scrapy.Spider):
         # ids
         case_data["processo_id"] = response.meta["numero"]
         case_data["incidente"] = int(incidente)
-        # All extractions now handle their own errors and timing via decorators
         case_data["numero_unico"] = extract_numero_unico(soup)
         case_data["classe"] = extract_classe(soup) or self.classe
-        case_data["meio"] = extract_meio(self, driver, soup)
-        case_data["publicidade"] = extract_publicidade(self, driver, soup)
-        case_data["badges"] = extract_badges(self, driver, soup)
-        case_data["liminar"] = extract_liminar(self, driver, soup)
         case_data["relator"] = extract_relator(soup)
-        case_data["primeiro_autor"] = extract_primeiro_autor(self, driver, soup)
-        case_data["meio"] = extract_tipo_processo(soup)
+        case_data["meio"] = extract_meio(soup)
+        case_data["publicidade"] = extract_publicidade(soup)
+        case_data["badges"] = extract_badges(self, driver, soup)
         case_data["origem"] = extract_origem(self, driver, soup)
         case_data["data_protocolo"] = extract_data_protocolo(self, driver, soup)
-        case_data["orgao_origem"] = extract_origem_orgao(self, driver, soup)
+        case_data["orgao_origem"] = extract_orgao_origem(self, driver, soup)
         case_data["numero_origem"] = extract_numero_origem(self, driver, soup)
-        case_data["volumes"] = extract_volumes(self, driver, soup)
-        case_data["folhas"] = extract_folhas(self, driver, soup)
-        case_data["apensos"] = extract_apensos(self, driver, soup)
-        case_data["autor1"] = extract_autor1(self, driver, soup)
+        case_data["primeiro_autor"] = extract_primeiro_autor(self, driver, soup)
         case_data["assuntos"] = extract_assuntos(self, driver, soup)
 
         # Wait for AJAX content to load dynamically
@@ -266,26 +252,42 @@ class StfSpider(scrapy.Spider):
         # All AJAX extractions now handle their own errors and timing via decorators
         case_data["partes"] = extract_partes(self, driver, soup)
         case_data["andamentos"] = extract_andamentos(self, driver, soup)
-        case_data["decisoes"] = extract_decisoes(self, driver, soup)
+        # case_data["decisoes"] = extract_decisoes(self, driver, soup)
         case_data["deslocamentos"] = extract_deslocamentos(self, driver, soup)
         case_data["peticoes"] = extract_peticoes(self, driver, soup)
         case_data["recursos"] = extract_recursos(self, driver, soup)
         case_data["pautas"] = extract_pautas(self, driver, soup)
-        case_data["sessao_virtual"] = [extract_sessao(self, driver, soup)]
+        case_data["sessao_virtual"] = extract_sessao_virtual(self, driver, soup)
+
+        # Volumes, folhas, apensos counters
+        counters = extract_volumes_folhas_apensos(self, driver, soup)
+        if counters:
+            case_data["volumes"] = counters.get("volumes")
+            case_data["folhas"] = counters.get("folhas")
+            case_data["apensos"] = counters.get("apensos")
+        else:
+            case_data["volumes"] = None
+            case_data["folhas"] = None
+            case_data["apensos"] = None
 
         # Track total extraction time
         total_extraction_time = time.time() - extraction_start_time
-        self.crawler.stats.inc_value("extraction/completed")
-        self.crawler.stats.set_value(
-            "extraction/total_duration", round(total_extraction_time, 2)
-        )
+        if (
+            hasattr(self, "crawler")
+            and self.crawler
+            and hasattr(self.crawler, "stats")
+            and self.crawler.stats
+        ):
+            self.crawler.stats.set_value(
+                "extraction/total_duration", round(total_extraction_time, 2)
+            )
 
         # Log total timing
         self.logger.info(f"Total extraction time: {total_extraction_time:.3f}s")
 
         # metadados
         case_data["status"] = response.status
-        case_data["html"] = re.sub(r"\s+", " ", page_html.strip())
+        case_data["html"] = normalize_spaces(page_html)
         case_data["extraido"] = datetime.datetime.now().isoformat() + "Z"
 
         # Create a Scrapy Item from the validated data for compatibility

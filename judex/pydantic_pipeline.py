@@ -2,7 +2,6 @@
 Pydantic validation pipeline for STF case data
 """
 
-import json
 import logging
 
 from itemadapter import ItemAdapter
@@ -32,17 +31,6 @@ class PydanticValidationPipeline:
 
             # Convert back to dict and update the item with validated data
             validated_dict = validated_item.model_dump()
-
-            # Convert JSON-text fields back to Python-native types for exporters
-            assuntos_value = validated_dict.get("assuntos")
-            if isinstance(assuntos_value, str):
-                try:
-                    parsed_assuntos = json.loads(assuntos_value)
-                    if isinstance(parsed_assuntos, list):
-                        validated_dict["assuntos"] = parsed_assuntos
-                except Exception:
-                    # Keep original value if it isn't valid JSON
-                    pass
 
             # Clear the item and update with validated data only
             for key in list(item.keys()):

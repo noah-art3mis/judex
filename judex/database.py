@@ -22,13 +22,13 @@ def init_database(db_path: str):
                 processo_id INTEGER UNIQUE,
                 -- info
                 classe TEXT CHECK (classe IN ('AC', 'ACO', 'ADC', 'ADI', 'ADO', 'ADPF', 'AI', 'AImp', 'AO', 'AOE', 'AP', 'AR', 'ARE', 'AS', 'CC', 'Cm', 'EI', 'EL', 'EP', 'Ext', 'HC', 'HD', 'IF', 'Inq', 'MI', 'MS', 'PADM', 'Pet', 'PPE', 'PSV', 'RC', 'Rcl', 'RE', 'RHC', 'RHD', 'RMI', 'RMS', 'RvC', 'SE', 'SIRDR', 'SL', 'SS', 'STA', 'STP', 'TPA')),
-                meio TEXT CHECK (meio IN ('Físico', 'Eletrônico')),
+                tipo_processo TEXT CHECK (tipo_processo IN ('Físico', 'Eletrônico')),
                 liminar INT CHECK (liminar IN (0, 1)),
                 relator TEXT,
                 origem TEXT,
-                origem_orgao TEXT,
+                orgao_origem TEXT,
                 data_protocolo TEXT,
-                autor1 TEXT,
+                primeiro_autor TEXT,
                 assuntos TEXT, -- Keep as JSON for now
                 -- Metadata
                 html TEXT,
@@ -213,8 +213,8 @@ def processo_write(db_path: str, processo_data: dict[str, Any]) -> bool:
             cursor.execute(
                 """
                 INSERT OR REPLACE INTO processos (
-                    numero_unico, incidente, processo_id, classe, meio, liminar, relator,
-                    origem, origem_orgao, data_protocolo, autor1, assuntos,
+                    numero_unico, incidente, processo_id, classe, tipo_processo, liminar, relator,
+                    origem, orgao_origem, data_protocolo, primeiro_autor, assuntos,
                     html, error_message, updated_at
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
@@ -223,13 +223,13 @@ def processo_write(db_path: str, processo_data: dict[str, Any]) -> bool:
                     processo_data.get("incidente"),
                     processo_data.get("processo_id"),
                     processo_data.get("classe"),
-                    processo_data.get("meio"),
+                    processo_data.get("tipo_processo"),
                     processo_data.get("liminar"),
                     processo_data.get("relator"),
                     processo_data.get("origem"),
-                    processo_data.get("origem_orgao"),
+                    processo_data.get("orgao_origem"),
                     processo_data.get("data_protocolo"),
-                    processo_data.get("autor1"),
+                    processo_data.get("primeiro_autor"),
                     json.dumps(processo_data.get("assuntos"), ensure_ascii=False),
                     processo_data.get("html"),
                     processo_data.get("error_message"),

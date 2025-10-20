@@ -7,10 +7,13 @@ Utiliza scrapy-selenium. Tem performance de ~4 processos por minuto. Possui supo
 ## Uso via CLI (Recomendado)
 
 ```bash
+# instalar wsl (pode demorar)
+wsl --install
+
 # instalar uv
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
-# instalar chromedriver (pode demorar um pouco)
+# instalar chromedriver (pode demorar)
 sudo apt install chromium-chromedriver
 
 # clonar repositório
@@ -19,7 +22,7 @@ git clone https://github.com/noah-art3mis/judex
 # baixar dependências
 cd judex && uv sync
 
-# instalar em modo editável
+# instalar
 uv pip install -e .
 
 # usar o CLI
@@ -35,7 +38,9 @@ uv run judex scrape --classe ADI --processo 4916 --processo 4917 --salvar-como j
 ---
 
 -   `--output-path`: diretório de saída (padrão: judex_output)
--   `--verbose`: habilitar logging verboso
+-   `--quiet`: reduzir verbosidade (log INFO). Padrão: verboso (DEBUG)
+-   `--log-level`: definir nível de log do Scrapy (CRITICAL, ERROR, WARNING, INFO, DEBUG)
+-   `--no-cache/--cache`: desabilitar/habilitar cache HTTP (quando usado, desabilita)
 -   `--skip-existing`: pular processos existentes (padrão: true)
 -   `--retry-failed`: tentar novamente processos que falharam (padrão: true)
 -   `--max-age`: idade máxima dos processos em horas (padrão: 24)
@@ -53,7 +58,13 @@ uv run judex scrape -c ADI -p 4916 -p 4917 -p 4918 -s json
 uv run judex scrape -c ADPF -p 123 -s json -s sql
 
 # Com opções avançadas
-uv run judex scrape -c ADI -p 123 --output-path /tmp/output --verbose --max-age 48
+uv run judex scrape -c ADI -p 123 --output-path /tmp/output --max-age 48
+
+# Modo silencioso (INFO)
+uv run judex scrape -c ADI -p 123 -s json --quiet
+
+# Controlando logs e cache HTTP
+uv run judex scrape -c ADI -p 123 -s json --log-level INFO --no-cache
 ```
 
 ### 2. Como biblioteca
@@ -108,13 +119,13 @@ class Processo:
 
     # detalhes
     classe: str
-    meio: str
+    tipo_processo: str
     liminar: bool
     relator: str
     origem: str
-    origem_orgao: str
+    orgao_origem: str
     data_protocolo: str
-    autor1: str
+    primeiro_autor: str
     assuntos: str
 
     # listas

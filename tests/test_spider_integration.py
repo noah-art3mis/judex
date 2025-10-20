@@ -189,8 +189,8 @@ class TestStfSpiderIntegration:
     @patch("judex.spiders.stf.extract_tipo_processo")
     @patch("judex.spiders.stf.extract_origem")
     @patch("judex.spiders.stf.extract_data_protocolo")
-    @patch("judex.spiders.stf.extract_origem_orgao")
-    @patch("judex.spiders.stf.extract_autor1")
+    @patch("judex.spiders.stf.extract_orgao_origem")
+    @patch("judex.spiders.stf.extract_primeiro_autor")
     @patch("judex.spiders.stf.extract_assuntos")
     @patch("judex.spiders.stf.extract_partes")
     @patch("judex.spiders.stf.extract_andamentos")
@@ -211,8 +211,8 @@ class TestStfSpiderIntegration:
         mock_andamentos,
         mock_partes,
         mock_assuntos,
-        mock_autor1,
-        mock_origem_orgao,
+        mock_primeiro_autor,
+        mock_orgao_origem,
         mock_data_protocolo,
         mock_origem,
         mock_tipo_processo,
@@ -230,8 +230,8 @@ class TestStfSpiderIntegration:
         mock_tipo_processo.return_value = "Eletrônico"
         mock_origem.return_value = "STF"
         mock_data_protocolo.return_value = "2023-01-01"
-        mock_origem_orgao.return_value = "STF"
-        mock_autor1.return_value = "João Silva"
+        mock_orgao_origem.return_value = "STF"
+        mock_primeiro_autor.return_value = "João Silva"
         mock_assuntos.return_value = ["Direito Constitucional"]
         mock_partes.return_value = [
             {"_index": 1, "tipo": "Autor", "nome": "João Silva"}
@@ -300,11 +300,11 @@ class TestStfSpiderIntegration:
                 assert item["classe"] == "ADI"
                 assert item["liminar"] == ["liminar1"]
                 assert item["relator"] == "Ministro Silva"
-                assert item["meio"] == "Eletrônico"
+                assert item["tipo_processo"] == "Eletrônico"
                 assert item["origem"] == "STF"
                 assert item["data_protocolo"] == "2023-01-01"
-                assert item["origem_orgao"] == "STF"
-                assert item["autor1"] == "João Silva"
+                assert item["orgao_origem"] == "STF"
+                assert item["primeiro_autor"] == "João Silva"
                 assert item["assuntos"] == ["Direito Constitucional"]
                 assert item["status"] == 200
                 assert item["html"] == "<html>Test page</html>"

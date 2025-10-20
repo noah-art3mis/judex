@@ -7,7 +7,7 @@ import json
 import pytest
 from pydantic import ValidationError
 
-from judex.models import Andamento, CaseType, Meio, Parte, STFCaseModel
+from judex.models import Andamento, CaseType, Parte, ProcessType, STFCaseModel
 
 
 class TestCaseType:
@@ -41,12 +41,12 @@ class TestCaseType:
 
 
 class TestProcessType:
-    """Test Meio enum"""
+    """Test ProcessType enum"""
 
     def test_valid_process_types(self):
         """Test that valid process types are accepted"""
-        assert Meio("Físico") == Meio.FISICO
-        assert Meio("Eletrônico") == Meio.ELETRONICO
+        assert ProcessType("Físico") == ProcessType.FISICO
+        assert ProcessType("Eletrônico") == ProcessType.ELETRONICO
 
     def test_process_type_validation(self):
         """Test process type validation in STFCaseModel"""
@@ -54,10 +54,10 @@ class TestProcessType:
             "processo_id": 123,
             "incidente": 456,
             "classe": "ADI",
-            "meio": "Físico",
+            "tipo_processo": "Físico",
         }
         case = STFCaseModel(**data)
-        assert case.meio == Meio.FISICO
+        assert case.tipo_processo == ProcessType.FISICO
 
 
 class TestParte:
@@ -156,8 +156,8 @@ class TestSTFCaseModel:
         case = STFCaseModel(**data)
         assert case.liminar == 0
 
-    def test_assuntos_conversion(self):
-        """Test assuntos field conversion from list to JSON string"""
+    def test_assuntos_list_preserved(self):
+        """Test assuntos field preserved as list and normalized"""
         data = {
             "processo_id": 123,
             "incidente": 456,
@@ -165,9 +165,33 @@ class TestSTFCaseModel:
             "assuntos": ["Direito Constitucional", "Direito Administrativo"],
         }
         case = STFCaseModel(**data)
-        assert isinstance(case.assuntos, str)
-        parsed = json.loads(case.assuntos)
-        assert parsed == ["Direito Constitucional", "Direito Administrativo"]
+        assert isinstance(case.assuntos, list)
+        assert case.assuntos == ["Direito Constitucional", "Direito Administrativo"]
+
+    def test_assuntos_legacy_string_json(self):
+        """Accept legacy JSON string and convert to list"""
+        data = {
+            "processo_id": 123,
+            "incidente": 456,
+            "classe": "ADI",
+            "assuntos": json.dumps(
+                ["Direito Constitucional", "Direito Administrativo"], ensure_ascii=False
+            ),
+        }
+        case = STFCaseModel(**data)
+        assert isinstance(case.assuntos, list)
+        assert case.assuntos == ["Direito Constitucional", "Direito Administrativo"]
+
+    def test_assuntos_plain_string(self):
+        """Single assunto string becomes single-item list"""
+        data = {
+            "processo_id": 123,
+            "incidente": 456,
+            "classe": "ADI",
+            "assuntos": "Direito Constitucional",
+        }
+        case = STFCaseModel(**data)
+        assert case.assuntos == ["Direito Constitucional"]
 
     def test_andamentos_field_mapping(self):
         """Test andamentos field mapping from 'index' to 'index_num'"""
@@ -321,13 +345,13 @@ class TestSTFCaseModel:
         }
         case = STFCaseModel(**data)
         assert case.numero_unico is None
-        assert case.meio is None
+        assert case.tipo_processo is None
         assert case.liminar is None
         assert case.relator is None
         assert case.origem is None
         assert case.data_protocolo is None
-        assert case.origem_orgao is None
-        assert case.autor1 is None
+        assert case.orgao_origem is None
+        assert case.primeiro_autor is None
         assert case.assuntos is None
         assert case.partes == []
         assert case.andamentos == []
@@ -364,13 +388,13 @@ class TestComplexValidation:
             "incidente": 456,
             "numero_unico": "ADI 123456",
             "classe": "ADI",
-            "meio": "Eletrônico",
+            "tipo_processo": "Eletrônico",
             "liminar": ["Liminar 1", "Liminar 2"],
             "relator": "Ministro Silva",
             "origem": "STF",
             "data_protocolo": "2023-01-01",
-            "origem_orgao": "STF",
-            "autor1": "João Silva",
+            "orgao_origem": "STF",
+            "primeiro_autor": "João Silva",
             "assuntos": ["Direito Constitucional", "Direito Administrativo"],
             "partes": [
                 {"_index": 1, "tipo": "Autor", "nome": "João Silva"},
@@ -442,13 +466,12 @@ class TestComplexValidation:
         assert case.incidente == 456
         assert case.numero_unico == "ADI 123456"
         assert case.classe == CaseType.ADI
-        assert case.meio == Meio.ELETRONICO
+        assert case.tipo_processo == ProcessType.ELETRONICO
 
         # Test converted fields
         assert case.liminar == 1
-        assert isinstance(case.assuntos, str)
-        parsed_assuntos = json.loads(case.assuntos)
-        assert parsed_assuntos == ["Direito Constitucional", "Direito Administrativo"]
+        assert isinstance(case.assuntos, list)
+        assert case.assuntos == ["Direito Constitucional", "Direito Administrativo"]
 
         # Test field mapping
         assert len(case.andamentos) == 2

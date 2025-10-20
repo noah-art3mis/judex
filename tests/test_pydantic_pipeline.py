@@ -141,7 +141,7 @@ class TestPydanticValidationPipeline:
             "processo_id": 123,
             "incidente": 456,
             "classe": "ADI",
-            "meio": "Eletrônico",
+            "tipo_processo": "Eletrônico",
         }
 
         # Mock ItemAdapter

@@ -23,12 +23,12 @@ class TestDynamicFieldExtraction:
             "numero_unico",
             "classe",
             "liminar",
-            "meio",
+            "tipo_processo",
             "relator",
             "origem",
             "data_protocolo",
-            "origem_orgao",
-            "autor1",
+            "orgao_origem",
+            "primeiro_autor",
             "assuntos",
             "partes",
             "andamentos",
@@ -99,7 +99,7 @@ class TestDynamicFieldExtraction:
         expected_fields = [
             "andamentos",
             "assuntos",
-            "autor1",
+            "primeiro_autor",
             "classe",
             "data_protocolo",
             "decisoes",
@@ -111,7 +111,7 @@ class TestDynamicFieldExtraction:
             "liminar",
             "numero_unico",
             "origem",
-            "origem_orgao",
+            "orgao_origem",
             "partes",
             "pautas",
             "peticoes",
@@ -120,7 +120,7 @@ class TestDynamicFieldExtraction:
             "relator",
             "sessao",
             "status",
-            "meio",
+            "tipo_processo",
         ]
 
         assert fields == expected_fields

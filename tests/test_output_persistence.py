@@ -89,9 +89,7 @@ class TestSQLOutputPersistence:
             pipeline = DatabasePipeline.from_crawler(mock_crawler)
 
             assert pipeline.db_path == db_path
-            mock_crawler.settings.get.assert_called_once_with(
-                "DATABASE_PATH", "judex.db"
-            )
+            mock_crawler.settings.get.assert_called_once_with("DATABASE_PATH", "judex.db")
 
     def test_database_file_creation(self):
         """Test that database file is created with correct schema"""
@@ -142,7 +140,7 @@ class TestSQLOutputPersistence:
                 "incidente": 123,
                 "processo_id": 123,
                 "classe": "ADI",
-                "meio": "Eletrônico",
+                "tipo_processo": "Eletrônico",
                 "liminar": 0,
                 "relator": "Test Judge",
             }
@@ -156,7 +154,7 @@ class TestSQLOutputPersistence:
                 "incidente": 123,
                 "processo_id": 123,
                 "classe": "ADI",
-                "meio": "Eletrônico",
+                "tipo_processo": "Eletrônico",
                 "liminar": 1,  # Changed
                 "relator": "Updated Judge",  # Changed
             }
@@ -167,16 +165,12 @@ class TestSQLOutputPersistence:
             # Check that only one record exists (replaced)
             with sqlite3.connect(db_path) as conn:
                 cursor = conn.cursor()
-                cursor.execute(
-                    "SELECT COUNT(*) FROM processos WHERE numero_unico = '123'"
-                )
+                cursor.execute("SELECT COUNT(*) FROM processos WHERE numero_unico = '123'")
                 count = cursor.fetchone()[0]
                 assert count == 1
 
                 # Check that the updated data is there
-                cursor.execute(
-                    "SELECT relator, liminar FROM processos WHERE numero_unico = '123'"
-                )
+                cursor.execute("SELECT relator, liminar FROM processos WHERE numero_unico = '123'")
                 row = cursor.fetchone()
                 assert row[0] == "Updated Judge"
                 assert row[1] == 1
@@ -248,7 +242,7 @@ class TestOutputFileAppending:
                     "incidente": 123,
                     "processo_id": 123,
                     "classe": "ADI",
-                    "meio": "Eletrônico",
+                    "tipo_processo": "Eletrônico",
                     "liminar": 0,
                     "relator": "Judge A",
                 },
@@ -257,7 +251,7 @@ class TestOutputFileAppending:
                     "incidente": 456,
                     "processo_id": 456,
                     "classe": "ADI",
-                    "meio": "Eletrônico",
+                    "tipo_processo": "Eletrônico",
                     "liminar": 0,
                     "relator": "Judge B",
                 },
@@ -272,7 +266,7 @@ class TestOutputFileAppending:
                 "incidente": 123,
                 "processo_id": 123,
                 "classe": "ADI",
-                "meio": "Eletrônico",
+                "tipo_processo": "Eletrônico",
                 "liminar": 1,  # Updated
                 "relator": "Updated Judge A",  # Updated
             }
@@ -289,17 +283,13 @@ class TestOutputFileAppending:
                 assert count == 2
 
                 # Check that the updated record has new data
-                cursor.execute(
-                    "SELECT relator, liminar FROM processos WHERE numero_unico = '123'"
-                )
+                cursor.execute("SELECT relator, liminar FROM processos WHERE numero_unico = '123'")
                 row = cursor.fetchone()
                 assert row[0] == "Updated Judge A"
                 assert row[1] == 1
 
                 # Check that the other record is unchanged
-                cursor.execute(
-                    "SELECT relator FROM processos WHERE numero_unico = '456'"
-                )
+                cursor.execute("SELECT relator FROM processos WHERE numero_unico = '456'")
                 row = cursor.fetchone()
                 assert row[0] == "Judge B"
 
@@ -501,7 +491,7 @@ class TestOutputFileAppendingImplementation:
                 "incidente": 123,
                 "processo_id": 123,
                 "classe": "ADI",
-                "meio": "Eletrônico",
+                "tipo_processo": "Eletrônico",
                 "liminar": 0,
                 "relator": "Judge A",
             }
@@ -515,7 +505,7 @@ class TestOutputFileAppendingImplementation:
                 "incidente": 123,
                 "processo_id": 123,
                 "classe": "ADI",
-                "meio": "Eletrônico",
+                "tipo_processo": "Eletrônico",
                 "liminar": 1,
                 "relator": "Updated Judge A",
             }
@@ -531,8 +521,6 @@ class TestOutputFileAppendingImplementation:
                 assert count == 1
 
                 # Check updated data
-                cursor.execute(
-                    "SELECT relator FROM processos WHERE numero_unico = '123'"
-                )
+                cursor.execute("SELECT relator FROM processos WHERE numero_unico = '123'")
                 row = cursor.fetchone()
                 assert row[0] == "Updated Judge A"

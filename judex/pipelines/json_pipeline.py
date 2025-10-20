@@ -1,6 +1,4 @@
 import os
-from io import BytesIO
-from typing import Any, BinaryIO, List, Optional, cast
 
 from scrapy.exporters import JsonItemExporter
 
@@ -21,22 +19,18 @@ class JsonPipeline:
         self.custom_name = custom_name
         self.process_numbers = process_numbers
         self.overwrite = overwrite
-        self.file: Optional[BinaryIO] = None
-        self.exporter: Optional[JsonItemExporter] = None
-        self.fields_to_export: Optional[List[str]] = None
+        self.file = None
+        self.exporter = None
 
     @classmethod
     def from_crawler(cls, crawler):
-        obj = cls(
+        return cls(
             output_path=crawler.settings.get("OUTPUT_PATH", "judex_output"),
             classe=crawler.settings.get("CLASSE"),
             custom_name=crawler.settings.get("CUSTOM_NAME"),
             process_numbers=crawler.settings.get("PROCESS_NUMBERS"),
             overwrite=crawler.settings.get("OVERWRITE", True),
         )
-        # Pass FEED_EXPORT_FIELDS down to exporter for ordering
-        obj.fields_to_export = crawler.settings.getlist("FEED_EXPORT_FIELDS")
-        return obj
 
     def open_spider(self, spider):
         # Generate filename
@@ -55,19 +49,9 @@ class JsonPipeline:
         if self.overwrite and os.path.exists(file_path):
             os.remove(file_path)
 
-        self.file = cast(BinaryIO, open(file_path, "wb"))
-        # Respect top-level order from settings if provided
-        fields = self.fields_to_export
-        # JsonItemExporter accepts a file-like binary stream; wrap for strict typing
-        stream = cast(BinaryIO, self.file)
-        if not hasattr(stream, "write"):
-            stream = cast(BinaryIO, BytesIO())
+        self.file = open(file_path, "wb")
         self.exporter = JsonItemExporter(
-            cast(Any, stream),
-            indent=2,
-            ensure_ascii=False,
-            export_empty_fields=True,
-            fields_to_export=fields,
+            self.file, indent=2, ensure_ascii=False, export_empty_fields=True
         )
         self.exporter.start_exporting()
 
@@ -78,6 +62,5 @@ class JsonPipeline:
             self.file.close()
 
     def process_item(self, item, spider):
-        if self.exporter is not None:
-            self.exporter.export_item(item)
+        self.exporter.export_item(item)
         return item

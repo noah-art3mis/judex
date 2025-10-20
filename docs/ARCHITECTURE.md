@@ -88,7 +88,7 @@ STF Portal → Selenium WebDriver → BeautifulSoup → Raw Data Dictionary
 ```python
 STFCaseModel (Main Model)
 ├── CaseType (Enum)
-├── Meio (Enum)
+├── ProcessType (Enum)
 ├── Parte (Sub-model)
 ├── Andamento (Sub-model)
 ├── Decisao (Sub-model)
@@ -153,7 +153,7 @@ processos (
     incidente INTEGER UNIQUE,
     processo_id INTEGER UNIQUE,
     classe TEXT CHECK (...),
-    meio TEXT CHECK (...),
+    tipo_processo TEXT CHECK (...),
     liminar INT CHECK (liminar IN (0, 1)),
     -- ... other fields
 )
