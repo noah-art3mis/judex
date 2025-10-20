@@ -1,0 +1,18 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[remote "origin"]
+	url = https://github.com/noah-art3mis/judex
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "main"]
+	remote = origin
+	merge = refs/heads/main
+	vscode-merge-base = origin/main
+[branch "performance"]
+	vscode-merge-base = origin/main
+[branch "ground-truth"]
+	vscode-merge-base = origin/main
+	remote = origin
+	merge = refs/heads/ground-truth

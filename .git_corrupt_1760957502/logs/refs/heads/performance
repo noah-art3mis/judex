@@ -1,0 +1,7 @@
+0000000000000000000000000000000000000000 dffcd0b14eb8a9b04c3a25ee8369419b4e7a4ed5 Gustavo Costa <gustavo@arcos.org.br> 1760834566 +0100	branch: Created from HEAD
+dffcd0b14eb8a9b04c3a25ee8369419b4e7a4ed5 db70aae6d0850d1031ffa7f0dce7105d4e8d086b Gustavo Costa <gustavo@arcos.org.br> 1760841468 +0100	commit: add --no-cache
+db70aae6d0850d1031ffa7f0dce7105d4e8d086b 39f90ab8e7cb9abe0b0fdb1d0ce5b6cdc3a77a50 Gustavo Costa <gustavo@arcos.org.br> 1760841482 +0100	commit: add examples
+39f90ab8e7cb9abe0b0fdb1d0ce5b6cdc3a77a50 616918d6b881412b5c1be039094ff361d3fa51ee Gustavo Costa <gustavo@arcos.org.br> 1760841708 +0100	commit: add text utils
+616918d6b881412b5c1be039094ff361d3fa51ee dd45520cd7a508ce0afe64781242733cd28936ee Gustavo Costa <gustavo@arcos.org.br> 1760841824 +0100	commit: create mixins
+dd45520cd7a508ce0afe64781242733cd28936ee ad9974c9c1a9e1a373829c44f0825f28e451ceb8 Gustavo Costa <gustavo@arcos.org.br> 1760841929 +0100	commit: add base spide
+ad9974c9c1a9e1a373829c44f0825f28e451ceb8 cf176b510465d580967b4f9bc9386ec8a51a3a97 Gustavo Costa <gustavo@arcos.org.br> 1760847115 +0100	commit: uh oh

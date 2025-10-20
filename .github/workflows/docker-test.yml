@@ -1,0 +1,99 @@
+name: Docker Cross-Platform Testing
+
+on:
+    push:
+        branches: [main, develop]
+    pull_request:
+        branches: [main]
+    workflow_dispatch:
+
+jobs:
+    docker-test:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                python-version: [3.9, 3.10, 3.11]
+                platform: [linux/amd64]
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v3
+
+            - name: Build Docker image
+              run: |
+                  if [ "${{ matrix.python-version }}" = "3.9" ]; then
+                    docker build -f Dockerfile.python39 -t judex:python39 .
+                  elif [ "${{ matrix.python-version }}" = "3.11" ]; then
+                    docker build -f Dockerfile.python311 -t judex:python311 .
+                  else
+                    docker build -t judex:latest .
+                  fi
+
+            - name: Run tests
+              run: |
+                  if [ "${{ matrix.python-version }}" = "3.9" ]; then
+                    docker run --rm -v "$(pwd):/app" judex:python39 uv run python -m pytest tests/ -v
+                  elif [ "${{ matrix.python-version }}" = "3.11" ]; then
+                    docker run --rm -v "$(pwd):/app" judex:python311 uv run python -m pytest tests/ -v
+                  else
+                    docker run --rm -v "$(pwd):/app" judex:latest uv run python -m pytest tests/ -v
+                  fi
+
+            - name: Test specific components
+              run: |
+                  if [ "${{ matrix.python-version }}" = "3.9" ]; then
+                    IMAGE="judex:python39"
+                  elif [ "${{ matrix.python-version }}" = "3.11" ]; then
+                    IMAGE="judex:python311"
+                  else
+                    IMAGE="judex:latest"
+                  fi
+
+                  # Test models
+                  docker run --rm -v "$(pwd):/app" $IMAGE uv run python -m pytest tests/test_models.py -v
+
+                  # Test database
+                  docker run --rm -v "$(pwd):/app" $IMAGE uv run python -m pytest tests/test_database_standalone.py -v
+
+                  # Test pipeline
+                  docker run --rm -v "$(pwd):/app" $IMAGE uv run python -m pytest tests/test_pydantic_pipeline.py -v
+
+            - name: Test Chrome/ChromeDriver
+              run: |
+                  if [ "${{ matrix.python-version }}" = "3.9" ]; then
+                    IMAGE="judex:python39"
+                  elif [ "${{ matrix.python-version }}" = "3.11" ]; then
+                    IMAGE="judex:python311"
+                  else
+                    IMAGE="judex:latest"
+                  fi
+
+                  # Test Chrome installation
+                  docker run --rm $IMAGE chromium --version
+
+                  # Test ChromeDriver
+                  docker run --rm $IMAGE chromedriver --version
+
+            - name: Test package installation
+              run: |
+                  if [ "${{ matrix.python-version }}" = "3.9" ]; then
+                    IMAGE="judex:python39"
+                  elif [ "${{ matrix.python-version }}" = "3.11" ]; then
+                    IMAGE="judex:python311"
+                  else
+                    IMAGE="judex:latest"
+                  fi
+
+                  # Build package in Docker
+                  docker run --rm -v "$(pwd):/app" $IMAGE uv run python -m build
+
+                  # Test package installation
+                  docker run --rm -v "$(pwd):/app" $IMAGE pip install dist/judex-*.whl
+
+            - name: Cleanup
+              if: always()
+              run: |
+                  docker system prune -f

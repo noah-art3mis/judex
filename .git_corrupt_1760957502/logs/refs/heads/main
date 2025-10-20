@@ -1,0 +1,6 @@
+0000000000000000000000000000000000000000 76d8381a971147ec32a62657468b45a0c634f69c Gustavo Costa <gustavo@arcos.org.br> 1760732427 +0100	clone: from https://github.com/noah-art3mis/judex
+76d8381a971147ec32a62657468b45a0c634f69c d3feb418b72403a711e49a5509797d154600b2d3 Gustavo Costa <gustavo@arcos.org.br> 1760741952 +0100	commit: refactor core
+d3feb418b72403a711e49a5509797d154600b2d3 5749f28f9ac91b549797163d20b8707725360794 Gustavo Costa <gustavo@arcos.org.br> 1760741962 +0100	pull: Merge made by the 'ort' strategy.
+5749f28f9ac91b549797163d20b8707725360794 07e2973ae1c9db0b9ab240ade7ad324e124feac2 Gustavo Costa <gustavo@arcos.org.br> 1760830172 +0100	pull --tags origin main: Fast-forward
+07e2973ae1c9db0b9ab240ade7ad324e124feac2 d4b71b225bfceac96e81ffd8c3e68d00b7197dc6 Gustavo Costa <gustavo@arcos.org.br> 1760834327 +0100	commit: fix tests 190/191
+d4b71b225bfceac96e81ffd8c3e68d00b7197dc6 dffcd0b14eb8a9b04c3a25ee8369419b4e7a4ed5 Gustavo Costa <gustavo@arcos.org.br> 1760834380 +0100	commit: update version

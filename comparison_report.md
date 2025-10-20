@@ -1,0 +1,505 @@
+Generated on: 2025-10-20 11:18:43
+
+- AI_772309.json
+	- liminar
+		- ground-truth: "null"
+		- actual-result: "0"
+	- autor1
+		- ground-truth: "null"
+		- actual-result: "null"
+	- informacoes
+		- ground-truth: "null"
+		- actual-result: "null"
+	- decisoes
+		- ground-truth: "null"
+		- actual-result: "null"
+	- relator
+		- ground-truth: "null"
+		- actual-result: """"
+	- apensos
+		- ground-truth: "0"
+		- actual-result: "null"
+	- pautas
+		- ground-truth: "[]"
+		- actual-result: "null"
+	- numero_origem
+		- ground-truth: "[123456789]"
+		- actual-result: "null"
+	- numero_unico
+		- ground-truth: "null"
+		- actual-result: ""Sem número único""
+	- partes
+		- ground-truth: "[{"index": 1, "tipo": "IMPTE.(S)", "nome": "SERGIO ROCHA CAMARA"}, {"index": 2, "tipo": "ADV.(A/S)", "nome": "EM CAUSA PROPRIA"}, {"index": 3, "tipo": "IMPDO.(A/S)", "nome": "CONGRESSO NACIONAL"}]"
+		- actual-result: "null"
+	- orgao_origem
+		- ground-truth: ""SUPERIOR TRIBUNAL DE JUSTIÇA""
+		- actual-result: "null"
+	- deslocamentos
+		- ground-truth: "[{"index_num": 1, "guia": "5247/2018", "recebido_por": "SEJ - ACERVO ELETRÔNICO INATIVO", "data_recebido": "04/12/2018", "enviado_por": "RECEBIMENTO E APOIO AO PROCESSAMENTO INICIAL DE RECURSOS CÍVEIS E CRIMINAIS", "data_enviado": "03/12/2018"}, {"index_num": 2, "guia": "72959/2018", "recebido_por": "RECEBIMENTO E APOIO AO PROCESSAMENTO INICIAL DE RECURSOS CÍVEIS E CRIMINAIS", "data_recebido": "04/11/2018", "enviado_por": "SEÇÃO DE RECEBIMENTO E DISTRIBUIÇÃO DE RECURSOS", "data_enviado": "04/11/2018"}, {"index_num": 3, "guia": "1819270/2018", "recebido_por": "SEÇÃO DE RECEBIMENTO E DISTRIBUIÇÃO DE RECURSOS", "data_recebido": "23/03/2018", "enviado_por": "SUPERIOR TRIBUNAL DE JUSTIÇA", "data_enviado": "23/03/2018"}]"
+		- actual-result: "null"
+	- andamentos
+		- ground-truth: "[{"index_num": 1, "data": "23/03/2018", "nome": "Cancelamento de autuação", "complemento": "Não consta nenhuma peça no processo.", "link_descricao": null, "link": null, "julgador": null}, {"index_num": 2, "data": "23/03/2018", "nome": "Cancelamento de autuação", "complemento": "Não consta nenhuma peça no processo.", "link_descricao": null, "link": null, "julgador": null}]"
+		- actual-result: "null"
+	- recursos
+		- ground-truth: "[]"
+		- actual-result: "null"
+	- meio
+		- ground-truth: ""FISICO""
+		- actual-result: ""Físico""
+	- assuntos
+		- ground-truth: "["DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Servidor Público Civil | Licenças / Afastamentos | Licença-Prêmio"]"
+		- actual-result: "null"
+	- sessao_virtual
+		- ground-truth: "[{"data": null, "tipo": null, "numero": null, "relator": null, "status": null, "participantes": []}]"
+		- actual-result: "null"
+	- folhas
+		- ground-truth: "282"
+		- actual-result: "null"
+	- peticoes
+		- ground-truth: "[]"
+		- actual-result: "null"
+	- extraido
+		- ground-truth: ""2025-10-19T02:27:40.642753Z""
+		- actual-result: "null"
+	- publicidade
+		- ground-truth: ""PUBLICO""
+		- actual-result: "null"
+	- volumes
+		- ground-truth: "1"
+		- actual-result: "null"
+	- badges
+		- ground-truth: "["LIMINAR"]"
+		- actual-result: "null"
+	- status
+		- ground-truth: "200"
+		- actual-result: "null"
+
+- MI_12.json
+	- meio
+		- ground-truth: ""FISICO""
+		- actual-result: "null"
+	- publicidade
+		- ground-truth: ""PUBLICO""
+		- actual-result: "null"
+	- orgao_origem
+		- ground-truth: ""FÓRUM DA COMARCA DE RANCHARIA""
+		- actual-result: "null"
+	- sessao_virtual
+		- ground-truth: "[{"data": null, "tipo": null, "numero": null, "relator": null, "status": null, "participantes": []}]"
+		- actual-result: "null"
+	- volumes
+		- ground-truth: "1"
+		- actual-result: "null"
+	- apensos
+		- ground-truth: "0"
+		- actual-result: "null"
+	- numero_origem
+		- ground-truth: "[123]"
+		- actual-result: "null"
+	- primeiro_autor
+		- ground-truth: "null"
+		- actual-result: "null"
+	- badges
+		- ground-truth: "[]"
+		- actual-result: "null"
+	- folhas
+		- ground-truth: "0"
+		- actual-result: "null"
+	- informacoes
+		- ground-truth: "null"
+		- actual-result: "null"
+	- sessao
+		- ground-truth: "null"
+		- actual-result: "{"data": null, "tipo": null, "numero": null, "relator": null, "status": null, "participantes": []}"
+	- liminar
+		- ground-truth: "null"
+		- actual-result: "0"
+	- decisoes
+		- ground-truth: "null"
+		- actual-result: "[]"
+	- autor1
+		- ground-truth: "null"
+		- actual-result: ""SERGIO ROCHA CAMARA""
+	- tipo_processo
+		- ground-truth: "null"
+		- actual-result: ""Físico""
+	- origem_orgao
+		- ground-truth: "null"
+		- actual-result: ""FÓRUM DA COMARCA DE RANCHARIA""
+	- extraido
+		- ground-truth: ""2025-10-19T02:27:40.642753Z""
+		- actual-result: ""2025-10-20T04:37:36.807015Z""
+	- data_protocolo
+		- ground-truth: ""17/10/1988""
+		- actual-result: ""1988-10-17T00:00:00Z""
+	- assuntos
+		- ground-truth: "["ASSUNTO PARA PROCESSO ANTIGO | | PROCESSO ANTIGO"]"
+		- actual-result: ""[\"ASSUNTO PARA PROCESSO ANTIGO |   | PROCESSO ANTIGO\"]""
+	- deslocamentos[0].guia
+		- ground-truth: ""832/9990""
+		- actual-result: ""Guia 832/9990""
+	- deslocamentos[0].index_num
+		- ground-truth: "1"
+		- actual-result: "3"
+	- deslocamentos[1].guia
+		- ground-truth: ""833/9990""
+		- actual-result: ""Guia 833/9990""
+	- deslocamentos[2].guia
+		- ground-truth: ""4190/9990""
+		- actual-result: ""Guia 4190/9990""
+	- deslocamentos[2].index_num
+		- ground-truth: "3"
+		- actual-result: "1"
+	- andamentos[0].link_descricao
+		- ground-truth: "null"
+		- actual-result: "null"
+	- andamentos[0].link
+		- ground-truth: "null"
+		- actual-result: "null"
+	- andamentos[0].index_num
+		- ground-truth: "1"
+		- actual-result: "10"
+	- andamentos[1].link_descricao
+		- ground-truth: "null"
+		- actual-result: "null"
+	- andamentos[1].link
+		- ground-truth: "null"
+		- actual-result: "null"
+	- andamentos[1].index_num
+		- ground-truth: "2"
+		- actual-result: "9"
+	- andamentos[2].link_descricao
+		- ground-truth: "null"
+		- actual-result: "null"
+	- andamentos[2].link
+		- ground-truth: "null"
+		- actual-result: "null"
+	- andamentos[2].index_num
+		- ground-truth: "3"
+		- actual-result: "8"
+	- andamentos[2].complemento
+		- ground-truth: "null"
+		- actual-result: """"
+	- andamentos[3].link_descricao
+		- ground-truth: "null"
+		- actual-result: "null"
+	- andamentos[3].link
+		- ground-truth: "null"
+		- actual-result: "null"
+	- andamentos[3].index_num
+		- ground-truth: "4"
+		- actual-result: "7"
+	- andamentos[4].link_descricao
+		- ground-truth: "null"
+		- actual-result: "null"
+	- andamentos[4].link
+		- ground-truth: "null"
+		- actual-result: "null"
+	- andamentos[4].index_num
+		- ground-truth: "5"
+		- actual-result: "6"
+	- andamentos[5].link_descricao
+		- ground-truth: "null"
+		- actual-result: "null"
+	- andamentos[5].link
+		- ground-truth: "null"
+		- actual-result: "null"
+	- andamentos[5].index_num
+		- ground-truth: "6"
+		- actual-result: "5"
+	- andamentos[6].link_descricao
+		- ground-truth: "null"
+		- actual-result: "null"
+	- andamentos[6].link
+		- ground-truth: "null"
+		- actual-result: "null"
+	- andamentos[6].index_num
+		- ground-truth: "7"
+		- actual-result: "4"
+	- andamentos[6].complemento
+		- ground-truth: "null"
+		- actual-result: """"
+	- andamentos[7].link_descricao
+		- ground-truth: "null"
+		- actual-result: "null"
+	- andamentos[7].link
+		- ground-truth: "null"
+		- actual-result: "null"
+	- andamentos[7].index_num
+		- ground-truth: "8"
+		- actual-result: "3"
+	- andamentos[8].link_descricao
+		- ground-truth: "null"
+		- actual-result: "null"
+	- andamentos[8].link
+		- ground-truth: "null"
+		- actual-result: "null"
+	- andamentos[8].index_num
+		- ground-truth: "9"
+		- actual-result: "2"
+	- andamentos[8].complemento
+		- ground-truth: "null"
+		- actual-result: """"
+	- andamentos[9].link_descricao
+		- ground-truth: "null"
+		- actual-result: "null"
+	- andamentos[9].link
+		- ground-truth: "null"
+		- actual-result: "null"
+	- andamentos[9].index_num
+		- ground-truth: "10"
+		- actual-result: "1"
+	- partes.length
+		- ground-truth: "3"
+		- actual-result: "6"
+	- partes[0].nome
+		- ground-truth: ""SERGIO ROCHA CAMARA""
+		- actual-result: ""IMPTE.(S)""
+	- partes[0].tipo
+		- ground-truth: ""IMPTE.(S)""
+		- actual-result: ""PARTE""
+	- partes[1].nome
+		- ground-truth: ""EM CAUSA PROPRIA""
+		- actual-result: ""SERGIO ROCHA CAMARA""
+	- partes[1].tipo
+		- ground-truth: ""ADV.(A/S)""
+		- actual-result: ""PARTE""
+	- partes[2].nome
+		- ground-truth: ""CONGRESSO NACIONAL""
+		- actual-result: ""ADV.(A/S)""
+	- partes[2].tipo
+		- ground-truth: ""IMPDO.(A/S)""
+		- actual-result: ""PARTE""
+
+- RE_1234567.json
+	- informacoes
+		- ground-truth: "null"
+		- actual-result: "[]"
+	- autor1
+		- ground-truth: "null"
+		- actual-result: ""GUNARS SPROGIS""
+	- apensos
+		- ground-truth: "null"
+		- actual-result: "0"
+	- numero_origem.length
+		- ground-truth: "1"
+		- actual-result: "0"
+	- partes.length
+		- ground-truth: "4"
+		- actual-result: "8"
+	- partes[0].nome
+		- ground-truth: ""GUNARS SPROGIS""
+		- actual-result: ""RECTE.(S)""
+	- partes[0].tipo
+		- ground-truth: ""RECTE.(S)""
+		- actual-result: ""PARTE""
+	- partes[1].nome
+		- ground-truth: ""VANESSA CRISTINA PASQUALINI (40513/BA, 29897/PR, 13695/SC, 400362/SP)""
+		- actual-result: ""GUNARS SPROGIS""
+	- partes[1].tipo
+		- ground-truth: ""ADV.(A/S)""
+		- actual-result: ""PARTE""
+	- partes[2].nome
+		- ground-truth: ""INSTITUTO NACIONAL DO SEGURO SOCIAL - INSS""
+		- actual-result: ""ADV.(A/S)""
+	- partes[2].tipo
+		- ground-truth: ""RECDO.(A/S)""
+		- actual-result: ""PARTE""
+	- partes[3].nome
+		- ground-truth: ""PROCURADOR-GERAL FEDERAL (00000/DF)""
+		- actual-result: ""VANESSA CRISTINA PASQUALINI (40513/BA, 29897/PR, 13695/SC, 400362/SP)""
+	- partes[3].tipo
+		- ground-truth: ""ADV.(A/S)""
+		- actual-result: ""PARTE""
+	- deslocamentos[0].guia
+		- ground-truth: ""38828/2019""
+		- actual-result: ""Guia 38828/2019""
+	- deslocamentos[0].index_num
+		- ground-truth: "1"
+		- actual-result: "10"
+	- deslocamentos[0].data_recebido
+		- ground-truth: ""22/10/2019""
+		- actual-result: "null"
+	- deslocamentos[1].guia
+		- ground-truth: ""19394/2019""
+		- actual-result: ""Guia 19394/2019""
+	- deslocamentos[1].index_num
+		- ground-truth: "2"
+		- actual-result: "9"
+	- deslocamentos[2].guia
+		- ground-truth: ""14889/2019""
+		- actual-result: ""Guia 14889/2019""
+	- deslocamentos[2].index_num
+		- ground-truth: "3"
+		- actual-result: "8"
+	- deslocamentos[3].guia
+		- ground-truth: ""5065/2019""
+		- actual-result: ""Guia 5065/2019""
+	- deslocamentos[3].index_num
+		- ground-truth: "4"
+		- actual-result: "7"
+	- deslocamentos[4].guia
+		- ground-truth: ""3062/2019""
+		- actual-result: ""Guia 3062/2019""
+	- deslocamentos[4].index_num
+		- ground-truth: "5"
+		- actual-result: "6"
+	- deslocamentos[5].guia
+		- ground-truth: ""34831/2019""
+		- actual-result: ""Guia 34831/2019""
+	- deslocamentos[5].index_num
+		- ground-truth: "6"
+		- actual-result: "5"
+	- deslocamentos[6].guia
+		- ground-truth: ""3773/2019""
+		- actual-result: ""Guia 3773/2019""
+	- deslocamentos[6].index_num
+		- ground-truth: "7"
+		- actual-result: "4"
+	- deslocamentos[7].guia
+		- ground-truth: ""543/2019""
+		- actual-result: ""Guia 543/2019""
+	- deslocamentos[7].index_num
+		- ground-truth: "8"
+		- actual-result: "3"
+	- deslocamentos[8].guia
+		- ground-truth: ""3541/2019""
+		- actual-result: ""Guia 3541/2019""
+	- deslocamentos[8].index_num
+		- ground-truth: "9"
+		- actual-result: "2"
+	- deslocamentos[9].guia
+		- ground-truth: ""2175581/2019""
+		- actual-result: ""Guia 2175581/2019""
+	- deslocamentos[9].index_num
+		- ground-truth: "10"
+		- actual-result: "1"
+	- andamentos[0].nome
+		- ground-truth: ""PROCESSO RECEBIDO NA ORIGEM""
+		- actual-result: ""Processo recebido na origem""
+	- andamentos[0].index_num
+		- ground-truth: "1"
+		- actual-result: "13"
+	- andamentos[1].nome
+		- ground-truth: ""AUTOS DISPONIBILIZADOS À ORIGEM""
+		- actual-result: ""Autos disponibilizados à origem""
+	- andamentos[1].index_num
+		- ground-truth: "2"
+		- actual-result: "12"
+	- andamentos[1].complemento
+		- ground-truth: "null"
+		- actual-result: """"
+	- andamentos[2].nome
+		- ground-truth: ""INTIMADO ELETRONICAMENTE""
+		- actual-result: ""Intimado eletronicamente""
+	- andamentos[2].index_num
+		- ground-truth: "3"
+		- actual-result: "11"
+	- andamentos[3].nome
+		- ground-truth: ""INTIMADO ELETRONICAMENTE""
+		- actual-result: ""Intimado eletronicamente""
+	- andamentos[3].index_num
+		- ground-truth: "4"
+		- actual-result: "10"
+	- andamentos[4].link_descricao
+		- ground-truth: ""TERMO DE REMESSA""
+		- actual-result: ""Termo de remessa""
+	- andamentos[4].nome
+		- ground-truth: ""REMESSA EXTERNA DOS AUTOS""
+		- actual-result: ""Remessa externa dos autos, Guia nº""
+	- andamentos[4].index_num
+		- ground-truth: "5"
+		- actual-result: "9"
+	- andamentos[5].nome
+		- ground-truth: ""INTIMAÇÃO ELETRÔNICA DISPONIBILIZADA""
+		- actual-result: ""Intimação eletrônica disponibilizada""
+	- andamentos[5].index_num
+		- ground-truth: "6"
+		- actual-result: "8"
+	- andamentos[6].link_descricao
+		- ground-truth: ""DESPACHO""
+		- actual-result: ""Despacho""
+	- andamentos[6].nome
+		- ground-truth: ""PUBLICAÇÃO, DJE""
+		- actual-result: ""Publicação, DJE""
+	- andamentos[7].nome
+		- ground-truth: ""DETERMINADA A DEVOLUÇÃO PELO REGIME DA REPERCUSSÃO GERAL""
+		- actual-result: ""Determinada a devolução pelo regime da repercussão geral""
+	- andamentos[7].index_num
+		- ground-truth: "8"
+		- actual-result: "6"
+	- andamentos[8].nome
+		- ground-truth: ""CONCLUSOS À PRESIDÊNCIA""
+		- actual-result: ""Conclusos à Presidência""
+	- andamentos[8].index_num
+		- ground-truth: "9"
+		- actual-result: "5"
+	- andamentos[8].complemento
+		- ground-truth: "null"
+		- actual-result: """"
+	- andamentos[9].link_descricao
+		- ground-truth: ""CERTIDÃO""
+		- actual-result: ""Certidão""
+	- andamentos[9].nome
+		- ground-truth: ""REGISTRADO À PRESIDÊNCIA""
+		- actual-result: ""Registrado à Presidência""
+	- andamentos[9].index_num
+		- ground-truth: "10"
+		- actual-result: "4"
+	- andamentos[9].complemento
+		- ground-truth: "null"
+		- actual-result: """"
+	- andamentos[10].nome
+		- ground-truth: ""AUTUADO""
+		- actual-result: ""Autuado""
+	- andamentos[10].index_num
+		- ground-truth: "11"
+		- actual-result: "3"
+	- andamentos[10].complemento
+		- ground-truth: "null"
+		- actual-result: """"
+	- andamentos[11].nome
+		- ground-truth: ""CERTIDÃO""
+		- actual-result: ""Certidão""
+	- andamentos[11].index_num
+		- ground-truth: "12"
+		- actual-result: "2"
+	- andamentos[12].nome
+		- ground-truth: ""PROTOCOLADO""
+		- actual-result: ""Protocolado""
+	- andamentos[12].index_num
+		- ground-truth: "13"
+		- actual-result: "1"
+	- recursos.length
+		- ground-truth: "0"
+		- actual-result: "1"
+	- meio
+		- ground-truth: ""ELETRONICO""
+		- actual-result: ""Eletrônico""
+	- assuntos
+		- ground-truth: "["DIREITO PREVIDENCIÁRIO | Benefícios em Espécie", "DIREITO PREVIDENCIÁRIO | RMI - Renda Mensal Inicial, Reajustes e Revisões Específicas", "DIREITO PREVIDENCIÁRIO | Pedidos Genéricos Relativos aos Benefícios em Espécie | Concessão", "DIREITO PREVIDENCIÁRIO | RMI - Renda Mensal Inicial, Reajustes e Revisões Específicas | Reajustes e Revisões Específicos", "DIREITO PREVIDENCIÁRIO | Pedidos Genéricos Relativos aos Benefícios em Espécie | Data de Início de Benefício (DIB)"]"
+		- actual-result: ""[\"DIREITO PREVIDENCIÁRIO | Benefícios em Espécie\", \"DIREITO PREVIDENCIÁRIO | RMI - Renda Mensal Inicial, Reajustes e Revisões Específicas\", \"DIREITO PREVIDENCIÁRIO | Pedidos Genéricos Relativos aos Benefícios em Espécie | Concessão\", \"DIREITO PREVIDENCIÁRIO | RMI - Renda Mensal Inicial, Reajustes e Revisões Específicas | Reajustes e Revisões Específicos\", \"DIREITO PREVIDENCIÁRIO | Pedidos Genéricos Relativos aos Benefícios em Espécie | Data de Início de Benefício (DIB)\"]""
+	- liminar
+		- ground-truth: "0"
+		- actual-result: "1"
+	- folhas
+		- ground-truth: "null"
+		- actual-result: "0"
+	- extraido
+		- ground-truth: ""2025-10-19T02:27:40.642753Z""
+		- actual-result: ""2025-10-20T11:14:02.882092Z""
+	- volumes
+		- ground-truth: "0"
+		- actual-result: "1"
+	- decisoes[0]
+		- ground-truth: "8"
+		- actual-result: "{"index_num": 8, "data": "18/10/2019", "nome": "Determinada a devolução pelo regime da repercussão geral", "complemento": "Tema nº 334 - RE 630501, Tema nº 1023 - ARE 1172622", "julgador": "PRESIDÊNCIA", "link": null}"
+	- badges.length
+		- ground-truth: "1"
+		- actual-result: "5"
+	- badges[0]
+		- ground-truth: ""Maior de 60 anos ou portador de doença grave""
+		- actual-result: ""Processo Eletrônico""
+	- origem
+		- ground-truth: ""RIO GRANDE DO SUL""
+		- actual-result: ""RS - RIO GRANDE DO SUL""

@@ -1,0 +1,89 @@
+version: '3.8'
+
+services:
+    # Linux testing environment
+    judex-linux:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: judex:linux
+        container_name: judex-linux-test
+        environment:
+            - PLATFORM=linux
+            - PYTHONPATH=/app
+        volumes:
+            - .:/app
+            - ./output:/app/output
+        command:
+            [
+                'uv',
+                'run',
+                'python',
+                '-m',
+                'pytest',
+                'tests/',
+                '-v',
+                '--tb=short',
+            ]
+        networks:
+            - judex-network
+
+    # Development environment with live reload
+    judex-dev:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: judex:dev
+        container_name: judex-dev
+        environment:
+            - PLATFORM=linux
+            - PYTHONPATH=/app
+            - PYTHONUNBUFFERED=1
+        volumes:
+            - .:/app
+            - ./output:/app/output
+            - ./logs:/app/logs
+        command: ['uv', 'run', 'python', '-m', 'judex.core']
+        networks:
+            - judex-network
+        stdin_open: true
+        tty: true
+
+    # Testing with specific Python versions
+    judex-python39:
+        build:
+            context: .
+            dockerfile: Dockerfile.python39
+        image: judex:python39
+        container_name: judex-python39-test
+        environment:
+            - PLATFORM=linux
+            - PYTHONPATH=/app
+        volumes:
+            - .:/app
+        command: ['python', '-m', 'pytest', 'tests/', '-v']
+        networks:
+            - judex-network
+
+    judex-python311:
+        build:
+            context: .
+            dockerfile: Dockerfile.python311
+        image: judex:python311
+        container_name: judex-python311-test
+        environment:
+            - PLATFORM=linux
+            - PYTHONPATH=/app
+        volumes:
+            - .:/app
+        command: ['python', '-m', 'pytest', 'tests/', '-v']
+        networks:
+            - judex-network
+
+networks:
+    judex-network:
+        driver: bridge
+
+volumes:
+    output:
+    logs:

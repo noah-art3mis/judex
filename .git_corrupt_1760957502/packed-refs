@@ -1,0 +1,7 @@
+# pack-refs with: peeled fully-peeled sorted 
+b062662a4188105d78bd82c726d4e0507e86a6d3 refs/remotes/origin/development
+9e284780bf13b09b5e93c96434c7c32b8550a1d8 refs/remotes/origin/library
+76d8381a971147ec32a62657468b45a0c634f69c refs/remotes/origin/main
+b47a707fe1ffdb080504837c9e4403958dd1dace refs/remotes/origin/orm
+d7ec13c763e4efe9a6768a47b3356101787d5eaa refs/remotes/origin/scrapy-selenium
+76d8381a971147ec32a62657468b45a0c634f69c refs/tags/1.0.0

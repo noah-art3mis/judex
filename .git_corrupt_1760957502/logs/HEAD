@@ -1,0 +1,21 @@
+0000000000000000000000000000000000000000 76d8381a971147ec32a62657468b45a0c634f69c Gustavo Costa <gustavo@arcos.org.br> 1760732427 +0100	clone: from https://github.com/noah-art3mis/judex
+76d8381a971147ec32a62657468b45a0c634f69c d3feb418b72403a711e49a5509797d154600b2d3 Gustavo Costa <gustavo@arcos.org.br> 1760741952 +0100	commit: refactor core
+d3feb418b72403a711e49a5509797d154600b2d3 5749f28f9ac91b549797163d20b8707725360794 Gustavo Costa <gustavo@arcos.org.br> 1760741962 +0100	pull: Merge made by the 'ort' strategy.
+5749f28f9ac91b549797163d20b8707725360794 07e2973ae1c9db0b9ab240ade7ad324e124feac2 Gustavo Costa <gustavo@arcos.org.br> 1760830172 +0100	pull --tags origin main: Fast-forward
+07e2973ae1c9db0b9ab240ade7ad324e124feac2 d4b71b225bfceac96e81ffd8c3e68d00b7197dc6 Gustavo Costa <gustavo@arcos.org.br> 1760834327 +0100	commit: fix tests 190/191
+d4b71b225bfceac96e81ffd8c3e68d00b7197dc6 dffcd0b14eb8a9b04c3a25ee8369419b4e7a4ed5 Gustavo Costa <gustavo@arcos.org.br> 1760834380 +0100	commit: update version
+dffcd0b14eb8a9b04c3a25ee8369419b4e7a4ed5 dffcd0b14eb8a9b04c3a25ee8369419b4e7a4ed5 Gustavo Costa <gustavo@arcos.org.br> 1760834566 +0100	checkout: moving from main to performance
+dffcd0b14eb8a9b04c3a25ee8369419b4e7a4ed5 db70aae6d0850d1031ffa7f0dce7105d4e8d086b Gustavo Costa <gustavo@arcos.org.br> 1760841468 +0100	commit: add --no-cache
+db70aae6d0850d1031ffa7f0dce7105d4e8d086b 39f90ab8e7cb9abe0b0fdb1d0ce5b6cdc3a77a50 Gustavo Costa <gustavo@arcos.org.br> 1760841482 +0100	commit: add examples
+39f90ab8e7cb9abe0b0fdb1d0ce5b6cdc3a77a50 616918d6b881412b5c1be039094ff361d3fa51ee Gustavo Costa <gustavo@arcos.org.br> 1760841708 +0100	commit: add text utils
+616918d6b881412b5c1be039094ff361d3fa51ee dd45520cd7a508ce0afe64781242733cd28936ee Gustavo Costa <gustavo@arcos.org.br> 1760841824 +0100	commit: create mixins
+dd45520cd7a508ce0afe64781242733cd28936ee ad9974c9c1a9e1a373829c44f0825f28e451ceb8 Gustavo Costa <gustavo@arcos.org.br> 1760841929 +0100	commit: add base spide
+ad9974c9c1a9e1a373829c44f0825f28e451ceb8 cf176b510465d580967b4f9bc9386ec8a51a3a97 Gustavo Costa <gustavo@arcos.org.br> 1760847115 +0100	commit: uh oh
+cf176b510465d580967b4f9bc9386ec8a51a3a97 dffcd0b14eb8a9b04c3a25ee8369419b4e7a4ed5 Gustavo Costa <gustavo@arcos.org.br> 1760847120 +0100	checkout: moving from performance to main
+dffcd0b14eb8a9b04c3a25ee8369419b4e7a4ed5 dffcd0b14eb8a9b04c3a25ee8369419b4e7a4ed5 Gustavo Costa <gustavo@arcos.org.br> 1760847126 +0100	checkout: moving from main to development
+dffcd0b14eb8a9b04c3a25ee8369419b4e7a4ed5 b411362fd1362ed48421cc26d99545e299626fdc Gustavo Costa <gustavo@arcos.org.br> 1760929461 +0100	commit: add ground truth example
+b411362fd1362ed48421cc26d99545e299626fdc dffcd0b14eb8a9b04c3a25ee8369419b4e7a4ed5 Gustavo Costa <gustavo@arcos.org.br> 1760929581 +0100	checkout: moving from development to main
+dffcd0b14eb8a9b04c3a25ee8369419b4e7a4ed5 dffcd0b14eb8a9b04c3a25ee8369419b4e7a4ed5 Gustavo Costa <gustavo@arcos.org.br> 1760929594 +0100	checkout: moving from main to ground-truth
+dffcd0b14eb8a9b04c3a25ee8369419b4e7a4ed5 c75934ae0c3d8f28f58afa43b7937866812c4ce7 Gustavo Costa <gustavo@arcos.org.br> 1760929871 +0100	commit: add ground truth
+c75934ae0c3d8f28f58afa43b7937866812c4ce7 6deff7745311665a8e9c76e9de07ccb15798828a Gustavo Costa <gustavo@arcos.org.br> 1760933594 +0100	commit: add ground truth
+6deff7745311665a8e9c76e9de07ccb15798828a 1a8413ea01369d7a04ec3d7c874967d5e3870ef8 Gustavo Costa <gustavo@arcos.org.br> 1760935123 +0100	commit: add ground truth plans

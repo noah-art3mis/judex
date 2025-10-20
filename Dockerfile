@@ -1,0 +1,38 @@
+# Multi-stage Dockerfile for judex testing across platforms
+FROM python:3.10-slim as base
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    wget \
+    gnupg \
+    unzip \
+    curl \
+    chromium \
+    chromium-driver \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set Chrome environment variables
+ENV CHROME_BIN=/usr/bin/chromium
+ENV CHROMEDRIVER_PATH=/usr/bin/chromedriver
+
+# Create app directory
+WORKDIR /app
+
+# Copy requirements first for better caching
+COPY pyproject.toml ./
+COPY uv.lock* ./
+
+# Install uv
+RUN pip install uv
+
+# Copy source code BEFORE installing dependencies
+COPY . .
+
+# Install dependencies and the package
+RUN uv sync --frozen
+
+# Install the package in development mode
+RUN uv pip install -e .
+
+# Default command for testing
+CMD ["uv", "run", "python", "-m", "pytest", "tests/", "-v"]
