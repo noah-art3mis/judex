@@ -28,7 +28,7 @@ def init_database(db_path: str):
                 origem TEXT,
                 origem_orgao TEXT,
                 data_protocolo TEXT,
-                autor1 TEXT,
+                primeiro_autor TEXT,
                 assuntos TEXT, -- Keep as JSON for now
                 -- Metadata
                 html TEXT,
@@ -214,7 +214,7 @@ def processo_write(db_path: str, processo_data: dict[str, Any]) -> bool:
                 """
                 INSERT OR REPLACE INTO processos (
                     numero_unico, incidente, processo_id, classe, tipo_processo, liminar, relator,
-                    origem, origem_orgao, data_protocolo, autor1, assuntos,
+                    origem, origem_orgao, data_protocolo, primeiro_autor, assuntos,
                     html, error_message, updated_at
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
@@ -229,7 +229,7 @@ def processo_write(db_path: str, processo_data: dict[str, Any]) -> bool:
                     processo_data.get("origem"),
                     processo_data.get("origem_orgao"),
                     processo_data.get("data_protocolo"),
-                    processo_data.get("autor1"),
+                    processo_data.get("primeiro_autor"),
                     json.dumps(processo_data.get("assuntos"), ensure_ascii=False),
                     processo_data.get("html"),
                     processo_data.get("error_message"),

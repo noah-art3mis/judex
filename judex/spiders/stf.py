@@ -17,22 +17,25 @@ from judex.database import get_existing_processo_ids, get_failed_processo_ids
 from judex.extract import (
     extract_andamentos,
     extract_assuntos,
-    extract_autor1,
+    extract_badges,
     extract_classe,
     extract_data_protocolo,
     extract_decisoes,
     extract_deslocamentos,
-    extract_liminar,
+    extract_meio,
+    extract_numero_origem,
     extract_numero_unico,
     extract_origem,
     extract_origem_orgao,
     extract_partes,
     extract_pautas,
     extract_peticoes,
+    extract_primeiro_autor,
+    extract_publicidade,
     extract_recursos,
     extract_relator,
-    extract_sessao,
-    extract_tipo_processo,
+    extract_sessao_virtual,
+    extract_volumes_folhas_apensos,
 )
 from judex.items import STFCaseItem
 from judex.types import validate_case_type
@@ -83,7 +86,9 @@ class StfSpider(scrapy.Spider):
         try:
             self.numeros = json.loads(processos)
         except Exception as e:
-            raise ValueError("processos must be a JSON list, e.g., '[4916, 4917]'") from e
+            raise ValueError(
+                "processos must be a JSON list, e.g., '[4916, 4917]'"
+            ) from e
 
     def _filter_processos_by_database(self, db_path: str) -> tuple[list, int]:
         """
@@ -105,11 +110,17 @@ class StfSpider(scrapy.Spider):
                     existing_ids = get_existing_processo_ids(
                         db_path, self.classe, self.max_age_hours
                     )
-                    self.logger.info(f"Found {len(existing_ids)} existing processo IDs to skip")
+                    self.logger.info(
+                        f"Found {len(existing_ids)} existing processo IDs to skip"
+                    )
 
                 if self.retry_failed:
-                    failed_ids = get_failed_processo_ids(db_path, self.classe, self.max_age_hours)
-                    self.logger.info(f"Found {len(failed_ids)} failed processo IDs to retry")
+                    failed_ids = get_failed_processo_ids(
+                        db_path, self.classe, self.max_age_hours
+                    )
+                    self.logger.info(
+                        f"Found {len(failed_ids)} failed processo IDs to retry"
+                    )
 
             except Exception as e:
                 self.logger.warning(f"Could not check database for existing data: {e}")
@@ -147,9 +158,7 @@ class StfSpider(scrapy.Spider):
 
         # Generate requests only for numeros that need scraping
         for numero in numeros_to_scrape:
-            url = (
-                f"{base}/processos/listarProcessos.asp?classe={self.classe}&numeroProcesso={numero}"
-            )
+            url = f"{base}/processos/listarProcessos.asp?classe={self.classe}&numeroProcesso={numero}"
 
             yield SeleniumRequest(
                 url=url,
@@ -212,23 +221,26 @@ class StfSpider(scrapy.Spider):
         # ids
         case_data["processo_id"] = response.meta["numero"]
         case_data["incidente"] = int(incidente)
-        # All extractions now handle their own errors and timing via decorators
         case_data["numero_unico"] = extract_numero_unico(soup)
         case_data["classe"] = extract_classe(soup) or self.classe
-        case_data["liminar"] = extract_liminar(self, driver, soup)
         case_data["relator"] = extract_relator(soup)
-        case_data["tipo_processo"] = extract_tipo_processo(soup)
+        case_data["meio"] = extract_meio(soup)
+        case_data["publicidade"] = extract_publicidade(soup)
+        case_data["badges"] = extract_badges(self, driver, soup)
         case_data["origem"] = extract_origem(self, driver, soup)
         case_data["data_protocolo"] = extract_data_protocolo(self, driver, soup)
-        case_data["origem_orgao"] = extract_origem_orgao(self, driver, soup)
-        case_data["autor1"] = extract_autor1(self, driver, soup)
+        case_data["orgao_origem"] = extract_origem_orgao(self, driver, soup)
+        case_data["numero_origem"] = extract_numero_origem(self, driver, soup)
+        case_data["primeiro_autor"] = extract_primeiro_autor(self, driver, soup)
         case_data["assuntos"] = extract_assuntos(self, driver, soup)
 
         # Wait for AJAX content to load dynamically
         try:
             Wait = WebDriverWait(driver, 10)
             Wait.until(
-                lambda d: d.find_element(By.ID, "resumo-partes").get_attribute("innerHTML").strip()
+                lambda d: d.find_element(By.ID, "resumo-partes")
+                .get_attribute("innerHTML")
+                .strip()
                 != ""
                 or d.find_element(By.ID, "resumo-partes")
                 .get_attribute("innerHTML")
@@ -247,12 +259,25 @@ class StfSpider(scrapy.Spider):
         case_data["peticoes"] = extract_peticoes(self, driver, soup)
         case_data["recursos"] = extract_recursos(self, driver, soup)
         case_data["pautas"] = extract_pautas(self, driver, soup)
-        case_data["sessao"] = extract_sessao(self, driver, soup)
+        case_data["sessao_virtual"] = extract_sessao_virtual(self, driver, soup)
+
+        # Volumes, folhas, apensos counters
+        counters = extract_volumes_folhas_apensos(self, driver, soup)
+        if counters:
+            case_data["volumes"] = counters.get("volumes")
+            case_data["folhas"] = counters.get("folhas")
+            case_data["apensos"] = counters.get("apensos")
+        else:
+            case_data["volumes"] = None
+            case_data["folhas"] = None
+            case_data["apensos"] = None
 
         # Track total extraction time
         total_extraction_time = time.time() - extraction_start_time
         self.crawler.stats.inc_value("extraction/completed")
-        self.crawler.stats.set_value("extraction/total_duration", round(total_extraction_time, 2))
+        self.crawler.stats.set_value(
+            "extraction/total_duration", round(total_extraction_time, 2)
+        )
 
         # Log total timing
         self.logger.info(f"Total extraction time: {total_extraction_time:.3f}s")

@@ -30,7 +30,7 @@ DOWNLOADER_MIDDLEWARES = {
 # }
 
 ITEM_PIPELINES = {
-    "judex.pydantic_pipeline.PydanticValidationPipeline": 200,
+    # "judex.pydantic_pipeline.PydanticValidationPipeline": 200,
     # "judex.pipelines.DatabasePipeline": 300,  # SQLite database (enabled dynamically)
     # JSON, CSV, and JSONL handled by custom pipelines
 }
@@ -45,7 +45,7 @@ AUTOTHROTTLE_MAX_DELAY = 60
 AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
 AUTOTHROTTLE_DEBUG = False
 
-HTTPCACHE_ENABLED = True
+HTTPCACHE_ENABLED = False
 HTTPCACHE_EXPIRATION_SECS = 360
 HTTPCACHE_DIR = "httpcache"
 HTTPCACHE_IGNORE_HTTP_CODES: list[int] = []

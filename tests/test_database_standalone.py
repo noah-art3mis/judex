@@ -63,7 +63,7 @@ def sample_processo_data():
         "origem": "GOVERNADOR DO ESTADO DO RIO DE JANEIRO",
         "origem_orgao": "TRIBUNAL DE JUSTIÇA DO ESTADO DO RIO DE JANEIRO",
         "data_protocolo": "2013-03-15T00:00:00Z",
-        "autor1": "GOVERNADOR DO ESTADO DO RIO DE JANEIRO",
+        "primeiro_autor": "GOVERNADOR DO ESTADO DO RIO DE JANEIRO",
         "assuntos": [
             "DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Controle de Constitucionalidade"
         ],
@@ -308,7 +308,7 @@ class TestEdgeCases:
             "origem": "TEST ORIGIN",
             "origem_orgao": "TEST ORG",
             "data_protocolo": "2023-01-01T00:00:00Z",
-            "autor1": "TEST AUTHOR",
+            "primeiro_autor": "TEST AUTHOR",
             "assuntos": [],
             "partes_total": [],
             "andamentos": [],
@@ -340,7 +340,7 @@ class TestEdgeCases:
             "origem": "GOVERNADOR DO ESTADO DO RIO DE JANEIRO",
             "origem_orgao": "TRIBUNAL DE JUSTIÇA DO ESTADO DO RIO DE JANEIRO",
             "data_protocolo": "2023-01-01T00:00:00Z",
-            "autor1": "GOVERNADOR DO ESTADO DO RIO DE JANEIRO",
+            "primeiro_autor": "GOVERNADOR DO ESTADO DO RIO DE JANEIRO",
             "assuntos": [
                 "DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Controle de Constitucionalidade"
             ],

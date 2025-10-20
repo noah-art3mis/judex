@@ -6,7 +6,7 @@
         "numero_unico": null,
         "meio": "FISICO",
         "publicidade": "PUBLICO",
-        "badges": ["LIMINAR"],
+        "badges": [],
         "assuntos": [
             "DIREITO ADMINISTRATIVO E OUTRAS MATÉRIAS DE DIREITO PÚBLICO | Servidor Público Civil | Licenças / Afastamentos | Licença-Prêmio"
         ],
@@ -18,22 +18,27 @@
         "folhas": 282,
         "apensos": 0,
         "relator": null,
-        "primeiro_autor": null,
+        "primeiro_autor": "TESTE",
         "partes": [
             {
                 "index": 1,
-                "tipo": "IMPTE.(S)",
-                "nome": "SERGIO ROCHA CAMARA"
+                "tipo": "AGTE.(S)",
+                "nome": "TESTE"
             },
             {
                 "index": 2,
                 "tipo": "ADV.(A/S)",
-                "nome": "EM CAUSA PROPRIA"
+                "nome": "ADVOGADO TESTE"
             },
             {
                 "index": 3,
-                "tipo": "IMPDO.(A/S)",
-                "nome": "CONGRESSO NACIONAL"
+                "tipo": "AGDO.(A/S)",
+                "nome": "ESTADO DO ACRE"
+            },
+            {
+                "index": 4,
+                "tipo": "PROC.(A/S)(ES)",
+                "nome": "PROCURADOR-GERAL DO ESTADO DO ACRE"
             }
         ],
         "andamentos": [
@@ -47,13 +52,13 @@
                 "julgador": null
             },
             {
-                "index_num": 2,
+                "index_num": 1,
                 "data": "23/03/2018",
-                "nome": "Cancelamento de autuação",
-                "complemento": "Não consta nenhuma peça no processo.",
+                "nome": "Autuado",
+                "complemento": null,
+                "julgador": null,
                 "link_descricao": null,
-                "link": null,
-                "julgador": null
+                "link": null
             }
         ],
         "sessao_virtual": [

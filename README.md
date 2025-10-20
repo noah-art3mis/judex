@@ -114,16 +114,16 @@ class Processo:
     origem: str
     origem_orgao: str
     data_protocolo: str
-    autor1: str
+    primeiro_autor: str
     assuntos: str
 
     # listas
     partes: list
     andamento: list
-    decisao: list 
-    deslocamento: list 
-    peticao: list 
-    recursos: list 
+    decisao: list
+    deslocamento: list
+    peticao: list
+    recursos: list
 
     # metadados
     html: str

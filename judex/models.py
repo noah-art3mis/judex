@@ -179,8 +179,8 @@ class STFCaseModel(BaseModel):
     origem: str | None = None
     data_protocolo: str | None = None
     origem_orgao: str | None = None
-    autor1: str | None = None
-    assuntos: str | None = None  # Database stores as JSON TEXT
+    primeiro_autor: str | None = None
+    assuntos: list[str] | None = None
 
     # AJAX-loaded content
     partes: list[Parte] = Field(default_factory=list)
@@ -241,11 +241,22 @@ class STFCaseModel(BaseModel):
     @field_validator("assuntos", mode="before")
     @classmethod
     def validate_assuntos(cls, v):
-        # Convert list to JSON string for database compatibility
-        if isinstance(v, list):
+        if v is None or v == "":
+            return None
+        if isinstance(v, str):
+            # Accept legacy JSON string -> list, or single string
             import json
 
-            return json.dumps(v, ensure_ascii=False)
+            try:
+                parsed = json.loads(v)
+                if isinstance(parsed, list):
+                    return [str(x).strip() for x in parsed if str(x).strip()]
+                return [str(parsed).strip()] if str(parsed).strip() else None
+            except Exception:
+                trimmed = v.strip()
+                return [trimmed] if trimmed else None
+        if isinstance(v, list):
+            return [str(x).strip() for x in v if str(x).strip()]
         return v
 
     @field_validator("partes", mode="before")
@@ -258,7 +269,9 @@ class STFCaseModel(BaseModel):
                 if isinstance(item, dict) and "_index" in item:
                     item = item.copy()
                     item["index"] = item.pop("_index")
-                processed_items.append(Parte(**item) if isinstance(item, dict) else item)
+                processed_items.append(
+                    Parte(**item) if isinstance(item, dict) else item
+                )
             return processed_items
         return v
 
@@ -272,7 +285,9 @@ class STFCaseModel(BaseModel):
                 if isinstance(item, dict) and "index" in item:
                     item = item.copy()
                     item["index_num"] = item.pop("index")
-                processed_items.append(Andamento(**item) if isinstance(item, dict) else item)
+                processed_items.append(
+                    Andamento(**item) if isinstance(item, dict) else item
+                )
             return processed_items
         return v
 
@@ -286,7 +301,9 @@ class STFCaseModel(BaseModel):
                 if isinstance(item, dict) and "index" in item:
                     item = item.copy()
                     item["index_num"] = item.pop("index")
-                processed_items.append(Decisao(**item) if isinstance(item, dict) else item)
+                processed_items.append(
+                    Decisao(**item) if isinstance(item, dict) else item
+                )
             return processed_items
         return v
 
@@ -300,7 +317,9 @@ class STFCaseModel(BaseModel):
                 if isinstance(item, dict) and "index" in item:
                     item = item.copy()
                     item["index_num"] = item.pop("index")
-                processed_items.append(Deslocamento(**item) if isinstance(item, dict) else item)
+                processed_items.append(
+                    Deslocamento(**item) if isinstance(item, dict) else item
+                )
             return processed_items
         return v
 
@@ -314,7 +333,9 @@ class STFCaseModel(BaseModel):
                 if isinstance(item, dict) and "index" in item:
                     item = item.copy()
                     item["index_num"] = item.pop("index")
-                processed_items.append(Peticao(**item) if isinstance(item, dict) else item)
+                processed_items.append(
+                    Peticao(**item) if isinstance(item, dict) else item
+                )
             return processed_items
         return v
 
@@ -328,7 +349,9 @@ class STFCaseModel(BaseModel):
                 if isinstance(item, dict) and "index" in item:
                     item = item.copy()
                     item["index_num"] = item.pop("index")
-                processed_items.append(Recurso(**item) if isinstance(item, dict) else item)
+                processed_items.append(
+                    Recurso(**item) if isinstance(item, dict) else item
+                )
             return processed_items
         return v
 
@@ -342,7 +365,9 @@ class STFCaseModel(BaseModel):
                 if isinstance(item, dict) and "index" in item:
                     item = item.copy()
                     item["index_num"] = item.pop("index")
-                processed_items.append(Pauta(**item) if isinstance(item, dict) else item)
+                processed_items.append(
+                    Pauta(**item) if isinstance(item, dict) else item
+                )
             return processed_items
         return v
 

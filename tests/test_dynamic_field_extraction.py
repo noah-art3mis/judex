@@ -28,7 +28,7 @@ class TestDynamicFieldExtraction:
             "origem",
             "data_protocolo",
             "origem_orgao",
-            "autor1",
+            "primeiro_autor",
             "assuntos",
             "partes",
             "andamentos",
@@ -99,7 +99,7 @@ class TestDynamicFieldExtraction:
         expected_fields = [
             "andamentos",
             "assuntos",
-            "autor1",
+            "primeiro_autor",
             "classe",
             "data_protocolo",
             "decisoes",

@@ -155,7 +155,7 @@ class STFCaseModel(BaseModel):
     origem: str | None = None
     data_protocolo: str | None = None
     origem_orgao: str | None = None
-    autor1: str | None = None
+    primeiro_autor: str | None = None
     assuntos: str | None = None
 
     # AJAX-loaded content
@@ -186,7 +186,7 @@ class STFCaseModel(BaseModel):
 -   `origem` (str | None): Process origin
 -   `data_protocolo` (str | None): Protocol date
 -   `origem_orgao` (str | None): Origin organization
--   `autor1` (str | None): First author/plaintiff
+-   `primeiro_autor` (str | None): First author/plaintiff
 -   `assuntos` (str | None): Subjects as JSON string
 -   `partes` (list[Parte]): Parties involved
 -   `andamentos` (list[Andamento]): Process movements
