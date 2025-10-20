@@ -55,8 +55,8 @@ def scrape(
         "--output-path",
         help="O caminho para o diretório de saída (padrão: judex_output)",
     ),
-    verbose: bool = typer.Option(
-        False, "--verbose", "-v", help="Habilitar logging verboso"
+    quiet: bool = typer.Option(
+        False, "--quiet", "-q", help="Reduzir verbosidade (log apenas INFO)"
     ),
     custom_name: Optional[str] = typer.Option(
         None,
@@ -78,6 +78,16 @@ def scrape(
         "--max-age",
         help="Idade máxima do processo para raspar em horas (padrão: 24)",
     ),
+    log_level: Optional[str] = typer.Option(
+        None,
+        "--log-level",
+        help="Scrapy LOG_LEVEL (CRITICAL|ERROR|WARNING|INFO|DEBUG)",
+    ),
+    no_cache: bool = typer.Option(
+        False,
+        "--no-cache/--cache",
+        help="Desabilitar cache HTTP (sobrepõe configurações quando ativado)",
+    ),
 ):
     """Raspar casos jurídicos do STF"""
     try:
@@ -96,8 +106,20 @@ def scrape(
             max_age_hours=max_age,
             db_path=None,
             custom_name=custom_name,
-            verbose=verbose,
+            verbose=not quiet,
         )
+
+        # Apply CLI-controlled Scrapy settings
+        if log_level:
+            scraper.settings.set("LOG_LEVEL", str(log_level).upper())
+        else:
+            if quiet:
+                scraper.settings.set("LOG_LEVEL", "INFO")
+            else:
+                scraper.settings.set("LOG_LEVEL", "DEBUG")
+
+        if no_cache:
+            scraper.settings.set("HTTPCACHE_ENABLED", False)
 
         # Display startup information with rich formatting
         print(
@@ -107,10 +129,6 @@ def scrape(
         print(f"[blue]💾 Tipo de saída: {salvar_como}[/blue]")
 
         scraper.scrape()
-
-        print(f"[blue]📁 Diretório de saída: {output_path}[/blue]")
-        print(f"[blue]💾 Tipo de saída: {salvar_como}[/blue]")
-        print("[bold green]✅ Raspagem concluída com sucesso![/bold green]")
 
     except Exception as e:
         print(f"[bold red]❌ Erro: {e}[/bold red]")

@@ -1,6 +1,5 @@
 import datetime
 import json
-import re
 import time
 from collections.abc import AsyncGenerator, Iterator
 
@@ -20,7 +19,6 @@ from judex.extract import (
     extract_badges,
     extract_classe,
     extract_data_protocolo,
-    extract_decisoes,
     extract_deslocamentos,
     extract_meio,
     extract_numero_origem,
@@ -39,6 +37,7 @@ from judex.extract import (
 )
 from judex.items import STFCaseItem
 from judex.types import validate_case_type
+from judex.utils.text import normalize_spaces
 
 
 class StfSpider(scrapy.Spider):
@@ -213,7 +212,6 @@ class StfSpider(scrapy.Spider):
 
         # Track overall extraction timing
         extraction_start_time = time.time()
-        self.crawler.stats.inc_value("extraction/started")
 
         # Create a dictionary for Pydantic validation
         case_data = {}
@@ -274,17 +272,22 @@ class StfSpider(scrapy.Spider):
 
         # Track total extraction time
         total_extraction_time = time.time() - extraction_start_time
-        self.crawler.stats.inc_value("extraction/completed")
-        self.crawler.stats.set_value(
-            "extraction/total_duration", round(total_extraction_time, 2)
-        )
+        if (
+            hasattr(self, "crawler")
+            and self.crawler
+            and hasattr(self.crawler, "stats")
+            and self.crawler.stats
+        ):
+            self.crawler.stats.set_value(
+                "extraction/total_duration", round(total_extraction_time, 2)
+            )
 
         # Log total timing
         self.logger.info(f"Total extraction time: {total_extraction_time:.3f}s")
 
         # metadados
         case_data["status"] = response.status
-        case_data["html"] = re.sub(r"\s+", " ", page_html.strip())
+        case_data["html"] = normalize_spaces(page_html)
         case_data["extraido"] = datetime.datetime.now().isoformat() + "Z"
 
         # Create a Scrapy Item from the validated data for compatibility

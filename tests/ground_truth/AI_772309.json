@@ -45,7 +45,7 @@
             {
                 "index_num": 2,
                 "data": "23/03/2018",
-                "nome": "Cancelamento de autuação",
+                "nome": "CANCELAMENTO DE AUTUAÇÃO",
                 "complemento": "Não consta nenhuma peça no processo.",
                 "link_descricao": null,
                 "link": null,
@@ -54,7 +54,7 @@
             {
                 "index_num": 1,
                 "data": "23/03/2018",
-                "nome": "Autuado",
+                "nome": "AUTUADO",
                 "complemento": null,
                 "julgador": null,
                 "link_descricao": null,

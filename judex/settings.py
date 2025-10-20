@@ -30,6 +30,7 @@ DOWNLOADER_MIDDLEWARES = {
 # }
 
 ITEM_PIPELINES = {
+    # todo add "judex.pipelines.normalize_pipeline.NormalizePipeline": 100,
     # "judex.pydantic_pipeline.PydanticValidationPipeline": 200,
     # "judex.pipelines.DatabasePipeline": 300,  # SQLite database (enabled dynamically)
     # JSON, CSV, and JSONL handled by custom pipelines
