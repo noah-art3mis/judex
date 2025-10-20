@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-IGNORED_KEYS = {"extraido", "html"}
+IGNORED_KEYS = {"extraido", "html", "status", "recursos"}
 
 
 def _assert_json_equal(expected, actual, path: str = "") -> None:

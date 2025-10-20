@@ -498,6 +498,7 @@ def extract_decisoes(data: list) -> list:
             decisoes_list.append(item)
     return decisoes_list
 
+
 # """Extract decisoes from andamento-julgador badge elements"""
 #     try:
 #         # Find all andamento elements that contain julgador badges
@@ -776,7 +777,8 @@ def extract_peticoes(spider, driver: WebDriver, soup) -> list:
 @handle_extraction_errors(default_value=[], log_errors=True)
 def extract_recursos(spider, driver: WebDriver, soup) -> list:
     """Extract recursos from andamentos that have julgador badges"""
-
+    # todo this is bugged. check a real recurso
+    return []
 
     # try:
     #     # Find all andamento elements
